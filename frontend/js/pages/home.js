@@ -195,7 +195,7 @@ async function _onSpin() {
         Wheel.spin(() => {
             btn.disabled = false;
             _showResult(dish);
-        });
+        }, dish.dish_id);
     } catch (err) {
         Toast.show(err.message || 'Błąd losowania', 'error');
         btn.disabled = false;

@@ -92,14 +92,29 @@ const Wheel = (() => {
         ctx.stroke();
     }
 
-    function spin(onResult) {
+    function spin(onResult, targetId) {
         if (isSpinning || !segments.length) return;
         isSpinning = true;
 
-        const totalRot = Math.PI * 2 * (8 + Math.random() * 6);
+        const slice    = (Math.PI * 2) / segments.length;
+        const startAng = currentAngle;
+        let totalRot;
+
+        const targetIdx = targetId !== undefined
+            ? segments.findIndex(s => s.id === targetId)
+            : -1;
+
+        if (targetIdx >= 0) {
+            // Calculate rotation so the pointer (top, -π/2) lands on the center of targetIdx
+            const targetFinalAngle = -Math.PI / 2 - targetIdx * slice - slice / 2;
+            const diff = ((targetFinalAngle - startAng) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+            totalRot = diff + Math.PI * 2 * (8 + Math.floor(Math.random() * 4));
+        } else {
+            totalRot = Math.PI * 2 * (8 + Math.random() * 6);
+        }
+
         const duration = 4000 + Math.random() * 1200;
         const start    = performance.now();
-        const startAng = currentAngle;
 
         function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
 
