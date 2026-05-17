@@ -46,7 +46,7 @@ final class UserRepository extends BaseRepository
     public function getAll(): array
     {
         return $this->fetchAll(
-            'SELECT id, email, name, role, avatar_url, created_at FROM v_user_stats ORDER BY created_at DESC'
+            'SELECT id, email, name, role, created_at, total_spins, total_favorites, total_ratings, last_spin_at FROM v_user_stats ORDER BY created_at DESC'
         );
     }
 }
