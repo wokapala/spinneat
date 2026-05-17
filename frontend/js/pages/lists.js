@@ -91,11 +91,11 @@ async function _loadLists() {
         el.querySelectorAll('.edit-list-btn').forEach(btn =>
             btn.addEventListener('click', async e => {
                 e.stopPropagation();
-                const res  = await API.lists.get(btn.dataset.id).catch(() => null);
+                const res  = await API.lists.get(parseInt(btn.dataset.id)).catch(() => null);
                 if (!res) return;
                 _openListModal(res.data, async data => {
                     try {
-                        await API.lists.update(btn.dataset.id, data);
+                        await API.lists.update(parseInt(btn.dataset.id), data);
                         Toast.show('Lista zaktualizowana', 'success');
                         await _loadLists();
                     } catch (err) { Toast.show(err.message, 'error'); }
@@ -107,7 +107,7 @@ async function _loadLists() {
                 e.stopPropagation();
                 if (!confirm('Usunąć listę?')) return;
                 try {
-                    await API.lists.delete(btn.dataset.id);
+                    await API.lists.delete(parseInt(btn.dataset.id));
                     Toast.show('Lista usunięta', 'info');
                     await _loadLists();
                 } catch (err) { Toast.show(err.message, 'error'); }
@@ -160,7 +160,7 @@ async function _viewList(id) {
     document.querySelectorAll('.remove-dish-btn').forEach(btn =>
         btn.addEventListener('click', async () => {
             try {
-                await API.lists.removeDish(btn.dataset.listid, btn.dataset.dishid);
+                await API.lists.removeDish(parseInt(btn.dataset.listid), parseInt(btn.dataset.dishid));
                 btn.closest('div[style]').remove();
                 Toast.show('Danie usunięte z listy', 'info');
             } catch (err) { Toast.show(err.message, 'error'); }

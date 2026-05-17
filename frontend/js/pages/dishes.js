@@ -137,7 +137,7 @@ async function _openDishDetail(id) {
 
     document.querySelector('.fav-modal-btn')?.addEventListener('click', async e => {
         const id = parseInt(e.currentTarget.dataset.id);
-        try { await API.dishes.addFavorite(id); Toast.show('Dodano do ulubionych!', 'success'); } catch (err) { Toast.show(err.message, 'error'); }
+        try { await API.dishes.addFavorite(id); Modal.hide(); Toast.show('Dodano do ulubionych!', 'success'); } catch (err) { Toast.show(err.message, 'error'); }
     });
     document.querySelector('.rate-modal-btn')?.addEventListener('click', e => {
         const id = parseInt(e.currentTarget.dataset.id);
