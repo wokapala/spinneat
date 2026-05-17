@@ -8,16 +8,16 @@ final class DishRepository extends BaseRepository
 {
     public function findAll(?int $categoryId = null, ?string $search = null): array
     {
-        $where = ['d.is_active = TRUE'];
+        $where = ['is_active = TRUE'];
         $params = [];
 
         if ($categoryId !== null) {
-            $where[] = 'd.category_id = ?';
+            $where[] = 'category_id = ?';
             $params[] = $categoryId;
         }
 
         if ($search !== null) {
-            $where[] = '(d.name ILIKE ? OR d.description ILIKE ?)';
+            $where[] = '(name ILIKE ? OR description ILIKE ?)';
             $params[] = "%{$search}%";
             $params[] = "%{$search}%";
         }
@@ -25,7 +25,7 @@ final class DishRepository extends BaseRepository
         $whereClause = 'WHERE ' . implode(' AND ', $where);
 
         return $this->fetchAll(
-            "SELECT * FROM v_dish_details {$whereClause} ORDER BY spin_count DESC, d.name ASC",
+            "SELECT * FROM v_dish_details {$whereClause} ORDER BY spin_count DESC, name ASC",
             $params
         );
     }
