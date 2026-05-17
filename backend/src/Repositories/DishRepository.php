@@ -10,18 +10,16 @@ final class DishRepository extends BaseRepository
     {
         $where = ['d.is_active = TRUE'];
         $params = [];
-        $idx = 1;
 
         if ($categoryId !== null) {
-            $where[] = "d.category_id = \${$idx}";
+            $where[] = 'd.category_id = ?';
             $params[] = $categoryId;
-            $idx++;
         }
 
         if ($search !== null) {
-            $where[] = "(d.name ILIKE \${$idx} OR d.description ILIKE \${$idx})";
+            $where[] = '(d.name ILIKE ? OR d.description ILIKE ?)';
             $params[] = "%{$search}%";
-            $idx++;
+            $params[] = "%{$search}%";
         }
 
         $whereClause = 'WHERE ' . implode(' AND ', $where);
@@ -34,14 +32,14 @@ final class DishRepository extends BaseRepository
 
     public function findById(int $id): ?array
     {
-        return $this->fetchOne('SELECT * FROM v_dish_details WHERE id = $1', [$id]);
+        return $this->fetchOne('SELECT * FROM v_dish_details WHERE id = ?', [$id]);
     }
 
     public function create(array $data): array
     {
         $row = $this->fetchOne(
             'INSERT INTO dishes (name, description, category_id, image_url, created_by)
-             VALUES ($1, $2, $3, $4, $5) RETURNING id',
+             VALUES (?, ?, ?, ?, ?) RETURNING id',
             [$data['name'], $data['description'] ?? null, $data['category_id'], $data['image_url'] ?? null, $data['created_by'] ?? null]
         );
         return $this->findById((int) $row['id']);
@@ -50,8 +48,8 @@ final class DishRepository extends BaseRepository
     public function update(int $id, array $data): ?array
     {
         $this->execute(
-            'UPDATE dishes SET name = $1, description = $2, category_id = $3, image_url = $4, is_active = $5
-             WHERE id = $6',
+            'UPDATE dishes SET name = ?, description = ?, category_id = ?, image_url = ?, is_active = ?
+             WHERE id = ?',
             [$data['name'], $data['description'] ?? null, $data['category_id'], $data['image_url'] ?? null, $data['is_active'] ?? true, $id]
         );
         return $this->findById($id);
@@ -59,7 +57,7 @@ final class DishRepository extends BaseRepository
 
     public function delete(int $id): bool
     {
-        return $this->execute('UPDATE dishes SET is_active = FALSE WHERE id = $1', [$id]) > 0;
+        return $this->execute('UPDATE dishes SET is_active = FALSE WHERE id = ?', [$id]) > 0;
     }
 
     public function getFavorites(int $userId): array
@@ -67,7 +65,7 @@ final class DishRepository extends BaseRepository
         return $this->fetchAll(
             'SELECT vd.* FROM v_dish_details vd
              JOIN favorites f ON f.dish_id = vd.id
-             WHERE f.user_id = $1 ORDER BY f.created_at DESC',
+             WHERE f.user_id = ? ORDER BY f.created_at DESC',
             [$userId]
         );
     }
@@ -75,7 +73,7 @@ final class DishRepository extends BaseRepository
     public function addFavorite(int $userId, int $dishId): void
     {
         $this->execute(
-            'INSERT INTO favorites (user_id, dish_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+            'INSERT INTO favorites (user_id, dish_id) VALUES (?, ?) ON CONFLICT DO NOTHING',
             [$userId, $dishId]
         );
     }
@@ -83,7 +81,7 @@ final class DishRepository extends BaseRepository
     public function removeFavorite(int $userId, int $dishId): void
     {
         $this->execute(
-            'DELETE FROM favorites WHERE user_id = $1 AND dish_id = $2',
+            'DELETE FROM favorites WHERE user_id = ? AND dish_id = ?',
             [$userId, $dishId]
         );
     }
@@ -91,7 +89,7 @@ final class DishRepository extends BaseRepository
     public function isFavorite(int $userId, int $dishId): bool
     {
         $row = $this->fetchOne(
-            'SELECT 1 FROM favorites WHERE user_id = $1 AND dish_id = $2',
+            'SELECT 1 FROM favorites WHERE user_id = ? AND dish_id = ?',
             [$userId, $dishId]
         );
         return $row !== null;
