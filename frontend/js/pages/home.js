@@ -113,12 +113,38 @@ async function _loadHomeData() {
 
         // Init wheel
         const canvas = document.getElementById('wheelCanvas');
-        if (canvas) Wheel.init(canvas, dishes.slice(0, 12).map(d => ({ ...d, label: d.name })));
+        if (canvas) Wheel.init(canvas, dishes.slice(0, 16).map(d => ({ ...d, label: d.name })));
+
+        // Update wheel when filters change
+        const catSel2  = document.getElementById('spinCategory');
+        const listSel2 = document.getElementById('spinList');
+        catSel2?.addEventListener('change',  () => _updateWheel());
+        listSel2?.addEventListener('change', () => _updateWheel());
 
         // Feature cards
         _renderHomeCards(dishes.slice(0, 4));
     } catch (err) {
         document.getElementById('homeCards').innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
+    }
+}
+
+async function _updateWheel() {
+    const catId  = document.getElementById('spinCategory')?.value || null;
+    const listId = document.getElementById('spinList')?.value   || null;
+
+    try {
+        let dishes = [];
+        if (listId) {
+            const res = await API.lists.get(parseInt(listId));
+            dishes = res.data?.dishes || [];
+        } else {
+            const params = catId ? { category_id: parseInt(catId) } : {};
+            const res = await API.dishes.list(params);
+            dishes = res.data || [];
+        }
+        Wheel.setSegments(dishes.slice(0, 16).map(d => ({ ...d, label: d.name })));
+    } catch (err) {
+        Toast.show('Nie udało się zaktualizować koła', 'error');
     }
 }
 
