@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed": "#ef9dff",
+              "inverse-primary": "#fe6a34",
+              "primary-fixed": "#ff7949",
+              "on-tertiary": "#ffeefc",
+              "secondary-dim": "#902c2a",
+              "surface-variant": "#e3dbd7",
+              "on-secondary-fixed": "#6a0f12",
+              "inverse-surface": "#100e0c",
+              "secondary": "#a03834",
+              "on-primary-container": "#451000",
+              "error-dim": "#9f0519",
+              "surface-container-highest": "#e3dbd7",
+              "on-primary": "#ffefeb",
+              "on-secondary-container": "#852422",
+              "on-tertiary-container": "#5e1470",
+              "secondary-fixed": "#ffc3be",
+              "surface-bright": "#fcf5f1",
+              "primary": "#a63300",
+              "surface-container-low": "#f6efeb",
+              "outline-variant": "#b2aca9",
+              "on-error": "#ffefee",
+              "on-background": "#312e2c",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#ffafa9",
+              "on-secondary": "#ffefed",
+              "surface-dim": "#dad3ce",
+              "error": "#b31b25",
+              "tertiary-dim": "#78308a",
+              "on-surface": "#312e2c",
+              "secondary-container": "#ffc3be",
+              "primary-dim": "#922c00",
+              "primary-fixed-dim": "#f7652f",
+              "primary-container": "#ff7949",
+              "background": "#fcf5f1",
+              "surface-tint": "#a63300",
+              "tertiary": "#853d97",
+              "on-error-container": "#570008",
+              "on-secondary-fixed-variant": "#912d2b",
+              "surface": "#fcf5f1",
+              "on-primary-fixed-variant": "#551600",
+              "tertiary-fixed-dim": "#e190f1",
+              "on-tertiary-fixed-variant": "#681f7a",
+              "surface-container": "#eee7e2",
+              "on-primary-fixed": "#000000",
+              "error-container": "#fb5151",
+              "surface-container-high": "#e8e1dc",
+              "on-tertiary-fixed": "#400050",
+              "tertiary-container": "#ef9dff",
+              "on-surface-variant": "#5f5b58",
+              "inverse-on-surface": "#a19c99",
+              "outline": "#7a7673"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Be Vietnam Pro"],
+              "label": ["Be Vietnam Pro"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+      }
+      .signature-gradient {
+        background: linear-gradient(135deg, #a63300 0%, #ff7949 100%);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-40 bg-[#fcf5f1] dark:bg-stone-950 flex items-center justify-between px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#a63300] dark:text-[#ff7949]">restaurant_menu</span>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-xl font-extrabold text-[#a63300] dark:text-[#ff7949]">Spin &amp; Eat</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-sm"><!-- user.initials --></div>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-6 pt-4 space-y-8">
+<!-- Search Section -->
+<section class="space-y-4">
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-4 pl-12 pr-4 shadow-sm focus:ring-2 focus:ring-primary/20 placeholder:text-outline transition-all" placeholder="Search your saved meals..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+<button class="px-5 py-2 bg-primary text-on-primary rounded-full font-medium whitespace-nowrap">All</button>
+<button class="px-5 py-2 bg-surface-container text-on-surface-variant rounded-full font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors">Polish</button>
+<button class="px-5 py-2 bg-surface-container text-on-surface-variant rounded-full font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors">Italian</button>
+<button class="px-5 py-2 bg-surface-container text-on-surface-variant rounded-full font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors">Asian</button>
+<button class="px-5 py-2 bg-surface-container text-on-surface-variant rounded-full font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors">Dessert</button>
+</div>
+</section>
+<!-- Meals List Header -->
+<div class="flex items-end justify-between">
+<div>
+<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface">My Meals</h2>
+<p class="text-on-surface-variant text-sm mt-1">24 Delicious recipes saved</p>
+</div>
+<button class="text-primary font-bold text-sm flex items-center gap-1 hover:opacity-80">
+                Sort by
+                <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+<!-- Meals List -->
+<div class="grid gap-6">
+<!-- Meal Card 1 -->
+<div class="relative group overflow-hidden">
+<div class="absolute inset-0 bg-secondary-container flex items-center justify-end px-6 rounded-DEFAULT">
+<span class="material-symbols-outlined text-on-secondary-container">delete</span>
+</div>
+<div class="relative bg-surface-container-lowest p-5 rounded-DEFAULT flex items-center gap-4 transition-transform active:scale-[0.98] cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-outline-variant/10">
+<div class="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center text-3xl">
+                        🥟
+                    </div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-headline font-bold text-lg text-on-surface">Pierogi Ruskie</h3>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-semibold rounded-full">Polish</span>
+</div>
+<div class="flex items-center gap-3 mt-1 text-outline text-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                45 min
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">local_fire_department</span>
+                                High
+                            </div>
+</div>
+</div>
+<div class="flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-outline text-sm">chevron_left</span>
+<span class="text-[8px] text-outline uppercase font-bold tracking-tighter">Swipe</span>
+</div>
+</div>
+</div>
+<!-- Meal Card 2 -->
+<div class="relative group overflow-hidden">
+<div class="absolute inset-0 bg-secondary-container flex items-center justify-end px-6 rounded-DEFAULT">
+<span class="material-symbols-outlined text-on-secondary-container">delete</span>
+</div>
+<div class="relative bg-surface-container-lowest p-5 rounded-DEFAULT flex items-center gap-4 transition-transform active:scale-[0.98] cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-outline-variant/10">
+<div class="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center text-3xl">
+                        🍝
+                    </div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-headline font-bold text-lg text-on-surface">Pesto Genovese</h3>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-semibold rounded-full">Italian</span>
+</div>
+<div class="flex items-center gap-3 mt-1 text-outline text-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                15 min
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">local_fire_department</span>
+                                Easy
+                            </div>
+</div>
+</div>
+<div class="flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-outline text-sm">chevron_left</span>
+<span class="text-[8px] text-outline uppercase font-bold tracking-tighter">Swipe</span>
+</div>
+</div>
+</div>
+<!-- Meal Card 3 -->
+<div class="relative group overflow-hidden">
+<div class="absolute inset-0 bg-secondary-container flex items-center justify-end px-6 rounded-DEFAULT">
+<span class="material-symbols-outlined text-on-secondary-container">delete</span>
+</div>
+<div class="relative bg-surface-container-lowest p-5 rounded-DEFAULT flex items-center gap-4 transition-transform active:scale-[0.98] cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-outline-variant/10">
+<div class="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center text-3xl">
+                        🍣
+                    </div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-headline font-bold text-lg text-on-surface">Dragon Roll</h3>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-semibold rounded-full">Asian</span>
+</div>
+<div class="flex items-center gap-3 mt-1 text-outline text-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                60 min
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">local_fire_department</span>
+                                Expert
+                            </div>
+</div>
+</div>
+<div class="flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-outline text-sm">chevron_left</span>
+<span class="text-[8px] text-outline uppercase font-bold tracking-tighter">Swipe</span>
+</div>
+</div>
+</div>
+<!-- Meal Card 4 -->
+<div class="relative group overflow-hidden">
+<div class="absolute inset-0 bg-secondary-container flex items-center justify-end px-6 rounded-DEFAULT">
+<span class="material-symbols-outlined text-on-secondary-container">delete</span>
+</div>
+<div class="relative bg-surface-container-lowest p-5 rounded-DEFAULT flex items-center gap-4 transition-transform active:scale-[0.98] cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-outline-variant/10">
+<div class="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center text-3xl">
+                        🍕
+                    </div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-headline font-bold text-lg text-on-surface">Margherita Pizza</h3>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-semibold rounded-full">Italian</span>
+</div>
+<div class="flex items-center gap-3 mt-1 text-outline text-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                20 min
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">local_fire_department</span>
+                                Med
+                            </div>
+</div>
+</div>
+<div class="flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-outline text-sm">chevron_left</span>
+<span class="text-[8px] text-outline uppercase font-bold tracking-tighter">Swipe</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Featured Section (Bento Style) -->
+<section class="mt-12 space-y-4">
+<h2 class="font-headline text-2xl font-extrabold tracking-tight text-on-surface">Quick Actions</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-[#ffefeb] p-6 rounded-lg flex flex-col justify-between aspect-square group cursor-pointer active:scale-95 transition-all">
+<span class="material-symbols-outlined text-primary text-3xl">auto_awesome</span>
+<div>
+<p class="font-headline font-bold text-primary text-lg">Surprise Me</p>
+<p class="text-xs text-primary-dim/70">Spin for a random meal</p>
+</div>
+</div>
+<div class="bg-surface-container-high p-6 rounded-lg flex flex-col justify-between aspect-square group cursor-pointer active:scale-95 transition-all">
+<span class="material-symbols-outlined text-on-surface text-3xl">shopping_cart</span>
+<div>
+<p class="font-headline font-bold text-on-surface text-lg">Grocery List</p>
+<p class="text-xs text-on-surface-variant">8 items to buy</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-28 right-6 w-14 h-14 signature-gradient text-white rounded-full flex items-center justify-center shadow-[0_12px_24px_rgba(166,51,0,0.3)] z-40 active:scale-90 transition-transform">
+<span class="material-symbols-outlined font-bold text-3xl">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md z-50 flex justify-around items-center p-2 bg-[#ff7949]/80 dark:bg-[#a63300]/80 backdrop-blur-xl rounded-full shadow-[0_24px_48px_rgba(166,51,0,0.1)]">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-white/70 px-5 py-2 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-medium">Home</span>
+</a>
+<!-- Meals (ACTIVE) -->
+<a class="flex flex-col items-center justify-center bg-white/20 dark:bg-black/20 rounded-full px-5 py-2 text-white active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-medium">Meals</span>
+</a>
+<!-- History -->
+<a class="flex flex-col items-center justify-center text-white/70 px-5 py-2 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-medium">History</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-white/70 px-5 py-2 hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-medium">Profile</span>
+</a>
+</nav>
+</body></html>

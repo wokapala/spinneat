@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Spin &amp; Eat - Result</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed": "#ef9dff",
+              "inverse-primary": "#fe6a34",
+              "primary-fixed": "#ff7949",
+              "on-tertiary": "#ffeefc",
+              "secondary-dim": "#902c2a",
+              "surface-variant": "#e3dbd7",
+              "on-secondary-fixed": "#6a0f12",
+              "inverse-surface": "#100e0c",
+              "secondary": "#a03834",
+              "on-primary-container": "#451000",
+              "error-dim": "#9f0519",
+              "surface-container-highest": "#e3dbd7",
+              "on-primary": "#ffefeb",
+              "on-secondary-container": "#852422",
+              "on-tertiary-container": "#5e1470",
+              "secondary-fixed": "#ffc3be",
+              "surface-bright": "#fcf5f1",
+              "primary": "#a63300",
+              "surface-container-low": "#f6efeb",
+              "outline-variant": "#b2aca9",
+              "on-error": "#ffefee",
+              "on-background": "#312e2c",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#ffafa9",
+              "on-secondary": "#ffefed",
+              "surface-dim": "#dad3ce",
+              "error": "#b31b25",
+              "tertiary-dim": "#78308a",
+              "on-surface": "#312e2c",
+              "secondary-container": "#ffc3be",
+              "primary-dim": "#922c00",
+              "primary-fixed-dim": "#f7652f",
+              "primary-container": "#ff7949",
+              "background": "#fcf5f1",
+              "surface-tint": "#a63300",
+              "tertiary": "#853d97",
+              "on-error-container": "#570008",
+              "on-secondary-fixed-variant": "#912d2b",
+              "surface": "#fcf5f1",
+              "on-primary-fixed-variant": "#551600",
+              "tertiary-fixed-dim": "#e190f1",
+              "on-tertiary-fixed-variant": "#681f7a",
+              "surface-container": "#eee7e2",
+              "on-primary-fixed": "#000000",
+              "error-container": "#fb5151",
+              "surface-container-high": "#e8e1dc",
+              "on-tertiary-fixed": "#400050",
+              "tertiary-container": "#ef9dff",
+              "on-surface-variant": "#5f5b58",
+              "inverse-on-surface": "#a19c99",
+              "outline": "#7a7673"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Be Vietnam Pro"],
+              "label": ["Be Vietnam Pro"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff7949;
+            opacity: 0.6;
+            border-radius: 2px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-40 bg-[#fcf5f1] dark:bg-stone-950">
+<div class="flex items-center justify-between px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#a63300] dark:text-[#ff7949]">restaurant_menu</span>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-xl font-extrabold text-[#a63300] dark:text-[#ff7949]">Spin &amp; Eat</h1>
+</div>
+<button class="hover:opacity-80 active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[#312e2c]">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center px-6 py-8 relative overflow-hidden">
+<!-- Ambient Confetti / Decorative Elements -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden">
+<div class="confetti-piece" style="top: 10%; left: 15%; transform: rotate(15deg);"></div>
+<div class="confetti-piece" style="top: 25%; left: 80%; transform: rotate(-25deg); background: #a63300;"></div>
+<div class="confetti-piece" style="top: 60%; left: 5%; transform: rotate(45deg);"></div>
+<div class="confetti-piece" style="top: 75%; left: 90%; transform: rotate(110deg); background: #ff7949;"></div>
+<div class="confetti-piece" style="top: 40%; left: 40%; transform: rotate(200deg); opacity: 0.2;"></div>
+</div>
+<!-- Winning Result Card -->
+<div class="w-full max-w-sm relative group">
+<!-- Background Layering for Depth -->
+<div class="absolute -inset-4 bg-primary-container/10 blur-3xl rounded-full opacity-50"></div>
+<div class="relative bg-surface-container-lowest rounded-lg p-8 shadow-[0_24px_48px_rgba(166,51,0,0.06)] text-center flex flex-col items-center">
+<!-- Meal Emoji Badge -->
+<div class="w-24 h-24 bg-surface-container-low rounded-full flex items-center justify-center mb-6 relative">
+<span aria-label="Spicy Ramen" class="text-6xl" role="img">🍜</span>
+<!-- Sparkle accents -->
+<span class="material-symbols-outlined absolute -top-2 -right-2 text-primary-fixed" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<!-- Text Header -->
+<p class="font-label text-on-surface-variant font-medium tracking-widest uppercase text-xs mb-2">Today's Perfect Match</p>
+<h2 class="font-headline text-4xl font-extrabold text-on-surface leading-tight mb-8">Spicy Miso Ramen</h2>
+<!-- Visual Detail (Asymmetric Element) -->
+<div class="w-full mb-8 relative">
+<img alt="Winning Meal" class="w-full h-48 object-cover rounded-DEFAULT shadow-lg -rotate-2 group-hover:rotate-0 transition-transform duration-500" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e3dbd7' width='200' height='200'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='48' fill='%23b2aca9'%3E%F0%9F%96%BC%3C/text%3E%3C/svg%3E"/>
+<div class="absolute -bottom-3 -right-3 bg-secondary px-3 py-1 rounded-full text-on-secondary font-label text-[10px] font-bold shadow-md">
+                        🔥 HOT PICK
+                    </div>
+</div>
+<!-- Action Buttons -->
+<div class="w-full space-y-4">
+<button class="w-full py-4 px-6 rounded-DEFAULT bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-lg shadow-lg active:scale-95 transition-all">
+                        Yes, let's eat!
+                    </button>
+<button class="w-full py-4 px-6 rounded-DEFAULT bg-surface-container-high text-on-surface font-headline font-bold text-lg active:scale-95 transition-all">
+                        Spin again
+                    </button>
+</div>
+<!-- Footer Link -->
+<button class="mt-8 text-primary font-label text-sm font-semibold hover:underline flex items-center gap-1 opacity-80">
+<span class="material-symbols-outlined text-sm">history</span>
+                    Add to history
+                </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<!-- Determined active: Home (closest to primary spin flow) or History (if considering the flow context) -->
+<!-- Given this is a result of a core action, "Home" or the main interaction point is active -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md z-50 flex justify-around items-center p-2 bg-[#ff7949]/80 dark:bg-[#a63300]/80 backdrop-blur-xl rounded-full shadow-[0_24px_48px_rgba(166,51,0,0.1)]">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center bg-white/20 dark:bg-black/20 rounded-full px-5 py-2 text-white transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-medium">Home</span>
+</a>
+<!-- Meals -->
+<a class="flex flex-col items-center justify-center text-white/70 px-5 py-2 hover:bg-white/10 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">restaurant</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-medium">Meals</span>
+</a>
+<!-- History -->
+<a class="flex flex-col items-center justify-center text-white/70 px-5 py-2 hover:bg-white/10 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-medium">History</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-white/70 px-5 py-2 hover:bg-white/10 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-medium">Profile</span>
+</a>
+</nav>
+<!-- Spacing for fixed nav -->
+<div class="h-28"></div>
+</body></html>
