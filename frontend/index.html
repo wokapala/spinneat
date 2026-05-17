@@ -3,42 +3,79 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spin &amp; Eat 🎡</title>
+    <title>Spin &amp; Eat</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/components.css" />
     <link rel="stylesheet" href="/css/responsive.css" />
+
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎡</text></svg>" />
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar" id="navbar">
-    <div class="navbar__brand" data-page="home">
-        <span class="navbar__logo">🎡</span>
-        <span class="navbar__title">Spin &amp; Eat</span>
+<!-- TOP BAR -->
+<header class="topbar" id="topbar">
+    <div class="topbar__brand" data-page="home">
+        <span class="material-symbols-outlined topbar__icon">restaurant_menu</span>
+        <span class="topbar__title">Spin &amp; Eat</span>
     </div>
-    <button class="navbar__toggle" id="navToggle" aria-label="Menu">&#9776;</button>
-    <ul class="navbar__links" id="navLinks">
-        <li><a href="#" data-page="home" class="nav-link">Główna</a></li>
-        <li><a href="#" data-page="dishes" class="nav-link">Dania</a></li>
-        <li class="nav-auth-only hidden"><a href="#" data-page="history" class="nav-link">Historia</a></li>
-        <li class="nav-auth-only hidden"><a href="#" data-page="lists" class="nav-link">Moje listy</a></li>
-        <li class="nav-auth-only hidden"><a href="#" data-page="favorites" class="nav-link">Ulubione</a></li>
-        <li class="nav-admin-only hidden"><a href="#" data-page="admin" class="nav-link">Panel admina</a></li>
-        <li class="nav-guest-only"><a href="#" data-page="login" class="nav-link btn btn--outline btn--sm">Zaloguj</a></li>
-        <li class="nav-guest-only"><a href="#" data-page="register" class="nav-link btn btn--primary btn--sm">Rejestracja</a></li>
-        <li class="nav-auth-only hidden">
-            <button class="btn btn--ghost btn--sm" id="logoutBtn">Wyloguj</button>
-        </li>
-    </ul>
+    <div class="topbar__actions">
+        <div class="topbar__pill nav-auth-only hidden" id="mealCountPill">
+            <span class="topbar__pill-dot"></span>
+            <span id="mealCountLabel">0 meals saved</span>
+        </div>
+        <button class="topbar__icon-btn nav-auth-only hidden" id="notifBtn" aria-label="Powiadomienia">
+            <span class="material-symbols-outlined">notifications</span>
+        </button>
+        <button class="topbar__icon-btn nav-guest-only" data-page="login" aria-label="Zaloguj się">
+            <span class="material-symbols-outlined">login</span>
+        </button>
+    </div>
+</header>
+
+<!-- MAIN (SPA content) -->
+<main class="app-content" id="app"></main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottomNav">
+    <button class="bottom-nav__item active" data-page="home">
+        <span class="material-symbols-outlined icon-fill">home</span>
+        <span class="bottom-nav__label">Home</span>
+    </button>
+    <button class="bottom-nav__item nav-auth-only hidden" data-page="dishes">
+        <span class="material-symbols-outlined">restaurant</span>
+        <span class="bottom-nav__label">Meals</span>
+    </button>
+    <button class="bottom-nav__item nav-auth-only hidden" data-page="history">
+        <span class="material-symbols-outlined">history</span>
+        <span class="bottom-nav__label">History</span>
+    </button>
+    <button class="bottom-nav__item nav-guest-only" data-page="dishes">
+        <span class="material-symbols-outlined">restaurant</span>
+        <span class="bottom-nav__label">Meals</span>
+    </button>
+    <button class="bottom-nav__item nav-auth-only hidden" data-page="lists">
+        <span class="material-symbols-outlined">format_list_bulleted</span>
+        <span class="bottom-nav__label">Lists</span>
+    </button>
+    <button class="bottom-nav__item nav-auth-only hidden" data-page="profile">
+        <span class="material-symbols-outlined">person</span>
+        <span class="bottom-nav__label">Profile</span>
+    </button>
+    <button class="bottom-nav__item nav-guest-only" data-page="login">
+        <span class="material-symbols-outlined">person</span>
+        <span class="bottom-nav__label">Profile</span>
+    </button>
 </nav>
 
-<!-- TOAST container -->
+<!-- TOAST -->
 <div id="toastContainer" class="toast-container"></div>
-
-<!-- MAIN content area (SPA) -->
-<main id="app" class="app-content"></main>
 
 <!-- MODAL -->
 <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
@@ -59,6 +96,7 @@
 <script src="/js/pages/history.js"></script>
 <script src="/js/pages/lists.js"></script>
 <script src="/js/pages/favorites.js"></script>
+<script src="/js/pages/profile.js"></script>
 <script src="/js/pages/admin.js"></script>
 <script src="/js/app.js"></script>
 </body>

@@ -3,8 +3,13 @@
 Pages.register = function(container) {
     container.innerHTML = `
         <div class="auth-wrapper">
-            <div class="auth-box">
-                <h2 class="auth-box__title">🎡 Utwórz konto</h2>
+            <div class="auth-card">
+                <div class="auth-card__brand">
+                    <span class="material-symbols-outlined" style="font-size:2.5rem;color:var(--clr-primary);">refresh</span>
+                    <h1 style="font-family:var(--font-headline);font-size:1.75rem;font-weight:800;letter-spacing:-.03em;color:var(--clr-on-bg);margin:0;">Spin & Eat</h1>
+                </div>
+                <p style="color:var(--clr-on-surface-var);font-size:.9375rem;margin-bottom:2rem;">Utwórz konto i zacznij losować swoje posiłki!</p>
+
                 <form id="registerForm" novalidate>
                     <div class="form-group">
                         <label for="regName">Imię i nazwisko</label>
@@ -17,13 +22,18 @@ Pages.register = function(container) {
                         <span class="field-error" id="emailErr"></span>
                     </div>
                     <div class="form-group">
-                        <label for="regPass">Hasło <span class="text-muted">(min. 8 znaków)</span></label>
+                        <label for="regPass">Hasło <span style="color:var(--clr-on-surface-var);font-weight:400;">(min. 8 znaków)</span></label>
                         <input type="password" id="regPass" name="password" placeholder="••••••••" autocomplete="new-password" />
-                        <span class="field-error" id="passErr"></span>
+                        <span class="field-error" id="passwordErr"></span>
                     </div>
-                    <button class="btn btn--primary btn--full mt-md" type="submit" id="regBtn">Zarejestruj się</button>
+                    <button class="btn btn--primary btn--full btn--pill mt-md" type="submit" id="regBtn">
+                        Utwórz konto <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
                 </form>
-                <p class="auth-box__link mt-md">Masz konto? <a href="#" data-page="login">Zaloguj się</a></p>
+
+                <p class="auth-card__switch">Masz już konto?
+                    <a href="#" data-page="login" style="color:var(--clr-primary);font-weight:600;text-decoration:none;">Zaloguj się</a>
+                </p>
             </div>
         </div>
     `;
@@ -35,18 +45,16 @@ Pages.register = function(container) {
         const password = document.getElementById('regPass').value;
         const btn      = document.getElementById('regBtn');
 
-        // Clear errors
-        ['nameErr','emailErr','passErr'].forEach(id => document.getElementById(id).textContent = '');
+        ['nameErr','emailErr','passwordErr'].forEach(id => document.getElementById(id).textContent = '');
 
         btn.disabled = true;
-        btn.textContent = 'Rejestracja…';
+        btn.innerHTML = '<div class="spinner" style="width:1.25rem;height:1.25rem;border-width:2px;margin:0 auto;"></div>';
 
         try {
             await API.auth.register({ name, email, password });
-            // Auto-login
             const loginRes = await API.auth.login({ email, password });
             Auth.set(loginRes.data);
-            Toast.show('Konto utworzone! Witaj 🎉', 'success');
+            Toast.show('Konto utworzone! Witaj!', 'success');
             App.navigate('home');
         } catch (err) {
             if (err.errors) {
@@ -57,9 +65,8 @@ Pages.register = function(container) {
             } else {
                 Toast.show(err.message, 'error');
             }
-        } finally {
             btn.disabled = false;
-            btn.textContent = 'Zarejestruj się';
+            btn.innerHTML = 'Utwórz konto <span class="material-symbols-outlined">arrow_forward</span>';
         }
     });
 };

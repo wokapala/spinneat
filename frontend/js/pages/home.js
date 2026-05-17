@@ -3,191 +3,252 @@
 const Pages = window.Pages || {};
 
 Pages.home = async function(container) {
-    // Hero
     if (!Auth.isLoggedIn()) {
-        container.innerHTML = `
-            <section class="hero">
-                <h1 class="hero__title">Nie wiesz co jeść?<br/>Zakręć kołem! 🎡</h1>
-                <p class="hero__sub">Spin & Eat losuje danie spośród setek przepisów. Koniec z codziennym dylematem – co na obiad?</p>
-                <div class="hero__actions">
-                    <button class="btn btn--primary btn--xl" data-page="register">Zacznij teraz</button>
-                    <button class="btn btn--outline btn--xl" data-page="dishes">Przeglądaj dania</button>
-                </div>
-            </section>
-            <section style="margin-top: 3rem;">
-                <div class="grid grid--3" style="gap:1.5rem; max-width:700px; margin:0 auto;">
-                    ${_featureCard('🎡', 'Losowanie', 'Zakręć kołem i odkryj dzisiejsze danie')}
-                    ${_featureCard('📋', 'Własne listy', 'Twórz listy ulubionych dań')}
-                    ${_featureCard('⭐', 'Oceny', 'Oceniaj co jadłeś i śledź historię')}
-                </div>
-            </section>
-        `;
+        _renderHeroGuest(container);
         return;
     }
-
-    // Logged in – show the wheel
-    container.innerHTML = `
-        <div class="page-header">
-            <h1>Dzień dobry, ${Auth.get().name}! 👋</h1>
-        </div>
-        <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:flex-start; justify-content:center;">
-            <div class="wheel-wrapper">
-                <p class="text-muted" style="font-size:.9rem; margin-bottom:.5rem;">Filtruj:</p>
-                <div class="wheel-filters" id="wheelFilters">
-                    <select id="spinCategory" class="search-bar" style="flex:none; padding:.5rem 1rem;">
-                        <option value="">Wszystkie kategorie</option>
-                    </select>
-                    <select id="spinList" class="search-bar" style="flex:none; padding:.5rem 1rem;">
-                        <option value="">Z całej bazy</option>
-                    </select>
-                </div>
-                <div class="wheel-canvas-wrap">
-                    <div class="wheel-pointer">▼</div>
-                    <canvas id="wheelCanvas"></canvas>
-                </div>
-                <button class="btn btn--primary btn--xl" id="spinBtn">🎡 Losuj!</button>
-            </div>
-            <div id="spinResult" style="max-width:420px; width:100%; display:flex; flex-direction:column; gap:1rem;"></div>
-        </div>
-    `;
-
-    await _loadFilters();
-    _initWheel();
-    _bindSpin();
+    _renderSpinPage(container);
 };
 
-function _featureCard(icon, title, desc) {
-    return `
-        <div class="card" style="text-align:center;">
-            <div style="font-size:2.5rem;margin-bottom:.75rem;">${icon}</div>
-            <h3 style="margin-bottom:.4rem;">${title}</h3>
-            <p class="text-muted" style="font-size:.875rem;">${desc}</p>
-        </div>
+/* ── GUEST HERO ── */
+function _renderHeroGuest(container) {
+    container.innerHTML = `
+        <section style="text-align:center; padding: 3rem 0 2rem;">
+            <h1 style="font-family:var(--font-headline);font-size:clamp(2rem,8vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--clr-on-bg);margin-bottom:.75rem;">
+                What's for<br/>dinner?
+            </h1>
+            <p style="color:var(--clr-on-surface-var);font-size:1.0625rem;margin-bottom:2.5rem;max-width:360px;margin-left:auto;margin-right:auto;">
+                Let chance decide your next culinary masterpiece.
+            </p>
+            <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;">
+                <button class="btn btn--primary btn--xl btn--pill" data-page="register">Zacznij teraz</button>
+                <button class="btn btn--secondary btn--xl btn--pill" data-page="dishes">Przeglądaj dania</button>
+            </div>
+        </section>
+
+        <section style="margin-top:3rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">
+            ${_featureCell('auto_awesome', 'Losowanie', 'Zakręć kołem i odkryj dzisiejsze danie', 'primary')}
+            ${_featureCell('format_list_bulleted', 'Własne listy', 'Twórz zestawy do losowania', 'surface')}
+            ${_featureCell('star', 'Oceny', 'Oceniaj co jadłeś i śledź historię', 'surface')}
+        </section>
     `;
 }
 
-async function _loadFilters() {
-    const [catRes, listRes, dishRes] = await Promise.all([
-        API.categories.list().catch(() => ({ data: [] })),
-        API.lists.list().catch(() => ({ data: [] })),
-        API.dishes.list().catch(() => ({ data: [] })),
-    ]);
-
-    const catSel  = document.getElementById('spinCategory');
-    const listSel = document.getElementById('spinList');
-
-    (catRes.data || []).forEach(c => {
-        catSel.insertAdjacentHTML('beforeend', `<option value="${c.id}">${c.icon || ''} ${c.name}</option>`);
-    });
-
-    (listRes.data || []).forEach(l => {
-        listSel.insertAdjacentHTML('beforeend', `<option value="${l.id}">${l.name}</option>`);
-    });
-
-    // Initial wheel segments from all dishes
-    _refreshWheel(dishRes.data || [], catRes.data || []);
-
-    catSel.addEventListener('change',  () => _onFilterChange(catRes.data || []));
-    listSel.addEventListener('change', () => _onFilterChange(catRes.data || []));
-}
-
-async function _onFilterChange(allCats) {
-    const catId  = document.getElementById('spinCategory').value;
-    const listId = document.getElementById('spinList').value;
-    try {
-        const params = {};
-        if (catId) params.category_id = catId;
-        const res = await API.dishes.list(params);
-        _refreshWheel(res.data || [], allCats);
-    } catch {}
-}
-
-function _refreshWheel(dishes, categories) {
-    const canvas = document.getElementById('wheelCanvas');
-    if (!canvas) return;
-    const segments = dishes.slice(0, 12).map(d => ({
-        label: d.name,
-        color: d.category_color || '#FF6B35',
-        icon:  d.category_icon  || '🍽️',
-        id:    d.id,
-    }));
-    Wheel.init(canvas, segments);
-}
-
-function _initWheel() {
-    const canvas = document.getElementById('wheelCanvas');
-    if (!canvas) return;
-    Wheel.init(canvas, []);
-}
-
-function _bindSpin() {
-    const btn = document.getElementById('spinBtn');
-    if (!btn) return;
-
-    btn.addEventListener('click', async () => {
-        const canvas = document.getElementById('wheelCanvas');
-        if (canvas) canvas.classList.add('spinning');
-        btn.disabled = true;
-
-        const listId = document.getElementById('spinList')?.value || null;
-        const catId  = document.getElementById('spinCategory')?.value || null;
-
-        try {
-            // Call API spin
-            const res = await API.spin.spin({
-                list_id:     listId ? parseInt(listId) : undefined,
-                category_id: catId  ? parseInt(catId)  : undefined,
-            });
-
-            const dish = res.data?.dish;
-            if (!dish) throw new Error('Brak wyniku');
-
-            // Animate wheel
-            Wheel.spin(() => {
-                _showResult(dish, res.data?.history);
-                if (canvas) canvas.classList.remove('spinning');
-                btn.disabled = false;
-            });
-        } catch (err) {
-            Toast.show(err.message || 'Błąd losowania', 'error');
-            if (canvas) canvas.classList.remove('spinning');
-            btn.disabled = false;
-        }
-    });
-}
-
-function _showResult(dish, history) {
-    const container = document.getElementById('spinResult');
-    if (!container) return;
-
-    container.innerHTML = `
-        <div class="result-card">
-            <div class="result-card__emoji">${dish.category_icon || '🍽️'}</div>
-            <h2 class="result-card__title">${dish.dish_name || dish.name}</h2>
-            <p class="result-card__category">${dish.category || ''}</p>
-            <div class="result-card__actions">
-                <button class="btn btn--primary" onclick="App.navigate('dishes')">
-                    📖 Przepis
-                </button>
-                <button class="btn btn--outline" id="rateSpinBtn">
-                    ⭐ Oceń
-                </button>
-                <button class="btn btn--ghost" onclick="App.navigate('history')">
-                    📜 Historia
-                </button>
+function _featureCell(icon, title, sub, type) {
+    return `
+        <div class="bento-cell bento-cell--${type}">
+            <span class="material-symbols-outlined bento-cell__icon">${icon}</span>
+            <div>
+                <p class="bento-cell__title">${title}</p>
+                <p class="bento-cell__sub">${sub}</p>
             </div>
         </div>
     `;
+}
 
-    const rateBtn = document.getElementById('rateSpinBtn');
-    if (rateBtn) {
-        rateBtn.addEventListener('click', () => _openRatingModal(dish.dish_id));
+/* ── LOGGED IN: SPIN PAGE ── */
+async function _renderSpinPage(container) {
+    container.innerHTML = `
+        <section class="wheel-section">
+            <div class="wheel-ambient"></div>
+            <div class="wheel-canvas-wrap">
+                <div class="wheel-pointer">
+                    <div class="wheel-pointer__inner">
+                        <div class="wheel-pointer__dot"></div>
+                    </div>
+                </div>
+                <canvas id="wheelCanvas"></canvas>
+                <div class="wheel-center">
+                    <div class="wheel-center__inner">
+                        <span class="material-symbols-outlined icon-fill">star</span>
+                    </div>
+                </div>
+            </div>
+            <div class="wheel-filters" id="wheelFilters">
+                <select id="spinCategory" style="padding:.4rem .9rem;background:var(--clr-surface-lowest);border:none;border-radius:var(--radius-full);font-family:var(--font-body);font-size:.8125rem;color:var(--clr-on-surface);cursor:pointer;outline:none;box-shadow:var(--shadow-card);">
+                    <option value="">Wszystkie</option>
+                </select>
+                <select id="spinList" style="padding:.4rem .9rem;background:var(--clr-surface-lowest);border:none;border-radius:var(--radius-full);font-family:var(--font-body);font-size:.8125rem;color:var(--clr-on-surface);cursor:pointer;outline:none;box-shadow:var(--shadow-card);">
+                    <option value="">Z całej bazy</option>
+                </select>
+            </div>
+            <button class="wheel-spin-btn" id="spinBtn">
+                SPIN! <span class="material-symbols-outlined">autorenew</span>
+            </button>
+        </section>
+        <div id="spinResult"></div>
+
+        <section style="margin-top:2.5rem;">
+            <div class="section-header">
+                <h2>Chef's Picks</h2>
+                <button class="section-header__action" data-page="dishes">View All</button>
+            </div>
+            <div id="homeCards" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                <div class="loading-overlay" style="grid-column:1/-1"><div class="spinner"></div></div>
+            </div>
+        </section>
+    `;
+
+    await _loadHomeData();
+    document.getElementById('spinBtn').addEventListener('click', _onSpin);
+}
+
+async function _loadHomeData() {
+    try {
+        const [dishRes, catRes, listRes] = await Promise.all([
+            API.dishes.list(),
+            API.categories.list(),
+            API.lists.list().catch(() => ({ data: [] })),
+        ]);
+
+        const dishes = dishRes.data || [];
+        const cats   = catRes.data  || [];
+        const lists  = listRes.data || [];
+
+        // Populate selects
+        const catSel  = document.getElementById('spinCategory');
+        const listSel = document.getElementById('spinList');
+        cats.forEach(c  => catSel?.insertAdjacentHTML('beforeend',  `<option value="${c.id}">${c.icon || ''} ${c.name}</option>`));
+        lists.forEach(l => listSel?.insertAdjacentHTML('beforeend', `<option value="${l.id}">${l.name}</option>`));
+
+        // Init wheel
+        const canvas = document.getElementById('wheelCanvas');
+        if (canvas) Wheel.init(canvas, dishes.slice(0, 12).map(d => ({ ...d, label: d.name })));
+
+        // Feature cards
+        _renderHomeCards(dishes.slice(0, 4));
+    } catch (err) {
+        document.getElementById('homeCards').innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
     }
+}
+
+function _renderHomeCards(dishes) {
+    const container = document.getElementById('homeCards');
+    if (!container || !dishes.length) return;
+
+    const [first, ...rest] = dishes;
+    container.innerHTML = `
+        <!-- big feature card -->
+        <div class="feature-card" style="grid-column:1/-1">
+            <div class="feature-card__img-wrap">
+                <div class="feature-card__img">${first.category_icon || '🍽️'}</div>
+                <div class="feature-card__tag">Trending</div>
+            </div>
+            <div class="feature-card__body">
+                <div class="feature-card__header">
+                    <h4 class="feature-card__name">${first.name}</h4>
+                    <button style="background:none;border:none;cursor:pointer;color:var(--clr-outline-var);" class="fav-btn" data-id="${first.id}">
+                        <span class="material-symbols-outlined">favorite</span>
+                    </button>
+                </div>
+                <div class="feature-card__meta">
+                    ${first.prep_time ? `<div class="feature-card__meta-item"><span class="material-symbols-outlined">schedule</span> ${first.prep_time} min</div>` : ''}
+                    ${first.difficulty ? `<div class="feature-card__meta-item"><span class="material-symbols-outlined">local_fire_department</span> ${_diffLabel(first.difficulty)}</div>` : ''}
+                </div>
+            </div>
+        </div>
+        <!-- small cards -->
+        ${rest.slice(0,2).map(d => `
+            <div class="small-card">
+                <div class="small-card__img">${d.category_icon || '🍽️'}</div>
+                <div class="small-card__body">
+                    <p class="small-card__name">${d.name}</p>
+                    <div class="small-card__footer">
+                        <span class="small-card__label small-card__label--quick">${d.category_name || ''}</span>
+                        <span class="material-symbols-outlined" style="color:var(--clr-outline-var);font-size:1.1rem;">add_circle</span>
+                    </div>
+                </div>
+            </div>
+        `).join('')}
+    `;
+
+    // Fav buttons
+    container.querySelectorAll('.fav-btn').forEach(btn =>
+        btn.addEventListener('click', async e => {
+            e.stopPropagation();
+            if (!Auth.isLoggedIn()) { Toast.show('Zaloguj się', 'info'); return; }
+            try {
+                await API.dishes.addFavorite(parseInt(btn.dataset.id));
+                btn.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24";
+                btn.style.color = 'var(--clr-primary)';
+                Toast.show('Dodano do ulubionych ❤️', 'success');
+            } catch (err) { Toast.show(err.message, 'error'); }
+        })
+    );
+}
+
+async function _onSpin() {
+    const btn    = document.getElementById('spinBtn');
+    const listId = document.getElementById('spinList')?.value   || null;
+    const catId  = document.getElementById('spinCategory')?.value || null;
+
+    btn.disabled = true;
+
+    try {
+        const res  = await API.spin.spin({
+            list_id:     listId ? parseInt(listId) : undefined,
+            category_id: catId  ? parseInt(catId)  : undefined,
+        });
+        const dish = res.data?.dish;
+        if (!dish) throw new Error('Brak dań do losowania');
+
+        Wheel.spin(() => {
+            btn.disabled = false;
+            _showResult(dish);
+        });
+    } catch (err) {
+        Toast.show(err.message || 'Błąd losowania', 'error');
+        btn.disabled = false;
+    }
+}
+
+function _showResult(dish) {
+    const el = document.getElementById('spinResult');
+    if (!el) return;
+
+    el.innerHTML = `
+        <div class="result-card" style="position:relative;">
+            <div class="result-ambient"></div>
+            <!-- confetti dots -->
+            <div class="confetti-piece" style="top:10%;left:12%;transform:rotate(15deg)"></div>
+            <div class="confetti-piece" style="top:20%;right:10%;background:#a63300;transform:rotate(-25deg)"></div>
+
+            <div class="result-card__badge">
+                <span>${dish.category_icon || '🍽️'}</span>
+                <span class="material-symbols-outlined">auto_awesome</span>
+            </div>
+            <p class="result-card__label">Today's Perfect Match</p>
+            <h2 class="result-card__title">${dish.dish_name || dish.name}</h2>
+
+            <div class="result-card__actions">
+                <button class="btn btn--primary btn--full" id="eatBtn">
+                    Yes, let's eat! <span class="material-symbols-outlined">check_circle</span>
+                </button>
+                <button class="btn btn--secondary btn--full" id="spinAgainBtn">
+                    Spin again
+                </button>
+            </div>
+            <button class="result-card__footer" id="rateResultBtn">
+                <span class="material-symbols-outlined">history</span> Oceń danie
+            </button>
+        </div>
+    `;
+
+    document.getElementById('spinAgainBtn').addEventListener('click', () => {
+        el.innerHTML = '';
+        _onSpin();
+    });
+    document.getElementById('eatBtn').addEventListener('click', () => {
+        Toast.show('Smacznego! 🍽️', 'success');
+    });
+    document.getElementById('rateResultBtn').addEventListener('click', () => {
+        _openRatingModal(dish.dish_id);
+    });
 }
 
 function _openRatingModal(dishId) {
     Modal.show(`
-        <h2 style="margin-bottom:1.5rem;">Oceń danie ⭐</h2>
+        <h2 style="font-family:var(--font-headline);font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">Oceń danie ⭐</h2>
         <form id="ratingForm">
             <div class="form-group">
                 <label>Ocena</label>
@@ -202,20 +263,20 @@ function _openRatingModal(dishId) {
                 <label>Komentarz (opcjonalnie)</label>
                 <textarea name="comment" rows="3" placeholder="Jak smakowało?"></textarea>
             </div>
-            <button class="btn btn--primary btn--full" type="submit">Zapisz ocenę</button>
+            <button class="btn btn--primary btn--full mt-md" type="submit">Zapisz ocenę</button>
         </form>
     `);
-
     document.getElementById('ratingForm').addEventListener('submit', async e => {
         e.preventDefault();
-        const fd    = new FormData(e.target);
-        const score = parseInt(fd.get('score'));
+        const fd = new FormData(e.target);
         try {
-            await API.ratings.save({ dish_id: dishId, score, comment: fd.get('comment') || null });
+            await API.ratings.save({ dish_id: dishId, score: parseInt(fd.get('score')), comment: fd.get('comment') || null });
             Modal.hide();
             Toast.show('Ocena zapisana!', 'success');
-        } catch (err) {
-            Toast.show(err.message, 'error');
-        }
+        } catch (err) { Toast.show(err.message, 'error'); }
     });
+}
+
+function _diffLabel(d) {
+    return { easy:'Łatwe', medium:'Średnie', hard:'Trudne' }[d] || d;
 }

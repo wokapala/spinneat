@@ -1,53 +1,60 @@
 :root {
-    /* Colors */
-    --color-primary:    #FF6B35;
-    --color-primary-dk: #E85520;
-    --color-secondary:  #2EC4B6;
-    --color-accent:     #FFBF69;
-    --color-bg:         #0F0F1A;
-    --color-bg-card:    #1A1A2E;
-    --color-bg-card2:   #16213E;
-    --color-surface:    #0F3460;
-    --color-text:       #F0F0F0;
-    --color-text-muted: #9090A0;
-    --color-border:     #2A2A45;
-    --color-success:    #57CC99;
-    --color-error:      #FF4D6D;
-    --color-warning:    #FFD166;
+    /* ── Warm editorial palette (Stitch design system) ── */
+    --clr-primary:          #a63300;
+    --clr-primary-dim:      #922c00;
+    --clr-primary-container:#ff7949;
+    --clr-on-primary:       #ffefeb;
+    --clr-secondary:        #a03834;
+    --clr-secondary-container:#ffc3be;
+    --clr-on-secondary:     #ffefed;
+    --clr-on-secondary-container:#852422;
+    --clr-tertiary-container:#ef9dff;
+    --clr-on-tertiary-container:#5e1470;
 
-    /* Typography */
-    --font-main:   'Segoe UI', system-ui, -apple-system, sans-serif;
-    --font-size-xs: .75rem;
-    --font-size-sm: .875rem;
-    --font-size-md: 1rem;
-    --font-size-lg: 1.25rem;
-    --font-size-xl: 1.5rem;
-    --font-size-2xl: 2rem;
-    --font-size-3xl: 3rem;
+    --clr-bg:               #fcf5f1;
+    --clr-surface:          #fcf5f1;
+    --clr-surface-low:      #f6efeb;
+    --clr-surface-container:#eee7e2;
+    --clr-surface-high:     #e8e1dc;
+    --clr-surface-highest:  #e3dbd7;
+    --clr-surface-lowest:   #ffffff;
+    --clr-surface-dim:      #dad3ce;
 
-    /* Spacing */
-    --space-xs:  .25rem;
-    --space-sm:  .5rem;
-    --space-md:  1rem;
-    --space-lg:  1.5rem;
-    --space-xl:  2rem;
-    --space-2xl: 3rem;
+    --clr-on-bg:            #312e2c;
+    --clr-on-surface:       #312e2c;
+    --clr-on-surface-var:   #5f5b58;
+    --clr-outline:          #7a7673;
+    --clr-outline-var:      #b2aca9;
 
-    /* Layout */
-    --navbar-h:    64px;
-    --max-width:   1200px;
-    --radius-sm:   .375rem;
-    --radius-md:   .75rem;
-    --radius-lg:   1.25rem;
+    --clr-error:            #b31b25;
+    --clr-error-container:  #fb5151;
+    --clr-success:          #2d6a4f;
+
+    /* ── Signature gradient ── */
+    --gradient-signature: linear-gradient(135deg, #a63300 0%, #ff7949 100%);
+
+    /* ── Typography ── */
+    --font-headline: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-body:     'Be Vietnam Pro', system-ui, sans-serif;
+
+    /* ── Sizes ── */
+    --radius-sm:   .5rem;
+    --radius-md:   1rem;
+    --radius-lg:   2rem;
+    --radius-xl:   3rem;
     --radius-full: 9999px;
 
-    /* Shadows */
-    --shadow-sm: 0 1px 3px rgba(0,0,0,.4);
-    --shadow-md: 0 4px 16px rgba(0,0,0,.5);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,.6);
-    --shadow-glow: 0 0 24px rgba(255,107,53,.35);
+    --topbar-h:  68px;
+    --bottomnav-h: 96px;
+    --max-w:     640px;
 
-    /* Transitions */
-    --transition: .2s ease;
-    --transition-slow: .4s ease;
+    /* ── Shadows (tinted, never pure black) ── */
+    --shadow-card: 0 4px 20px rgba(0,0,0,.04);
+    --shadow-float: 0 24px 48px rgba(166,51,0,.06);
+    --shadow-spin-btn: 0 12px 24px rgba(166,51,0,.2);
+    --shadow-nav: 0 24px 48px rgba(166,51,0,.1);
+
+    /* ── Transitions ── */
+    --t: .2s ease;
+    --t-slow: .5s ease;
 }

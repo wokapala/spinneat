@@ -3,11 +3,10 @@
 /* ── TOAST ── */
 const Toast = (() => {
     function show(msg, type = 'info', duration = 3500) {
-        const container = document.getElementById('toastContainer');
         const el = document.createElement('div');
         el.className = `toast toast--${type}`;
         el.textContent = msg;
-        container.appendChild(el);
+        document.getElementById('toastContainer').appendChild(el);
         setTimeout(() => el.remove(), duration);
     }
     return { show };
@@ -17,11 +16,8 @@ const Toast = (() => {
 const Modal = (() => {
     const modal   = document.getElementById('modal');
     const content = document.getElementById('modalContent');
-    const close   = document.getElementById('modalClose');
-    const overlay = document.getElementById('modalOverlay');
-
-    close.addEventListener('click',   hide);
-    overlay.addEventListener('click', hide);
+    document.getElementById('modalClose').addEventListener('click', hide);
+    document.getElementById('modalOverlay').addEventListener('click', hide);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') hide(); });
 
     function show(html) {
@@ -29,18 +25,18 @@ const Modal = (() => {
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     }
-
     function hide() {
         modal.classList.add('hidden');
         content.innerHTML = '';
         document.body.style.overflow = '';
     }
-
     return { show, hide };
 })();
 
-/* ── ROUTER / SPA ── */
+/* ── SPA ROUTER ── */
 const App = (() => {
+    const authRequired  = ['history', 'lists', 'favorites', 'profile'];
+    const adminRequired = ['admin'];
     const pages = {
         home:      Pages.home,
         login:     Pages.login,
@@ -49,60 +45,48 @@ const App = (() => {
         history:   Pages.history,
         lists:     Pages.lists,
         favorites: Pages.favorites,
+        profile:   Pages.profile,
         admin:     Pages.admin,
     };
 
-    let currentPage = null;
-
     function navigate(page, params = {}) {
-        const fn = pages[page];
-        if (!fn) return;
-
-        // Guard: auth-only pages
-        const authRequired = ['history', 'lists', 'favorites'];
-        const adminRequired = ['admin'];
-
         if (authRequired.includes(page) && !Auth.isLoggedIn()) {
             Toast.show('Zaloguj się, aby uzyskać dostęp', 'error');
             navigate('login');
             return;
         }
-
         if (adminRequired.includes(page) && !Auth.isAdmin()) {
             Toast.show('Brak uprawnień', 'error');
             return;
         }
+        const fn = pages[page];
+        if (!fn) return;
 
-        currentPage = page;
-        _setActiveNavLink(page);
+        _setActiveNav(page);
         const app = document.getElementById('app');
         app.innerHTML = '';
         fn(app, params);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function _setActiveNavLink(page) {
-        document.querySelectorAll('.nav-link').forEach(a => {
-            a.classList.toggle('active', a.dataset.page === page);
+    function _setActiveNav(page) {
+        document.querySelectorAll('.bottom-nav__item').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.page === page);
+            // swap icon fill on active
+            const icon = btn.querySelector('.material-symbols-outlined');
+            if (icon) {
+                icon.style.fontVariationSettings = btn.dataset.page === page
+                    ? "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24"
+                    : "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+            }
         });
     }
 
     async function init() {
-        // Nav clicks
+        // Delegate all [data-page] clicks
         document.addEventListener('click', e => {
             const link = e.target.closest('[data-page]');
-            if (link) {
-                e.preventDefault();
-                navigate(link.dataset.page);
-            }
-        });
-
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', () => Auth.logout());
-
-        // Mobile nav toggle
-        document.getElementById('navToggle').addEventListener('click', () => {
-            document.getElementById('navLinks').classList.toggle('open');
+            if (link) { e.preventDefault(); navigate(link.dataset.page); }
         });
 
         await Auth.init();
