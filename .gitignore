@@ -1,0 +1,4 @@
+.env
+backend/vendor/
+*.log
+.DS_Store

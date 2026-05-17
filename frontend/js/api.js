@@ -1,0 +1,95 @@
+'use strict';
+
+const API = (() => {
+    const BASE = '/api';
+
+    async function request(method, path, body = null) {
+        const opts = {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+        };
+        if (body !== null) opts.body = JSON.stringify(body);
+
+        const res = await fetch(BASE + path, opts);
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+            const err = new Error(data.message || `HTTP ${res.status}`);
+            err.status = res.status;
+            err.errors = data.errors;
+            throw err;
+        }
+        return data;
+    }
+
+    return {
+        get:    (path)         => request('GET',    path),
+        post:   (path, body)   => request('POST',   path, body),
+        put:    (path, body)   => request('PUT',    path, body),
+        delete: (path)         => request('DELETE', path),
+
+        // Auth
+        auth: {
+            register: (data) => request('POST', '/auth/register', data),
+            login:    (data) => request('POST', '/auth/login', data),
+            logout:   ()     => request('POST', '/auth/logout'),
+            me:       ()     => request('GET',  '/auth/me'),
+        },
+
+        // Categories
+        categories: {
+            list:    ()         => request('GET',    '/categories'),
+            create:  (data)     => request('POST',   '/categories', data),
+            update:  (id, data) => request('PUT',    `/categories/${id}`, data),
+            delete:  (id)       => request('DELETE', `/categories/${id}`),
+        },
+
+        // Dishes
+        dishes: {
+            list:          (params = {}) => {
+                const qs = new URLSearchParams(
+                    Object.fromEntries(Object.entries(params).filter(([,v]) => v != null))
+                ).toString();
+                return request('GET', `/dishes${qs ? '?' + qs : ''}`);
+            },
+            get:           (id)          => request('GET',    `/dishes/${id}`),
+            create:        (data)        => request('POST',   '/dishes', data),
+            update:        (id, data)    => request('PUT',    `/dishes/${id}`, data),
+            delete:        (id)          => request('DELETE', `/dishes/${id}`),
+            favorites:     ()            => request('GET',    '/favorites'),
+            addFavorite:   (id)          => request('POST',   `/favorites/${id}`),
+            removeFavorite:(id)          => request('DELETE', `/favorites/${id}`),
+        },
+
+        // Spin
+        spin: {
+            spin:    (opts = {}) => request('POST', '/spin', opts),
+            history: (page = 1)  => request('GET',  `/spin/history?page=${page}`),
+        },
+
+        // Lists
+        lists: {
+            list:       ()          => request('GET',    '/lists'),
+            get:        (id)        => request('GET',    `/lists/${id}`),
+            create:     (data)      => request('POST',   '/lists', data),
+            update:     (id, data)  => request('PUT',    `/lists/${id}`, data),
+            delete:     (id)        => request('DELETE', `/lists/${id}`),
+            addDish:    (id, dishId)=> request('POST',   `/lists/${id}/dishes`, { dish_id: dishId }),
+            removeDish: (id, dishId)=> request('DELETE', `/lists/${id}/dishes/${dishId}`),
+        },
+
+        // Ratings
+        ratings: {
+            save:   (data)     => request('POST', '/ratings', data),
+            update: (id, data) => request('PUT',  `/ratings/${id}`, data),
+        },
+
+        // Admin
+        admin: {
+            users:      ()         => request('GET',    '/admin/users'),
+            updateUser: (id, data) => request('PUT',    `/admin/users/${id}`, data),
+            deleteUser: (id)       => request('DELETE', `/admin/users/${id}`),
+        },
+    };
+})();
