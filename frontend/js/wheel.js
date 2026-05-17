@@ -59,27 +59,34 @@ const Wheel = (() => {
             ctx.stroke();
 
             // text
+            const midAngle = start + slice / 2;
+            const normMid  = ((midAngle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+            const flipped  = normMid > Math.PI / 2 && normMid < Math.PI * 3 / 2;
+
             ctx.save();
             ctx.translate(cx, cy);
-            ctx.rotate(start + slice / 2);
-            const textR = r * .65;
-            ctx.textAlign = 'right';
+            ctx.rotate(midAngle);
+            if (flipped) ctx.rotate(Math.PI);
+
+            const textR  = r * .65;
+            const sign   = flipped ? -1 : 1;
+            ctx.textAlign    = flipped ? 'left' : 'right';
             ctx.textBaseline = 'middle';
 
             // icon
             const iconSize = Math.min(18, r / Math.max(segments.length, 4));
             ctx.font = `${iconSize}px sans-serif`;
-            ctx.fillText(seg.icon, textR - 4, -iconSize * .7);
+            ctx.fillText(seg.icon, sign * (textR - 4), -iconSize * .7);
 
             // label
-            const maxLen  = Math.max(4, Math.floor(r / 16));
+            const maxLen  = Math.max(6, Math.floor(r / 12));
             const label   = seg.label.length > maxLen ? seg.label.slice(0, maxLen) + '…' : seg.label;
-            const lblSize = Math.min(12, r / Math.max(segments.length * .9, 5));
+            const lblSize = Math.min(13, r / Math.max(segments.length * .85, 5));
             ctx.font = `700 ${lblSize}px Plus Jakarta Sans, sans-serif`;
             ctx.fillStyle = '#312e2c';
-            ctx.shadowColor = 'rgba(255,255,255,.7)';
-            ctx.shadowBlur  = 3;
-            ctx.fillText(label, textR, iconSize * .7);
+            ctx.shadowColor = 'rgba(255,255,255,.8)';
+            ctx.shadowBlur  = 4;
+            ctx.fillText(label, sign * textR, iconSize * .7);
             ctx.shadowBlur = 0;
             ctx.restore();
         });
