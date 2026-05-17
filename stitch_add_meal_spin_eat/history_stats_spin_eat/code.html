@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>History &amp; Stats - Spin &amp; Eat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-highest": "#e3dbd7",
+              "on-surface-variant": "#5f5b58",
+              "surface-container": "#eee7e2",
+              "secondary-container": "#ffc3be",
+              "outline": "#7a7673",
+              "inverse-primary": "#fe6a34",
+              "surface-bright": "#fcf5f1",
+              "primary-fixed": "#ff7949",
+              "inverse-surface": "#100e0c",
+              "primary-fixed-dim": "#f7652f",
+              "error": "#b31b25",
+              "secondary-fixed-dim": "#ffafa9",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-container": "#852422",
+              "error-container": "#fb5151",
+              "tertiary-container": "#ef9dff",
+              "outline-variant": "#b2aca9",
+              "background": "#fcf5f1",
+              "on-primary-container": "#451000",
+              "on-primary-fixed": "#000000",
+              "on-tertiary-fixed": "#400050",
+              "on-secondary": "#ffefed",
+              "on-secondary-fixed-variant": "#912d2b",
+              "primary-dim": "#922c00",
+              "on-primary": "#ffefeb",
+              "error-dim": "#9f0519",
+              "tertiary-fixed": "#ef9dff",
+              "tertiary-dim": "#78308a",
+              "inverse-on-surface": "#a19c99",
+              "on-primary-fixed-variant": "#551600",
+              "tertiary-fixed-dim": "#e190f1",
+              "surface-dim": "#dad3ce",
+              "surface-container-high": "#e8e1dc",
+              "primary-container": "#ff7949",
+              "on-error": "#ffefee",
+              "surface-variant": "#e3dbd7",
+              "on-tertiary": "#ffeefc",
+              "on-tertiary-fixed-variant": "#681f7a",
+              "secondary-dim": "#902c2a",
+              "primary": "#a63300",
+              "surface-tint": "#a63300",
+              "surface-container-low": "#f6efeb",
+              "tertiary": "#853d97",
+              "on-background": "#312e2c",
+              "on-secondary-fixed": "#6a0f12",
+              "on-tertiary-container": "#5e1470",
+              "secondary-fixed": "#ffc3be",
+              "on-error-container": "#570008",
+              "on-surface": "#312e2c",
+              "surface": "#fcf5f1",
+              "secondary": "#a03834"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Be Vietnam Pro"],
+              "label": ["Be Vietnam Pro"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        background-color: #fcf5f1;
+        color: #312e2c;
+      }
+      .font-headline {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .signature-gradient {
+        background: linear-gradient(135deg, #a63300 0%, #ff7949 100%);
+      }
+    </style>
+</head>
+<body class="bg-background min-h-screen">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 bottom-0 w-[220px] z-50 bg-[#fcf5f1] dark:bg-stone-950 flex flex-col p-6 gap-2 border-none bg-[#f6efeb] dark:bg-stone-900">
+<div class="mb-8">
+<h1 class="text-xl font-extrabold text-[#a63300] font-headline tracking-tight">Spin &amp; Eat</h1>
+<p class="text-xs text-on-surface-variant font-medium">The Culinary Curator</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 text-[#312e2c] dark:text-stone-400 rounded-full hover:bg-[#eee7e2] dark:hover:bg-stone-800 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-headline font-medium text-sm">Home</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#312e2c] dark:text-stone-400 rounded-full hover:bg-[#eee7e2] dark:hover:bg-stone-800 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">restaurant_menu</span>
+<span class="font-headline font-medium text-sm">My Meals</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-[#a63300] text-[#ffefeb] rounded-full shadow-lg shadow-[#a63300]/10 active:scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-headline font-medium text-sm">History</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#312e2c] dark:text-stone-400 rounded-full hover:bg-[#eee7e2] dark:hover:bg-stone-800 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-headline font-medium text-sm">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-[220px] z-40 px-8 flex justify-between items-center w-full h-16 border-none bg-[#f6efeb] dark:bg-stone-900">
+<div class="flex items-center gap-4">
+<h2 class="font-headline font-bold text-lg text-[#a63300]">Spin History</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative cursor-pointer hover:bg-[#eee7e2] p-2 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[#a63300]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</div>
+<div class="flex items-center gap-3 cursor-pointer active:scale-95 duration-200">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs"><!-- user.initials --></div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[220px] pt-24 pb-12 px-8 min-h-screen">
+<!-- Stats Row: Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<!-- Total Spins Card -->
+<div class="bg-surface-container-lowest p-6 rounded-lg relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-on-surface-variant font-label text-sm font-medium mb-1">Total spins</p>
+<h3 class="text-4xl font-headline font-extrabold text-primary" data-bind="total_spins">47</h3>
+<div class="mt-4 flex items-center gap-2 text-xs text-secondary font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span><span data-bind="monthly_trend">+12%</span> from last month</span>
+</div>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-primary opacity-5 group-hover:scale-110 transition-transform duration-500">autorenew</span>
+</div>
+<!-- Favorite Meal Card -->
+<div class="bg-surface-container-lowest p-6 rounded-lg relative overflow-hidden md:col-span-1">
+<p class="text-on-surface-variant font-label text-sm font-medium mb-1">Favourite meal</p>
+<div class="flex items-start justify-between">
+<div>
+<h3 class="text-2xl font-headline font-bold text-on-surface leading-tight">Spicy Miso Ramen</h3>
+<p class="text-sm text-on-surface-variant mt-1">Ordered 14 times</p>
+</div>
+<div class="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0">
+<img alt="Spicy Miso Ramen" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e3dbd7' width='200' height='200'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='48' fill='%23b2aca9'%3E%F0%9F%96%BC%3C/text%3E%3C/svg%3E"/>
+</div>
+</div>
+<div class="mt-4 inline-flex items-center gap-2 bg-secondary-container px-3 py-1 rounded-full text-[10px] font-bold text-on-secondary-container">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+                    MOST RECURRING
+                </div>
+</div>
+<!-- This Week Card -->
+<div class="signature-gradient p-6 rounded-lg relative overflow-hidden shadow-xl shadow-primary/20">
+<div class="relative z-10 text-on-primary">
+<p class="font-label text-sm font-medium opacity-90 mb-1">This week</p>
+<h3 class="text-4xl font-headline font-extrabold"><span data-bind="weekly_spins">8</span> spins</h3>
+<div class="mt-4 flex gap-1 h-12 items-end">
+<div class="flex-1 bg-on-primary/20 rounded-t-sm h-[40%]"></div>
+<div class="flex-1 bg-on-primary/20 rounded-t-sm h-[60%]"></div>
+<div class="flex-1 bg-on-primary/40 rounded-t-sm h-[30%]"></div>
+<div class="flex-1 bg-on-primary rounded-t-sm h-[90%]"></div>
+<div class="flex-1 bg-on-primary/60 rounded-t-sm h-[50%]"></div>
+<div class="flex-1 bg-on-primary/30 rounded-t-sm h-[20%]"></div>
+<div class="flex-1 bg-on-primary/80 rounded-t-sm h-[75%]"></div>
+</div>
+</div>
+<span class="material-symbols-outlined absolute right-2 top-2 text-on-primary opacity-20">query_stats</span>
+</div>
+</div>
+<!-- History Table Section -->
+<section class="bg-surface-container-low rounded-lg p-8">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="text-2xl font-headline font-extrabold text-on-surface tracking-tight">Recent Activity</h3>
+<p class="text-on-surface-variant text-sm font-body">Detailed log of your culinary decisions</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full text-xs font-bold text-on-surface hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                        Filter
+                    </button>
+<button class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full text-xs font-bold text-on-surface hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Export
+                    </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-on-surface-variant font-label text-xs uppercase tracking-widest border-none">
+<th class="pb-4 font-bold">Date</th>
+<th class="pb-4 font-bold">Meal</th>
+<th class="pb-4 font-bold">Cuisine</th>
+<th class="pb-4 font-bold">Result</th>
+<th class="pb-4"></th>
+</tr>
+</thead>
+<tbody class="text-sm font-body divide-y-12 divide-transparent">
+<!-- Table Row 1 -->
+<tr class="group hover:translate-x-1 transition-transform duration-200">
+<td class="py-4 bg-surface-container-lowest first:rounded-l-lg pl-6 border-none">
+<span class="font-medium">Oct 24, 2023</span>
+<span class="block text-[10px] text-on-surface-variant">12:45 PM</span>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Mediterranean Salad" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e3dbd7' width='200' height='200'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='48' fill='%23b2aca9'%3E%F0%9F%96%BC%3C/text%3E%3C/svg%3E"/>
+</div>
+<span class="font-bold text-on-surface">Mediterranean Bowl</span>
+</div>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<span class="bg-surface-container px-3 py-1 rounded-full text-[10px] font-bold">GREEK</span>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<div class="flex items-center gap-2 text-primary font-bold">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Accepted</span>
+</div>
+</td>
+<td class="py-4 bg-surface-container-lowest last:rounded-r-lg pr-6 text-right border-none">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="group hover:translate-x-1 transition-transform duration-200">
+<td class="py-4 bg-surface-container-lowest first:rounded-l-lg pl-6 border-none">
+<span class="font-medium">Oct 23, 2023</span>
+<span class="block text-[10px] text-on-surface-variant">07:12 PM</span>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Steamed Dumplings" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e3dbd7' width='200' height='200'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='48' fill='%23b2aca9'%3E%F0%9F%96%BC%3C/text%3E%3C/svg%3E"/>
+</div>
+<span class="font-bold text-on-surface">Pork Dim Sum</span>
+</div>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<span class="bg-surface-container px-3 py-1 rounded-full text-[10px] font-bold">CANTONESE</span>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<div class="flex items-center gap-2 text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-sm">cancel</span>
+<span>Re-spun</span>
+</div>
+</td>
+<td class="py-4 bg-surface-container-lowest last:rounded-r-lg pr-6 text-right border-none">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Table Row 3 -->
+<tr class="group hover:translate-x-1 transition-transform duration-200">
+<td class="py-4 bg-surface-container-lowest first:rounded-l-lg pl-6 border-none">
+<span class="font-medium">Oct 22, 2023</span>
+<span class="block text-[10px] text-on-surface-variant">01:30 PM</span>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Avocado Toast" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e3dbd7' width='200' height='200'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='48' fill='%23b2aca9'%3E%F0%9F%96%BC%3C/text%3E%3C/svg%3E"/>
+</div>
+<span class="font-bold text-on-surface">Avocado Sourdough</span>
+</div>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<span class="bg-surface-container px-3 py-1 rounded-full text-[10px] font-bold">BRUNCH</span>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<div class="flex items-center gap-2 text-primary font-bold">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Accepted</span>
+</div>
+</td>
+<td class="py-4 bg-surface-container-lowest last:rounded-r-lg pr-6 text-right border-none">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Table Row 4 -->
+<tr class="group hover:translate-x-1 transition-transform duration-200">
+<td class="py-4 bg-surface-container-lowest first:rounded-l-lg pl-6 border-none">
+<span class="font-medium">Oct 21, 2023</span>
+<span class="block text-[10px] text-on-surface-variant">08:00 PM</span>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Margherita Pizza" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e3dbd7' width='200' height='200'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='48' fill='%23b2aca9'%3E%F0%9F%96%BC%3C/text%3E%3C/svg%3E"/>
+</div>
+<span class="font-bold text-on-surface">Margherita Napoletana</span>
+</div>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<span class="bg-surface-container px-3 py-1 rounded-full text-[10px] font-bold">ITALIAN</span>
+</td>
+<td class="py-4 bg-surface-container-lowest border-none">
+<div class="flex items-center gap-2 text-primary font-bold">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Accepted</span>
+</div>
+</td>
+<td class="py-4 bg-surface-container-lowest last:rounded-r-lg pr-6 text-right border-none">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-8 flex justify-center">
+<button class="bg-surface-container-lowest text-primary font-bold py-3 px-8 rounded-full border border-outline-variant/15 hover:bg-surface transition-all active:scale-95">
+                    View full history
+                </button>
+</div>
+</section>
+<!-- Informational Footer Grid -->
+<div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-white/40 backdrop-blur-md p-8 rounded-lg border border-outline-variant/10">
+<h4 class="font-headline font-bold text-on-surface mb-2">Cuisine Breakdown</h4>
+<div class="space-y-4 mt-6">
+<div>
+<div class="flex justify-between text-xs font-bold mb-1">
+<span>Japanese</span>
+<span data-bind="pct_japanese">42%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2">
+<div class="signature-gradient h-full rounded-full" style="width: 42%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-bold mb-1">
+<span>Italian</span>
+<span data-bind="pct_italian">28%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2">
+<div class="signature-gradient h-full rounded-full" style="width: 28%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-bold mb-1">
+<span>Greek</span>
+<span data-bind="pct_greek">15%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2">
+<div class="signature-gradient h-full rounded-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative rounded-lg overflow-hidden group">
+<img alt="Healthy food background" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e3dbd7' width='200' height='200'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='48' fill='%23b2aca9'%3E%F0%9F%96%BC%3C/text%3E%3C/svg%3E"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-8 text-on-primary">
+<p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Curated Insight</p>
+<h4 class="font-headline text-xl font-bold">You tend to spin for Japanese food on Friday nights.</h4>
+<p class="text-sm mt-2 opacity-90">Consider exploring our new "Izakaya Favorites" list for your next spin.</p>
+</div>
+</div>
+</div>
+</main>
+</body></html>

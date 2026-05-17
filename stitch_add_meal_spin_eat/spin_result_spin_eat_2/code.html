@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Spin &amp; Eat - Result</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-highest": "#e3dbd7",
+              "on-surface-variant": "#5f5b58",
+              "surface-container": "#eee7e2",
+              "secondary-container": "#ffc3be",
+              "outline": "#7a7673",
+              "inverse-primary": "#fe6a34",
+              "surface-bright": "#fcf5f1",
+              "primary-fixed": "#ff7949",
+              "inverse-surface": "#100e0c",
+              "primary-fixed-dim": "#f7652f",
+              "error": "#b31b25",
+              "secondary-fixed-dim": "#ffafa9",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-container": "#852422",
+              "error-container": "#fb5151",
+              "tertiary-container": "#ef9dff",
+              "outline-variant": "#b2aca9",
+              "background": "#fcf5f1",
+              "on-primary-container": "#451000",
+              "on-primary-fixed": "#000000",
+              "on-tertiary-fixed": "#400050",
+              "on-secondary": "#ffefed",
+              "on-secondary-fixed-variant": "#912d2b",
+              "primary-dim": "#922c00",
+              "on-primary": "#ffefeb",
+              "error-dim": "#9f0519",
+              "tertiary-fixed": "#ef9dff",
+              "tertiary-dim": "#78308a",
+              "inverse-on-surface": "#a19c99",
+              "on-primary-fixed-variant": "#551600",
+              "tertiary-fixed-dim": "#e190f1",
+              "surface-dim": "#dad3ce",
+              "surface-container-high": "#e8e1dc",
+              "primary-container": "#ff7949",
+              "on-error": "#ffefee",
+              "surface-variant": "#e3dbd7",
+              "on-tertiary": "#ffeefc",
+              "on-tertiary-fixed-variant": "#681f7a",
+              "secondary-dim": "#902c2a",
+              "primary": "#a63300",
+              "surface-tint": "#a63300",
+              "surface-container-low": "#f6efeb",
+              "tertiary": "#853d97",
+              "on-background": "#312e2c",
+              "on-secondary-fixed": "#6a0f12",
+              "on-tertiary-container": "#5e1470",
+              "secondary-fixed": "#ffc3be",
+              "on-error-container": "#570008",
+              "on-surface": "#312e2c",
+              "surface": "#fcf5f1",
+              "secondary": "#a03834"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Be Vietnam Pro"],
+              "label": ["Be Vietnam Pro"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .signature-gradient {
+            background: linear-gradient(135deg, #a63300 0%, #ff7949 100%);
+        }
+        .confetti-orange {
+            color: #ff7949;
+            animation: bounce 2s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-0 bottom-0 w-[220px] z-50 bg-[#fcf5f1] dark:bg-stone-950 flex flex-col p-6 gap-2">
+<div class="mb-8">
+<h1 class="text-xl font-extrabold text-[#a63300] tracking-tight">Spin &amp; Eat</h1>
+<p class="text-xs text-on-surface-variant font-medium">The Culinary Curator</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#a63300] text-[#ffefeb] rounded-full shadow-lg shadow-[#a63300]/10 font-['Plus_Jakarta_Sans'] font-medium text-sm transition-transform active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">home</span>
+                Home
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#312e2c] dark:text-stone-400 rounded-full font-['Plus_Jakarta_Sans'] font-medium text-sm hover:bg-[#eee7e2] dark:hover:bg-stone-800 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">restaurant_menu</span>
+                My Meals
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#312e2c] dark:text-stone-400 rounded-full font-['Plus_Jakarta_Sans'] font-medium text-sm hover:bg-[#eee7e2] dark:hover:bg-stone-800 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">history</span>
+                History
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#312e2c] dark:text-stone-400 rounded-full font-['Plus_Jakarta_Sans'] font-medium text-sm hover:bg-[#eee7e2] dark:hover:bg-stone-800 transition-all active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+</nav>
+</aside>
+<!-- Top App Bar Shell -->
+<header class="fixed top-0 right-0 left-[220px] z-40 px-8 flex justify-between items-center w-full h-16 bg-[#f6efeb] dark:bg-stone-900 border-none">
+<div class="font-['Plus_Jakarta_Sans'] font-bold text-lg text-[#a63300]">Spin Result</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#a63300] p-2 rounded-full hover:bg-[#eee7e2] transition-colors cursor-pointer active:scale-95">notifications</button>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="User profile avatar" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e3dbd7' width='200' height='200'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='48' fill='%23b2aca9'%3E%F0%9F%96%BC%3C/text%3E%3C/svg%3E"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas (Blurred Background) -->
+<main class="ml-[220px] pt-24 px-8 min-h-screen">
+<div class="max-w-6xl mx-auto space-y-12">
+<!-- Background Content: Today's Selection -->
+<section class="space-y-6">
+<div class="flex justify-between items-end">
+<h2 class="text-4xl font-headline font-extrabold tracking-tight">Today's Selection</h2>
+<span class="text-on-surface-variant font-label text-sm px-4 py-2 bg-surface-container rounded-full">Thursday, Oct 24</span>
+</div>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-12 gap-6">
+<div class="col-span-8 bg-surface-container-low rounded-lg p-8 h-[400px] flex flex-col justify-end relative overflow-hidden">
+<img alt="Featured Meal" class="absolute inset-0 w-full h-full object-cover opacity-80" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e3dbd7' width='200' height='200'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-size='48' fill='%23b2aca9'%3E%F0%9F%96%BC%3C/text%3E%3C/svg%3E"/>
+<div class="relative z-10">
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full text-xs font-bold mb-4 inline-block">TRENDING NOW</span>
+<h3 class="text-5xl font-headline font-extrabold text-on-background max-w-md">The Ultimate Autumn Harvest Bowl</h3>
+</div>
+</div>
+<div class="col-span-4 flex flex-col gap-6">
+<div class="bg-surface-container-lowest rounded-lg p-6 flex-1 shadow-sm">
+<span class="material-symbols-outlined text-primary mb-2" data-weight="fill">local_fire_department</span>
+<h4 class="font-headline font-bold text-xl">Quick Bites</h4>
+<p class="text-on-surface-variant text-sm mt-2">Meals under 15 minutes for your busy schedule.</p>
+</div>
+<div class="bg-primary-container rounded-lg p-6 flex-1 text-on-primary-container relative overflow-hidden">
+<h4 class="font-headline font-bold text-xl relative z-10">Curated for You</h4>
+<p class="text-sm mt-2 relative z-10">Based on your love for spicy Italian cuisine.</p>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-8xl opacity-10">auto_awesome</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-[60] flex items-center justify-center p-4">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm"></div>
+<!-- Modal Content -->
+<div class="glass-card w-full max-w-xl rounded-lg p-10 shadow-2xl relative z-10 text-center border border-white/20">
+<!-- Confetti Visual Hint -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
+<div class="absolute top-10 left-10 confetti-orange">
+<span class="material-symbols-outlined text-3xl">celebration</span>
+</div>
+<div class="absolute top-20 right-14 confetti-orange" style="animation-delay: 0.5s">
+<span class="material-symbols-outlined text-2xl">restaurant</span>
+</div>
+<div class="absolute bottom-10 left-20 confetti-orange" style="animation-delay: 1.2s">
+<span class="material-symbols-outlined text-xl" data-weight="fill">favorite</span>
+</div>
+<div class="absolute bottom-20 right-10 confetti-orange" style="animation-delay: 0.8s">
+<span class="material-symbols-outlined text-3xl">dinner_dining</span>
+</div>
+</div>
+<div class="space-y-8 relative z-20">
+<div class="inline-flex items-center justify-center w-24 h-24 bg-primary-container rounded-full text-5xl">
+                    🍱
+                </div>
+<div class="space-y-3">
+<p class="text-primary font-label font-bold tracking-widest uppercase text-sm">Your Culinary Destiny</p>
+<h2 class="text-6xl font-headline font-extrabold text-on-background leading-tight">Spicy Miso Ramen</h2>
+<p class="text-on-surface-variant max-w-xs mx-auto text-lg">Rich pork broth, silky noodles, and that perfect chili kick.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 justify-center pt-6">
+<button class="signature-gradient text-on-primary font-headline font-bold px-8 py-4 rounded-full shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-lg min-w-[200px]">
+                        Yes, let's eat!
+                    </button>
+<button class="bg-transparent border-2 border-outline-variant hover:border-primary text-on-surface font-headline font-bold px-8 py-4 rounded-full hover:bg-surface-container transition-all active:scale-95 text-lg min-w-[200px]">
+                        Spin again
+                    </button>
+</div>
+</div>
+<!-- Close Button -->
+<button class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+</body></html>
