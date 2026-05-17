@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+      - "${NGINX_PORT:-80}:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend:/var/www/frontend:ro
+      - ./backend/public:/var/www/backend/public:ro
+    depends_on:
+      - php
+    networks:
+      - spinneat-net
+
+  php:
+    build: ./backend
+    volumes:
+      - ./backend:/var/www/backend
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-spinneat}
+      DB_USER: ${DB_USER:-spinneat}
+      DB_PASS: ${DB_PASS:-secret}
+      APP_SECRET: ${APP_SECRET:-changeme_in_production}
+      APP_ENV: ${APP_ENV:-development}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - spinneat-net
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-spinneat}
+      POSTGRES_USER: ${DB_USER:-spinneat}
+      POSTGRES_PASSWORD: ${DB_PASS:-secret}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02_seed.sql:ro
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-spinneat}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - spinneat-net
+
+volumes:
+  pg_data:
+
+networks:
+  spinneat-net:
+    driver: bridge
