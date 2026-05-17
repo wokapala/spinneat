@@ -17,7 +17,9 @@ services:
   php:
     build: ./backend
     volumes:
-      - ./backend:/var/www/backend
+      - ./backend/src:/var/www/backend/src
+      - ./backend/public:/var/www/backend/public
+      - ./backend/tests:/var/www/backend/tests
     environment:
       DB_HOST: postgres
       DB_PORT: 5432

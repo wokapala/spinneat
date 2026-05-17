@@ -2,8 +2,11 @@
 
 Pages.favorites = async function(container) {
     container.innerHTML = `
-        <div class="page-header"><h1>❤️ Ulubione dania</h1></div>
-        <div class="grid grid--auto" id="favGrid">
+        <div style="margin-bottom:1.5rem;">
+            <h1 style="font-family:var(--font-headline);font-size:2rem;font-weight:800;letter-spacing:-.03em;">Ulubione</h1>
+            <p class="text-muted" style="font-size:.875rem;" id="favCount"></p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.75rem;" id="favList">
             <div class="loading-overlay"><div class="spinner"></div></div>
         </div>
     `;
@@ -11,46 +14,63 @@ Pages.favorites = async function(container) {
     try {
         const res   = await API.dishes.favorites();
         const items = res.data || [];
+        const list  = document.getElementById('favList');
+
+        document.getElementById('favCount').textContent = `${items.length} zapisanych dań`;
 
         if (!items.length) {
-            document.getElementById('favGrid').innerHTML = `
-                <div class="empty-state" style="grid-column:1/-1">
+            list.innerHTML = `
+                <div class="empty-state">
                     <div class="empty-icon">🤍</div>
-                    <p>Brak ulubionych.<br/>Dodaj dania klikając 🤍 na liście dań.</p>
+                    <p>Brak ulubionych dań</p>
+                    <button class="btn btn--primary btn--pill mt-md" data-page="dishes">Przeglądaj dania</button>
                 </div>
             `;
             return;
         }
 
-        document.getElementById('favGrid').innerHTML = items.map(d => `
-            <div class="dish-card">
-                <div class="dish-card__img">${d.category_icon || '🍽️'}</div>
-                <div class="dish-card__body">
-                    <p class="dish-card__name">${d.name}</p>
-                    <p class="dish-card__desc">${d.description || ''}</p>
-                    <div class="dish-card__meta">
-                        <span class="badge" style="background:${d.category_color}22;color:${d.category_color}">
-                            ${d.category_icon || ''} ${d.category_name}
-                        </span>
+        list.innerHTML = items.map(d => `
+            <div class="meal-card" data-id="${d.id}">
+                <div class="meal-card__emoji">${d.category_icon || '🍽️'}</div>
+                <div class="meal-card__body">
+                    <div class="meal-card__header">
+                        <h3 class="meal-card__name">${d.name}</h3>
+                        <span class="meal-card__tag">${d.category_name || ''}</span>
+                    </div>
+                    <div class="meal-card__meta">
+                        ${d.prep_time ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">schedule</span>${d.prep_time} min</div>` : ''}
+                        ${d.avg_rating ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">star</span>${parseFloat(d.avg_rating).toFixed(1)}</div>` : ''}
                     </div>
                 </div>
-                <div class="dish-card__actions">
-                    <button class="btn btn--ghost btn--sm unfav-btn" data-id="${d.id}" title="Usuń z ulubionych">💔 Usuń</button>
-                </div>
+                <button class="btn btn--ghost btn--sm unfav-btn" data-id="${d.id}" style="color:#c0392b;flex-shrink:0;" title="Usuń z ulubionych">
+                    <span class="material-symbols-outlined icon-fill" style="color:#c0392b;">favorite</span>
+                </button>
             </div>
         `).join('');
 
-        document.querySelectorAll('.unfav-btn').forEach(btn => {
-            btn.addEventListener('click', async () => {
+        list.querySelectorAll('.unfav-btn').forEach(btn => {
+            btn.addEventListener('click', async e => {
+                e.stopPropagation();
                 const id = parseInt(btn.dataset.id);
                 try {
                     await API.dishes.removeFavorite(id);
-                    btn.closest('.dish-card').remove();
+                    btn.closest('.meal-card').remove();
+                    const remaining = list.querySelectorAll('.meal-card').length;
+                    document.getElementById('favCount').textContent = `${remaining} zapisanych dań`;
+                    if (!remaining) {
+                        list.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">🤍</div>
+                                <p>Brak ulubionych dań</p>
+                                <button class="btn btn--primary btn--pill mt-md" data-page="dishes">Przeglądaj dania</button>
+                            </div>
+                        `;
+                    }
                     Toast.show('Usunięto z ulubionych', 'info');
                 } catch (err) { Toast.show(err.message, 'error'); }
             });
         });
     } catch (err) {
-        document.getElementById('favGrid').innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
+        document.getElementById('favList').innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
     }
 };
