@@ -73,7 +73,7 @@ async function _loadUsers() {
             btn.addEventListener('click', async () => {
                 const newRole = btn.dataset.role === 'admin' ? 'user' : 'admin';
                 try {
-                    await API.admin.updateUser(btn.dataset.id, { role: newRole });
+                    await API.admin.updateUser(parseInt(btn.dataset.id), { role: newRole });
                     Toast.show('Rola zmieniona', 'success');
                     _loadUsers();
                 } catch (err) { Toast.show(err.message, 'error'); }
@@ -84,7 +84,7 @@ async function _loadUsers() {
             btn.addEventListener('click', async () => {
                 if (!confirm('Na pewno usunąć użytkownika? Tej operacji nie można cofnąć.')) return;
                 try {
-                    await API.admin.deleteUser(btn.dataset.id);
+                    await API.admin.deleteUser(parseInt(btn.dataset.id));
                     Toast.show('Użytkownik usunięty', 'info');
                     _loadUsers();
                 } catch (err) { Toast.show(err.message, 'error'); }
@@ -164,7 +164,7 @@ async function _loadCategories() {
             btn.addEventListener('click', async () => {
                 if (!confirm('Usunąć kategorię? Powiązane dania stracą kategorię.')) return;
                 try {
-                    await API.categories.delete(btn.dataset.id);
+                    await API.categories.delete(parseInt(btn.dataset.id));
                     Toast.show('Kategoria usunięta', 'info');
                     _loadCategories();
                 } catch (err) { Toast.show(err.message, 'error'); }
