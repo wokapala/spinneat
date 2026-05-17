@@ -262,7 +262,23 @@ function _showResult(dish) {
 
     document.getElementById('spinAgainBtn').addEventListener('click', () => {
         el.innerHTML = '';
-        _onSpin();
+        const wheelSection = document.querySelector('.wheel-section');
+        if (wheelSection) {
+            wheelSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // wait for scroll to finish, then spin
+            const onScrollEnd = () => {
+                window.removeEventListener('scrollend', onScrollEnd);
+                _onSpin();
+            };
+            // scrollend is supported in modern browsers; fallback via timeout
+            if ('onscrollend' in window) {
+                window.addEventListener('scrollend', onScrollEnd, { once: true });
+            } else {
+                setTimeout(_onSpin, 700);
+            }
+        } else {
+            _onSpin();
+        }
     });
     document.getElementById('eatBtn').addEventListener('click', () => {
         Toast.show('Smacznego! 🍽️', 'success');
@@ -270,6 +286,8 @@ function _showResult(dish) {
     document.getElementById('rateResultBtn').addEventListener('click', () => {
         _openRatingModal(dish.dish_id);
     });
+
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function _openRatingModal(dishId) {
