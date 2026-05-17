@@ -10,7 +10,7 @@ final class RatingRepository extends BaseRepository
     {
         return $this->fetchOne(
             'INSERT INTO ratings (user_id, dish_id, score, comment)
-             VALUES ($1, $2, $3, $4)
+             VALUES (?, ?, ?, ?)
              ON CONFLICT (user_id, dish_id) DO UPDATE
                 SET score = EXCLUDED.score, comment = EXCLUDED.comment, rated_at = NOW()
              RETURNING *',
@@ -23,7 +23,7 @@ final class RatingRepository extends BaseRepository
         return $this->fetchAll(
             'SELECT r.*, u.name AS user_name FROM ratings r
              JOIN users u ON u.id = r.user_id
-             WHERE r.dish_id = $1 ORDER BY r.rated_at DESC',
+             WHERE r.dish_id = ? ORDER BY r.rated_at DESC',
             [$dishId]
         );
     }
@@ -33,13 +33,13 @@ final class RatingRepository extends BaseRepository
         return $this->fetchAll(
             'SELECT r.*, d.name AS dish_name FROM ratings r
              JOIN dishes d ON d.id = r.dish_id
-             WHERE r.user_id = $1 ORDER BY r.rated_at DESC',
+             WHERE r.user_id = ? ORDER BY r.rated_at DESC',
             [$userId]
         );
     }
 
     public function findById(int $id): ?array
     {
-        return $this->fetchOne('SELECT * FROM ratings WHERE id = $1', [$id]);
+        return $this->fetchOne('SELECT * FROM ratings WHERE id = ?', [$id]);
     }
 }
