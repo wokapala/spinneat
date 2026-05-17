@@ -10,7 +10,7 @@ final class SpinRepository extends BaseRepository
     {
         if ($listId !== null) {
             return $this->fetchOne(
-                'SELECT * FROM get_random_dish($1)',
+                'SELECT * FROM get_random_dish(?)',
                 [$listId]
             );
         }
@@ -20,7 +20,7 @@ final class SpinRepository extends BaseRepository
                 'SELECT d.id AS dish_id, d.name AS dish_name, c.name AS category,
                         c.icon AS category_icon, c.color AS category_color
                  FROM dishes d JOIN categories c ON c.id = d.category_id
-                 WHERE d.is_active = TRUE AND d.category_id = $1
+                 WHERE d.is_active = TRUE AND d.category_id = ?
                  ORDER BY RANDOM() LIMIT 1',
                 [$categoryId]
             );
@@ -32,7 +32,7 @@ final class SpinRepository extends BaseRepository
     public function recordSpin(int $userId, int $dishId, ?int $listId): array
     {
         return $this->fetchOne(
-            'INSERT INTO spin_history (user_id, dish_id, list_id) VALUES ($1, $2, $3) RETURNING *',
+            'INSERT INTO spin_history (user_id, dish_id, list_id) VALUES (?, ?, ?) RETURNING *',
             [$userId, $dishId, $listId]
         );
     }
@@ -46,16 +46,16 @@ final class SpinRepository extends BaseRepository
              FROM spin_history sh
              JOIN dishes d    ON d.id = sh.dish_id
              JOIN categories c ON c.id = d.category_id
-             WHERE sh.user_id = $1
+             WHERE sh.user_id = ?
              ORDER BY sh.spun_at DESC
-             LIMIT $2 OFFSET $3',
+             LIMIT ? OFFSET ?',
             [$userId, $limit, $offset]
         );
     }
 
     public function countHistory(int $userId): int
     {
-        $row = $this->fetchOne('SELECT COUNT(*) AS cnt FROM spin_history WHERE user_id = $1', [$userId]);
+        $row = $this->fetchOne('SELECT COUNT(*) AS cnt FROM spin_history WHERE user_id = ?', [$userId]);
         return (int) ($row['cnt'] ?? 0);
     }
 }

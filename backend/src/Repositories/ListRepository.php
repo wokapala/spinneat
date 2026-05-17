@@ -12,7 +12,7 @@ final class ListRepository extends BaseRepository
             'SELECT ul.*, COUNT(li.dish_id) AS dish_count
              FROM user_lists ul
              LEFT JOIN list_items li ON li.list_id = ul.id
-             WHERE ul.user_id = $1
+             WHERE ul.user_id = ?
              GROUP BY ul.id
              ORDER BY ul.created_at DESC',
             [$userId]
@@ -21,7 +21,7 @@ final class ListRepository extends BaseRepository
 
     public function findById(int $id): ?array
     {
-        return $this->fetchOne('SELECT * FROM user_lists WHERE id = $1', [$id]);
+        return $this->fetchOne('SELECT * FROM user_lists WHERE id = ?', [$id]);
     }
 
     public function findWithDishes(int $id): ?array
@@ -32,7 +32,7 @@ final class ListRepository extends BaseRepository
         $list['dishes'] = $this->fetchAll(
             'SELECT vd.* FROM v_dish_details vd
              JOIN list_items li ON li.dish_id = vd.id
-             WHERE li.list_id = $1 ORDER BY li.added_at DESC',
+             WHERE li.list_id = ? ORDER BY li.added_at DESC',
             [$id]
         );
         return $list;
@@ -42,7 +42,7 @@ final class ListRepository extends BaseRepository
     {
         return $this->fetchOne(
             'INSERT INTO user_lists (user_id, name, description, is_public)
-             VALUES ($1, $2, $3, $4) RETURNING *',
+             VALUES (?, ?, ?, ?) RETURNING *',
             [$userId, $data['name'], $data['description'] ?? null, $data['is_public'] ?? false]
         );
     }
@@ -50,7 +50,7 @@ final class ListRepository extends BaseRepository
     public function update(int $id, array $data): ?array
     {
         $this->execute(
-            'UPDATE user_lists SET name = $1, description = $2, is_public = $3 WHERE id = $4',
+            'UPDATE user_lists SET name = ?, description = ?, is_public = ? WHERE id = ?',
             [$data['name'], $data['description'] ?? null, $data['is_public'] ?? false, $id]
         );
         return $this->findById($id);
@@ -58,13 +58,13 @@ final class ListRepository extends BaseRepository
 
     public function delete(int $id): bool
     {
-        return $this->execute('DELETE FROM user_lists WHERE id = $1', [$id]) > 0;
+        return $this->execute('DELETE FROM user_lists WHERE id = ?', [$id]) > 0;
     }
 
     public function addDish(int $listId, int $dishId): void
     {
         $this->execute(
-            'INSERT INTO list_items (list_id, dish_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+            'INSERT INTO list_items (list_id, dish_id) VALUES (?, ?) ON CONFLICT DO NOTHING',
             [$listId, $dishId]
         );
     }
@@ -72,7 +72,7 @@ final class ListRepository extends BaseRepository
     public function removeDish(int $listId, int $dishId): void
     {
         $this->execute(
-            'DELETE FROM list_items WHERE list_id = $1 AND dish_id = $2',
+            'DELETE FROM list_items WHERE list_id = ? AND dish_id = ?',
             [$listId, $dishId]
         );
     }
@@ -80,7 +80,7 @@ final class ListRepository extends BaseRepository
     public function belongsToUser(int $listId, int $userId): bool
     {
         $row = $this->fetchOne(
-            'SELECT 1 FROM user_lists WHERE id = $1 AND user_id = $2',
+            'SELECT 1 FROM user_lists WHERE id = ? AND user_id = ?',
             [$listId, $userId]
         );
         return $row !== null;

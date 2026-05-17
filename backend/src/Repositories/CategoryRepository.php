@@ -13,13 +13,13 @@ final class CategoryRepository extends BaseRepository
 
     public function findById(int $id): ?array
     {
-        return $this->fetchOne('SELECT * FROM categories WHERE id = $1', [$id]);
+        return $this->fetchOne('SELECT * FROM categories WHERE id = ?', [$id]);
     }
 
     public function create(array $data): array
     {
         return $this->fetchOne(
-            'INSERT INTO categories (name, description, icon, color) VALUES ($1, $2, $3, $4) RETURNING *',
+            'INSERT INTO categories (name, description, icon, color) VALUES (?, ?, ?, ?) RETURNING *',
             [$data['name'], $data['description'] ?? null, $data['icon'] ?? null, $data['color'] ?? '#FF6B6B']
         );
     }
@@ -27,7 +27,7 @@ final class CategoryRepository extends BaseRepository
     public function update(int $id, array $data): ?array
     {
         $this->execute(
-            'UPDATE categories SET name = $1, description = $2, icon = $3, color = $4 WHERE id = $5',
+            'UPDATE categories SET name = ?, description = ?, icon = ?, color = ? WHERE id = ?',
             [$data['name'], $data['description'] ?? null, $data['icon'] ?? null, $data['color'] ?? '#FF6B6B', $id]
         );
         return $this->findById($id);
@@ -35,6 +35,6 @@ final class CategoryRepository extends BaseRepository
 
     public function delete(int $id): bool
     {
-        return $this->execute('DELETE FROM categories WHERE id = $1', [$id]) > 0;
+        return $this->execute('DELETE FROM categories WHERE id = ?', [$id]) > 0;
     }
 }
