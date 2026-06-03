@@ -51,11 +51,20 @@ final class AuthService
         $user = $this->users->findByEmail($email);
 
         if (!$user || !password_verify($password, $user->password)) {
+            error_log(sprintf(
+                '[auth] failed login for %s from %s',
+                $email,
+                $_SERVER['REMOTE_ADDR'] ?? '?'
+            ));
             throw new UnauthorizedException('Invalid email or password');
         }
 
+        // Defeat session fixation: issue a fresh ID once authenticated
+        session_regenerate_id(true);
+
         $_SESSION['user_id']   = $user->id;
         $_SESSION['user_role'] = $user->role;
+        $_SESSION['logged_at'] = time();
 
         return $user;
     }
@@ -63,6 +72,19 @@ final class AuthService
     public function logout(): void
     {
         $_SESSION = [];
+
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', [
+                'expires'  => time() - 42000,
+                'path'     => $params['path'],
+                'domain'   => $params['domain'],
+                'secure'   => $params['secure'],
+                'httponly' => $params['httponly'],
+                'samesite' => $params['samesite'] ?? 'Lax',
+            ]);
+        }
+
         session_destroy();
     }
 
