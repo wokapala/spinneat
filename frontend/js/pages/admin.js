@@ -42,25 +42,25 @@ async function _loadUsers() {
                 ${users.map(u => `
                     <div class="admin-user-row">
                         <div class="admin-user-row__avatar">
-                            ${_initials(u.name)}
+                            ${esc(_initials(u.name))}
                         </div>
                         <div style="flex:1;min-width:0;">
                             <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;">
-                                <p style="font-weight:600;font-size:.9375rem;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.name}</p>
-                                <span class="admin-role-badge admin-role-badge--${u.role}">${u.role}</span>
+                                <p style="font-weight:600;font-size:.9375rem;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(u.name)}</p>
+                                <span class="admin-role-badge admin-role-badge--${esc(u.role)}">${esc(u.role)}</span>
                             </div>
-                            <p style="color:var(--clr-on-surface-var);font-size:.8125rem;margin:0;">${u.email}</p>
+                            <p style="color:var(--clr-on-surface-var);font-size:.8125rem;margin:0;">${esc(u.email)}</p>
                             <p style="color:var(--clr-on-surface-var);font-size:.75rem;margin:.1rem 0 0;">
-                                <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">autorenew</span> ${u.total_spins || 0} spinów
+                                <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">autorenew</span> ${esc(u.total_spins || 0)} spinów
                                 &nbsp;·&nbsp;
-                                <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">favorite</span> ${u.total_favorites || 0} ulubionych
+                                <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">favorite</span> ${esc(u.total_favorites || 0)} ulubionych
                             </p>
                         </div>
                         <div style="display:flex;gap:.375rem;flex-shrink:0;">
-                            <button class="btn btn--secondary btn--sm role-btn" data-id="${u.id}" data-role="${u.role}" title="${u.role === 'admin' ? 'Degraduj do user' : 'Nadaj uprawnienia admin'}">
+                            <button class="btn btn--secondary btn--sm role-btn" data-id="${esc(u.id)}" data-role="${esc(u.role)}" title="${u.role === 'admin' ? 'Degraduj do user' : 'Nadaj uprawnienia admin'}">
                                 <span class="material-symbols-outlined" style="font-size:1rem;">${u.role === 'admin' ? 'arrow_downward' : 'arrow_upward'}</span>
                             </button>
-                            <button class="btn btn--ghost btn--sm del-user-btn" data-id="${u.id}" title="Usuń użytkownika" style="color:#c0392b;">
+                            <button class="btn btn--ghost btn--sm del-user-btn" data-id="${esc(u.id)}" title="Usuń użytkownika" style="color:#c0392b;">
                                 <span class="material-symbols-outlined" style="font-size:1rem;">delete</span>
                             </button>
                         </div>
@@ -91,7 +91,7 @@ async function _loadUsers() {
             });
         });
     } catch (err) {
-        el.innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
+        el.innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
     }
 }
 
@@ -112,14 +112,14 @@ async function _loadCategories() {
                 ${cats.map(c => `
                     <div style="display:flex;align-items:center;gap:.875rem;padding:.875rem 1rem;background:var(--clr-surface-lowest);border-radius:var(--radius-md);box-shadow:var(--shadow-card);">
                         <div style="width:2.75rem;height:2.75rem;border-radius:var(--radius-md);background:var(--clr-surface-low);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">
-                            ${c.icon || '📁'}
+                            ${esc(c.icon || '📁')}
                         </div>
                         <div style="flex:1;min-width:0;">
-                            <p style="font-weight:600;font-size:.9375rem;margin:0;">${c.name}</p>
-                            ${c.description ? `<p style="color:var(--clr-on-surface-var);font-size:.8125rem;margin:0;">${c.description}</p>` : ''}
+                            <p style="font-weight:600;font-size:.9375rem;margin:0;">${esc(c.name)}</p>
+                            ${c.description ? `<p style="color:var(--clr-on-surface-var);font-size:.8125rem;margin:0;">${esc(c.description)}</p>` : ''}
                         </div>
-                        ${c.color ? `<div style="width:1.25rem;height:1.25rem;border-radius:50%;background:${c.color};flex-shrink:0;"></div>` : ''}
-                        <button class="btn btn--ghost btn--sm del-cat-btn" data-id="${c.id}" style="color:#c0392b;flex-shrink:0;">
+                        ${/^#[0-9a-fA-F]{3,8}$/.test(c.color || '') ? `<div style="width:1.25rem;height:1.25rem;border-radius:50%;background:${c.color};flex-shrink:0;"></div>` : ''}
+                        <button class="btn btn--ghost btn--sm del-cat-btn" data-id="${esc(c.id)}" style="color:#c0392b;flex-shrink:0;">
                             <span class="material-symbols-outlined" style="font-size:1rem;">delete</span>
                         </button>
                     </div>
@@ -171,7 +171,7 @@ async function _loadCategories() {
             });
         });
     } catch (err) {
-        el.innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
+        el.innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
     }
 }
 

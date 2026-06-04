@@ -7,10 +7,10 @@ Pages.profile = async function(container) {
     container.innerHTML = `
         <div class="profile-header">
             <div class="profile-avatar">
-                <span style="font-size:2.5rem;line-height:1;">${_initials(user.name)}</span>
+                <span style="font-size:2.5rem;line-height:1;">${esc(_initials(user.name))}</span>
             </div>
-            <h2 class="profile-name">${user.name}</h2>
-            <p class="profile-email">${user.email}</p>
+            <h2 class="profile-name">${esc(user.name)}</h2>
+            <p class="profile-email">${esc(user.email)}</p>
             ${user.role === 'admin' ? `
                 <span style="display:inline-flex;align-items:center;gap:.3rem;font-size:.75rem;font-weight:700;padding:.25rem .875rem;border-radius:var(--radius-full);background:var(--clr-primary-container);color:var(--clr-on-primary);margin-top:.5rem;">
                     <span class="material-symbols-outlined" style="font-size:.9rem;">shield</span> Admin
@@ -66,12 +66,12 @@ Pages.profile = async function(container) {
         document.getElementById('profileStats').innerHTML = `
             <div class="stat-tile">
                 <span class="material-symbols-outlined stat-tile__icon">autorenew</span>
-                <span class="stat-tile__value">${total}</span>
+                <span class="stat-tile__value">${esc(total)}</span>
                 <span class="stat-tile__label">Spinów</span>
             </div>
             <div class="stat-tile">
                 <span class="material-symbols-outlined stat-tile__icon">favorite</span>
-                <span class="stat-tile__value">${favCount}</span>
+                <span class="stat-tile__value">${esc(favCount)}</span>
                 <span class="stat-tile__label">Ulubionych</span>
             </div>
         `;
