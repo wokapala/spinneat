@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Core\Csrf;
 use App\Core\Request;
 use App\Core\Response;
 use App\Exceptions\ValidationException;
@@ -44,5 +45,10 @@ final class AuthController extends BaseController
     {
         $user = $this->auth->currentUser();
         Response::success($user?->toPublicArray());
+    }
+
+    public function csrf(Request $request): void
+    {
+        Response::success(['token' => Csrf::token()]);
     }
 }
