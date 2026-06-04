@@ -13,6 +13,7 @@ use App\Controllers\ListController;
 use App\Controllers\RatingController;
 use App\Core\Middleware\AuthMiddleware;
 use App\Core\Middleware\AdminMiddleware;
+use App\Core\Middleware\CsrfMiddleware;
 use App\Exceptions\AppException;
 use Throwable;
 
@@ -37,6 +38,7 @@ final class Application
         $rate  = RatingController::class;
 
         // Auth
+        $this->router->get('/api/auth/csrf',      [new $auth(), 'csrf']);
         $this->router->post('/api/auth/register', [new $auth(), 'register']);
         $this->router->post('/api/auth/login',    [new $auth(), 'login']);
         $this->router->post('/api/auth/logout',   [new $auth(), 'logout'], [AuthMiddleware::class]);
