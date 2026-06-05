@@ -13,17 +13,17 @@ Pages.register = function(container) {
                 <form id="registerForm" novalidate>
                     <div class="form-group">
                         <label for="regName">Imię i nazwisko</label>
-                        <input type="text" id="regName" name="name" placeholder="Jan Kowalski" autocomplete="name" />
+                        <input type="text" id="regName" name="name" placeholder="Jan Kowalski" autocomplete="name" maxlength="100" required />
                         <span class="field-error" id="nameErr"></span>
                     </div>
                     <div class="form-group">
                         <label for="regEmail">E-mail</label>
-                        <input type="email" id="regEmail" name="email" placeholder="jan@example.com" autocomplete="email" />
+                        <input type="email" id="regEmail" name="email" placeholder="jan@example.com" autocomplete="email" maxlength="255" required />
                         <span class="field-error" id="emailErr"></span>
                     </div>
                     <div class="form-group">
-                        <label for="regPass">Hasło <span style="color:var(--clr-on-surface-var);font-weight:400;">(min. 8 znaków)</span></label>
-                        <input type="password" id="regPass" name="password" placeholder="••••••••" autocomplete="new-password" />
+                        <label for="regPass">Hasło <span style="color:var(--clr-on-surface-var);font-weight:400;">(min. 8 znaków, litera + cyfra)</span></label>
+                        <input type="password" id="regPass" name="password" placeholder="••••••••" autocomplete="new-password" minlength="8" maxlength="200" required />
                         <span class="field-error" id="passwordErr"></span>
                     </div>
                     <button class="btn btn--primary btn--full btn--pill mt-md" type="submit" id="regBtn">
