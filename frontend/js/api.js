@@ -32,6 +32,11 @@ const API = (() => {
         const data = await res.json().catch(() => ({}));
 
         if (!res.ok) {
+            // 419 CSRF expiry isn't standard but matches Laravel convention —
+            // drop the cached token so the next attempt fetches a fresh one.
+            if (res.status === 403 && /csrf/i.test(data.message || '')) {
+                csrfToken = null; csrfPromise = null;
+            }
             const err = new Error(data.message || `HTTP ${res.status}`);
             err.status = res.status;
             err.errors = data.errors;
