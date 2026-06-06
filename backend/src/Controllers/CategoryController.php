@@ -22,7 +22,7 @@ final class CategoryController extends BaseController
 
     public function store(Request $request): void
     {
-        $data = $this->validate($request->getBody(), ['name' => 'required|min:2']);
+        $data = $this->validate($request->getBody(), ['name' => 'required|min:2|max:100']);
         $cat  = $this->categories->create($data);
         Response::success($cat, 'Category created', 201);
     }
@@ -30,7 +30,7 @@ final class CategoryController extends BaseController
     public function update(Request $request, string $id): void
     {
         if (!$this->categories->findById((int) $id)) throw new NotFoundException('Category not found');
-        $data = $this->validate($request->getBody(), ['name' => 'required|min:2']);
+        $data = $this->validate($request->getBody(), ['name' => 'required|min:2|max:100']);
         Response::success($this->categories->update((int) $id, $data));
     }
 

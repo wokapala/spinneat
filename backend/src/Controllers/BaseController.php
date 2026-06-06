@@ -30,6 +30,12 @@ abstract class BaseController
                             $errors[$field] = "Field '{$field}' must be at least {$min} characters";
                         }
                     }
+                    if (str_starts_with($part, 'max:')) {
+                        $max = (int) substr($part, 4);
+                        if (strlen((string) $value) > $max) {
+                            $errors[$field] = "Field '{$field}' must be at most {$max} characters";
+                        }
+                    }
                     if ($part === 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                         $errors[$field] = "Field '{$field}' must be a valid email";
                     }

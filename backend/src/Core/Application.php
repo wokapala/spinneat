@@ -50,12 +50,12 @@ final class Application
         $this->router->put('/api/categories/{id}',     [new $cat(), 'update'],  [AuthMiddleware::class, AdminMiddleware::class]);
         $this->router->delete('/api/categories/{id}',  [new $cat(), 'destroy'], [AuthMiddleware::class, AdminMiddleware::class]);
 
-        // Dishes (public read, auth write)
+        // Dishes (public read, auth write — controller enforces owner-or-admin on mutate)
         $this->router->get('/api/dishes',          [new $dish(), 'index']);
         $this->router->get('/api/dishes/{id}',     [new $dish(), 'show']);
         $this->router->post('/api/dishes',         [new $dish(), 'store'],   [AuthMiddleware::class]);
-        $this->router->put('/api/dishes/{id}',     [new $dish(), 'update'],  [AuthMiddleware::class, AdminMiddleware::class]);
-        $this->router->delete('/api/dishes/{id}',  [new $dish(), 'destroy'], [AuthMiddleware::class, AdminMiddleware::class]);
+        $this->router->put('/api/dishes/{id}',     [new $dish(), 'update'],  [AuthMiddleware::class]);
+        $this->router->delete('/api/dishes/{id}',  [new $dish(), 'destroy'], [AuthMiddleware::class]);
 
         // Spin
         $this->router->post('/api/spin',           [new $spin(), 'spin'],   [AuthMiddleware::class]);
