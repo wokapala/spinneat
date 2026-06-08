@@ -35,7 +35,7 @@ final class DishController extends BaseController
     public function store(Request $request): void
     {
         $data = $this->validate($request->getBody(), [
-            'name'        => 'required|min:2',
+            'name'        => 'required|min:2|max:200',
             'category_id' => 'required|int',
         ]);
         $data['created_by'] = $this->currentUserId();
@@ -48,9 +48,10 @@ final class DishController extends BaseController
     {
         $dish = $this->dishes->findById((int) $id);
         if (!$dish) throw new NotFoundException('Dish not found');
+        $this->assertOwnerOrAdmin($dish);
 
         $data = $this->validate($request->getBody(), [
-            'name'        => 'required|min:2',
+            'name'        => 'required|min:2|max:200',
             'category_id' => 'required|int',
         ]);
 
@@ -62,9 +63,18 @@ final class DishController extends BaseController
     {
         $dish = $this->dishes->findById((int) $id);
         if (!$dish) throw new NotFoundException('Dish not found');
+        $this->assertOwnerOrAdmin($dish);
 
         $this->dishes->delete((int) $id);
         Response::success(null, 'Dish removed');
+    }
+
+    private function assertOwnerOrAdmin(array $dish): void
+    {
+        $isOwner = isset($dish['created_by']) && (int) $dish['created_by'] === $this->currentUserId();
+        if (!$isOwner && $this->currentUserRole() !== 'admin') {
+            throw new ForbiddenException('You do not own this dish');
+        }
     }
 
     public function favorites(Request $request): void
