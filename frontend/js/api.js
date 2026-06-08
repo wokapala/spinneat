@@ -2,13 +2,30 @@
 
 const API = (() => {
     const BASE = '/api';
+    const UNSAFE = new Set(['POST', 'PUT', 'DELETE', 'PATCH']);
+
+    let csrfToken = null;
+    let csrfPromise = null;
+
+    async function getCsrfToken() {
+        if (csrfToken) return csrfToken;
+        if (!csrfPromise) {
+            csrfPromise = fetch(BASE + '/auth/csrf', { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(d => { csrfToken = d.data?.token; return csrfToken; })
+                .catch(() => null);
+        }
+        return csrfPromise;
+    }
 
     async function request(method, path, body = null) {
-        const opts = {
-            method,
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'same-origin',
-        };
+        const headers = { 'Content-Type': 'application/json' };
+        if (UNSAFE.has(method)) {
+            const token = await getCsrfToken();
+            if (token) headers['X-CSRF-Token'] = token;
+        }
+
+        const opts = { method, headers, credentials: 'same-origin' };
         if (body !== null) opts.body = JSON.stringify(body);
 
         const res = await fetch(BASE + path, opts);

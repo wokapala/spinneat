@@ -57,28 +57,28 @@ async function _loadLists() {
         }
 
         el.innerHTML = items.map(l => `
-            <div class="list-item-card" data-id="${l.id}">
+            <div class="list-item-card" data-id="${esc(l.id)}">
                 <div class="list-item-card__icon">
                     <span class="material-symbols-outlined">format_list_bulleted</span>
                 </div>
                 <div class="list-item-card__body">
                     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;">
-                        <h3 class="list-item-card__name">${l.name}</h3>
+                        <h3 class="list-item-card__name">${esc(l.name)}</h3>
                         ${l.is_public ? `<span style="font-size:.625rem;font-weight:700;padding:.15rem .5rem;border-radius:var(--radius-full);background:var(--clr-secondary-container);color:var(--clr-on-secondary-container);flex-shrink:0;">Publiczna</span>` : ''}
                     </div>
                     <p class="list-item-card__meta">
                         <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">restaurant</span>
-                        ${l.dish_count || 0} dań${l.description ? ` · ${l.description}` : ''}
+                        ${esc(l.dish_count || 0)} dań${l.description ? ` · ${esc(l.description)}` : ''}
                     </p>
                 </div>
                 <div style="display:flex;gap:.375rem;flex-shrink:0;">
-                    <button class="btn btn--ghost btn--sm view-list-btn" data-id="${l.id}" title="Pokaż dania">
+                    <button class="btn btn--ghost btn--sm view-list-btn" data-id="${esc(l.id)}" title="Pokaż dania">
                         <span class="material-symbols-outlined">visibility</span>
                     </button>
-                    <button class="btn btn--ghost btn--sm edit-list-btn" data-id="${l.id}" title="Edytuj">
+                    <button class="btn btn--ghost btn--sm edit-list-btn" data-id="${esc(l.id)}" title="Edytuj">
                         <span class="material-symbols-outlined">edit</span>
                     </button>
-                    <button class="btn btn--ghost btn--sm del-list-btn" data-id="${l.id}" title="Usuń" style="color:#c0392b;">
+                    <button class="btn btn--ghost btn--sm del-list-btn" data-id="${esc(l.id)}" title="Usuń" style="color:#c0392b;">
                         <span class="material-symbols-outlined">delete</span>
                     </button>
                 </div>
@@ -117,7 +117,7 @@ async function _loadLists() {
             card.addEventListener('click', () => _viewList(parseInt(card.dataset.id)))
         );
     } catch (err) {
-        el.innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
+        el.innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
     }
 }
 
@@ -132,20 +132,20 @@ async function _viewList(id) {
                 <span class="material-symbols-outlined" style="color:var(--clr-on-primary);">format_list_bulleted</span>
             </div>
             <div>
-                <h2 style="font-family:var(--font-headline);font-size:1.25rem;font-weight:800;margin:0;">${list.name}</h2>
-                ${list.description ? `<p style="color:var(--clr-on-surface-var);font-size:.875rem;margin:0;">${list.description}</p>` : ''}
+                <h2 style="font-family:var(--font-headline);font-size:1.25rem;font-weight:800;margin:0;">${esc(list.name)}</h2>
+                ${list.description ? `<p style="color:var(--clr-on-surface-var);font-size:.875rem;margin:0;">${esc(list.description)}</p>` : ''}
             </div>
         </div>
 
         <div style="display:flex;flex-direction:column;gap:.5rem;max-height:340px;overflow-y:auto;margin-bottom:1.25rem;" id="listDishRows">
             ${(list.dishes || []).length ? (list.dishes || []).map(d => `
                 <div style="display:flex;align-items:center;gap:.75rem;padding:.625rem;background:var(--clr-surface-low);border-radius:var(--radius-md);">
-                    <span style="font-size:1.5rem;">${d.category_icon || '🍽️'}</span>
+                    <span style="font-size:1.5rem;">${esc(d.category_icon || '🍽️')}</span>
                     <div style="flex:1;min-width:0;">
-                        <p style="font-weight:600;font-size:.9375rem;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${d.name}</p>
-                        <p style="color:var(--clr-on-surface-var);font-size:.75rem;margin:0;">${d.category_name || ''}</p>
+                        <p style="font-weight:600;font-size:.9375rem;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(d.name)}</p>
+                        <p style="color:var(--clr-on-surface-var);font-size:.75rem;margin:0;">${esc(d.category_name || '')}</p>
                     </div>
-                    <button class="btn btn--ghost btn--sm remove-dish-btn" data-listid="${id}" data-dishid="${d.id}" style="color:#c0392b;flex-shrink:0;">
+                    <button class="btn btn--ghost btn--sm remove-dish-btn" data-listid="${esc(id)}" data-dishid="${esc(d.id)}" style="color:#c0392b;flex-shrink:0;">
                         <span class="material-symbols-outlined" style="font-size:1.1rem;">close</span>
                     </button>
                 </div>
@@ -175,11 +175,11 @@ async function _viewList(id) {
             <h2 style="font-family:var(--font-headline);font-size:1.25rem;font-weight:800;margin-bottom:1.25rem;">Dodaj danie do listy</h2>
             <div style="display:flex;flex-direction:column;gap:.5rem;max-height:400px;overflow-y:auto;">
                 ${dishes.map(d => `
-                    <div class="meal-card add-dish-row" data-dishid="${d.id}" style="cursor:pointer;">
-                        <div class="meal-card__emoji">${d.category_icon || '🍽️'}</div>
+                    <div class="meal-card add-dish-row" data-dishid="${esc(d.id)}" style="cursor:pointer;">
+                        <div class="meal-card__emoji">${esc(d.category_icon || '🍽️')}</div>
                         <div class="meal-card__body">
-                            <h3 class="meal-card__name" style="font-size:.9375rem;">${d.name}</h3>
-                            <p style="font-size:.75rem;color:var(--clr-on-surface-var);margin:0;">${d.category_name || ''}</p>
+                            <h3 class="meal-card__name" style="font-size:.9375rem;">${esc(d.name)}</h3>
+                            <p style="font-size:.75rem;color:var(--clr-on-surface-var);margin:0;">${esc(d.category_name || '')}</p>
                         </div>
                         <span class="material-symbols-outlined" style="color:var(--clr-outline-var);">add_circle</span>
                     </div>
@@ -207,11 +207,11 @@ function _openListModal(list, onSave) {
         <form id="listForm">
             <div class="form-group">
                 <label>Nazwa *</label>
-                <input type="text" name="name" value="${list?.name || ''}" required placeholder="np. Zdrowe obiady" />
+                <input type="text" name="name" value="${esc(list?.name || '')}" required placeholder="np. Zdrowe obiady" maxlength="200" />
             </div>
             <div class="form-group">
                 <label>Opis</label>
-                <textarea name="description" rows="2" placeholder="Krótki opis (opcjonalnie)">${list?.description || ''}</textarea>
+                <textarea name="description" rows="2" placeholder="Krótki opis (opcjonalnie)" maxlength="500">${esc(list?.description || '')}</textarea>
             </div>
             <label style="display:flex;align-items:center;gap:.625rem;padding:.75rem;background:var(--clr-surface-low);border-radius:var(--radius-md);cursor:pointer;margin-bottom:1.5rem;">
                 <input type="checkbox" name="is_public" ${list?.is_public ? 'checked' : ''} style="width:1.125rem;height:1.125rem;accent-color:var(--clr-primary);" />
