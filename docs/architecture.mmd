@@ -1,0 +1,32 @@
+flowchart TB
+    subgraph Client["Browser / Client"]
+        UI["HTML + CSS"]
+        JS["JavaScript (Fetch API)"]
+        UI --- JS
+    end
+
+    subgraph Nginx["nginx :80"]
+        Static["Static files<br/>(frontend/)"]
+        Proxy["Reverse proxy<br/>/api/* → php-fpm"]
+    end
+
+    subgraph PHP["php-fpm 8.3"]
+        Router["Core/Router<br/>+ Request/Response"]
+        MW["Middleware<br/>Auth · Admin"]
+        Ctrl["Controllers<br/>Auth · Dish · Category<br/>List · Rating · Spin · User"]
+        Svc["Services<br/>(business logic)"]
+        Repo["Repositories<br/>(PDO prepared stmt)"]
+        Router --> MW --> Ctrl --> Svc --> Repo
+    end
+
+    subgraph DB["PostgreSQL 16"]
+        Tables["Tables (3NF)<br/>users · dishes · recipes<br/>categories · ratings · ..."]
+        Views["Views<br/>v_dish_details<br/>v_user_stats"]
+        Func["Functions<br/>get_random_dish()<br/>trg_update_*()"]
+        Trig["Triggers<br/>after_spin_insert<br/>after_rating_change"]
+    end
+
+    JS -- "fetch /api/*" --> Nginx
+    UI -- "GET /" --> Static
+    Proxy --> Router
+    Repo -- "SQL (transactions)" --> DB

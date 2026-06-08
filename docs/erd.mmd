@@ -1,0 +1,101 @@
+erDiagram
+    users {
+        int          id PK
+        varchar      email UK
+        varchar      password
+        varchar      name
+        user_role    role
+        varchar      avatar_url
+        timestamptz  created_at
+        timestamptz  updated_at
+    }
+
+    categories {
+        int     id PK
+        varchar name UK
+        text    description
+        varchar icon
+        varchar color
+    }
+
+    dishes {
+        int          id PK
+        varchar      name
+        text         description
+        int          category_id FK
+        varchar      image_url
+        int          created_by FK
+        boolean      is_active
+        timestamptz  created_at
+    }
+
+    recipes {
+        int               id PK
+        int               dish_id FK,UK
+        text              instructions
+        int               prep_time
+        int               cook_time
+        int               servings
+        difficulty_level  difficulty
+        varchar           source_url
+    }
+
+    user_lists {
+        int          id PK
+        int          user_id FK
+        varchar      name
+        text         description
+        boolean      is_public
+        timestamptz  created_at
+    }
+
+    list_items {
+        int          list_id PK,FK
+        int          dish_id PK,FK
+        timestamptz  added_at
+    }
+
+    favorites {
+        int          user_id PK,FK
+        int          dish_id PK,FK
+        timestamptz  created_at
+    }
+
+    spin_history {
+        int          id PK
+        int          user_id FK
+        int          dish_id FK
+        int          list_id FK
+        timestamptz  spun_at
+    }
+
+    ratings {
+        int          id PK
+        int          user_id FK
+        int          dish_id FK
+        smallint     score
+        text         comment
+        timestamptz  rated_at
+    }
+
+    dish_stats {
+        int      dish_id PK,FK
+        int      spin_count
+        numeric  avg_rating
+    }
+
+    users        ||--o{ dishes        : "creates (1:N)"
+    users        ||--o{ user_lists    : "owns (1:N)"
+    users        ||--o{ spin_history  : "spins (1:N)"
+    users        ||--o{ ratings       : "rates (1:N)"
+    users        }o--o{ dishes        : "favorites (N:M via favorites)"
+
+    categories   ||--o{ dishes        : "groups (1:N)"
+
+    dishes       ||--|| recipes       : "has recipe (1:1)"
+    dishes       ||--|| dish_stats    : "has stats (1:1)"
+    dishes       ||--o{ spin_history  : "spun as (1:N)"
+    dishes       ||--o{ ratings       : "rated as (1:N)"
+
+    user_lists   }o--o{ dishes        : "contains (N:M via list_items)"
+    user_lists   ||--o{ spin_history  : "spun from (1:N, optional)"
