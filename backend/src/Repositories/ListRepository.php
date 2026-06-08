@@ -43,7 +43,7 @@ final class ListRepository extends BaseRepository
         return $this->fetchOne(
             'INSERT INTO user_lists (user_id, name, description, is_public)
              VALUES (?, ?, ?, ?) RETURNING *',
-            [$userId, $data['name'], $data['description'] ?? null, $data['is_public'] ?? false]
+            [$userId, $data['name'], $data['description'] ?? null, (int) ($data['is_public'] ?? false)]
         );
     }
 
@@ -51,7 +51,7 @@ final class ListRepository extends BaseRepository
     {
         $this->execute(
             'UPDATE user_lists SET name = ?, description = ?, is_public = ? WHERE id = ?',
-            [$data['name'], $data['description'] ?? null, $data['is_public'] ?? false, $id]
+            [$data['name'], $data['description'] ?? null, (int) ($data['is_public'] ?? false), $id]
         );
         return $this->findById($id);
     }

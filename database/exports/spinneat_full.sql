@@ -230,11 +230,11 @@ CREATE INDEX idx_list_items_list        ON list_items(list_id);
 -- SAMPLE DATA
 -- ============================================================
 
--- Default password for sample users: Admin1234!
+-- Default password for sample users: Admin1234! (bcrypt cost 12)
 INSERT INTO users (email, password, name, role) VALUES
-('admin@spinneat.local', '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uHxL6vxAm', 'Administrator', 'admin'),
-('jan@example.com',      '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uHxL6vxAm', 'Jan Kowalski',  'user'),
-('anna@example.com',     '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uHxL6vxAm', 'Anna Nowak',    'user');
+('admin@spinneat.local', '$2y$12$ulFz5Lj8yFPCvxdTs/NPHeuhmwLZ1yE2c3NehbaADi8zZ8emNNyqe', 'Administrator', 'admin'),
+('jan@example.com',      '$2y$12$ulFz5Lj8yFPCvxdTs/NPHeuhmwLZ1yE2c3NehbaADi8zZ8emNNyqe', 'Jan Kowalski',  'user'),
+('anna@example.com',     '$2y$12$ulFz5Lj8yFPCvxdTs/NPHeuhmwLZ1yE2c3NehbaADi8zZ8emNNyqe', 'Anna Nowak',    'user');
 
 INSERT INTO categories (name, description, icon, color) VALUES
 ('Polska',        'Tradycyjna kuchnia polska',           '🥟', '#E63946'),

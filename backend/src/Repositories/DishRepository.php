@@ -50,7 +50,7 @@ final class DishRepository extends BaseRepository
         $this->execute(
             'UPDATE dishes SET name = ?, description = ?, category_id = ?, image_url = ?, is_active = ?
              WHERE id = ?',
-            [$data['name'], $data['description'] ?? null, $data['category_id'], $data['image_url'] ?? null, $data['is_active'] ?? true, $id]
+            [$data['name'], $data['description'] ?? null, $data['category_id'], $data['image_url'] ?? null, (int) ($data['is_active'] ?? true), $id]
         );
         return $this->findById($id);
     }
