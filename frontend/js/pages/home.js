@@ -108,8 +108,8 @@ async function _loadHomeData() {
         // Populate selects
         const catSel  = document.getElementById('spinCategory');
         const listSel = document.getElementById('spinList');
-        cats.forEach(c  => catSel?.insertAdjacentHTML('beforeend',  `<option value="${c.id}">${c.icon || ''} ${c.name}</option>`));
-        lists.forEach(l => listSel?.insertAdjacentHTML('beforeend', `<option value="${l.id}">${l.name}</option>`));
+        cats.forEach(c  => catSel?.insertAdjacentHTML('beforeend',  `<option value="${esc(c.id)}">${esc(c.icon || '')} ${esc(c.name)}</option>`));
+        lists.forEach(l => listSel?.insertAdjacentHTML('beforeend', `<option value="${esc(l.id)}">${esc(l.name)}</option>`));
 
         // Init wheel
         const canvas = document.getElementById('wheelCanvas');
@@ -157,30 +157,30 @@ function _renderHomeCards(dishes) {
         <!-- big feature card -->
         <div class="feature-card" style="grid-column:1/-1">
             <div class="feature-card__img-wrap">
-                <div class="feature-card__img">${first.category_icon || '🍽️'}</div>
+                <div class="feature-card__img">${esc(first.category_icon || '🍽️')}</div>
                 <div class="feature-card__tag">Trending</div>
             </div>
             <div class="feature-card__body">
                 <div class="feature-card__header">
-                    <h4 class="feature-card__name">${first.name}</h4>
-                    <button style="background:none;border:none;cursor:pointer;color:var(--clr-outline-var);" class="fav-btn" data-id="${first.id}">
+                    <h4 class="feature-card__name">${esc(first.name)}</h4>
+                    <button style="background:none;border:none;cursor:pointer;color:var(--clr-outline-var);" class="fav-btn" data-id="${esc(first.id)}">
                         <span class="material-symbols-outlined">favorite</span>
                     </button>
                 </div>
                 <div class="feature-card__meta">
-                    ${first.prep_time ? `<div class="feature-card__meta-item"><span class="material-symbols-outlined">schedule</span> ${first.prep_time} min</div>` : ''}
-                    ${first.difficulty ? `<div class="feature-card__meta-item"><span class="material-symbols-outlined">local_fire_department</span> ${_diffLabel(first.difficulty)}</div>` : ''}
+                    ${first.prep_time ? `<div class="feature-card__meta-item"><span class="material-symbols-outlined">schedule</span> ${esc(first.prep_time)} min</div>` : ''}
+                    ${first.difficulty ? `<div class="feature-card__meta-item"><span class="material-symbols-outlined">local_fire_department</span> ${esc(_diffLabel(first.difficulty))}</div>` : ''}
                 </div>
             </div>
         </div>
         <!-- small cards -->
         ${rest.slice(0,2).map(d => `
             <div class="small-card">
-                <div class="small-card__img">${d.category_icon || '🍽️'}</div>
+                <div class="small-card__img">${esc(d.category_icon || '🍽️')}</div>
                 <div class="small-card__body">
-                    <p class="small-card__name">${d.name}</p>
+                    <p class="small-card__name">${esc(d.name)}</p>
                     <div class="small-card__footer">
-                        <span class="small-card__label small-card__label--quick">${d.category_name || ''}</span>
+                        <span class="small-card__label small-card__label--quick">${esc(d.category_name || '')}</span>
                         <span class="material-symbols-outlined" style="color:var(--clr-outline-var);font-size:1.1rem;">add_circle</span>
                     </div>
                 </div>
@@ -240,11 +240,11 @@ function _showResult(dish) {
             <div class="confetti-piece" style="top:20%;right:10%;background:#a63300;transform:rotate(-25deg)"></div>
 
             <div class="result-card__badge">
-                <span>${dish.category_icon || '🍽️'}</span>
+                <span>${esc(dish.category_icon || '🍽️')}</span>
                 <span class="material-symbols-outlined">auto_awesome</span>
             </div>
             <p class="result-card__label">Today's Perfect Match</p>
-            <h2 class="result-card__title">${dish.dish_name || dish.name}</h2>
+            <h2 class="result-card__title">${esc(dish.dish_name || dish.name)}</h2>
 
             <div class="result-card__actions">
                 <button class="btn btn--primary btn--full" id="eatBtn">

@@ -30,12 +30,12 @@ Pages.dishes = async function(container) {
         // Category chips
         const chips = document.getElementById('catChips');
         allCats.forEach(c => chips.insertAdjacentHTML('beforeend',
-            `<button class="chip" data-cat="${c.id}">${c.icon || ''} ${c.name}</button>`
+            `<button class="chip" data-cat="${esc(c.id)}">${esc(c.icon || '')} ${esc(c.name)}</button>`
         ));
 
         _renderList(allDishes);
     } catch (err) {
-        document.getElementById('dishList').innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
+        document.getElementById('dishList').innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
     }
 
     // Search
@@ -93,17 +93,17 @@ function _renderList(dishes) {
         return;
     }
     list.innerHTML = dishes.map(d => `
-        <div class="meal-card" data-id="${d.id}">
-            <div class="meal-card__emoji">${d.category_icon || '🍽️'}</div>
+        <div class="meal-card" data-id="${esc(d.id)}">
+            <div class="meal-card__emoji">${esc(d.category_icon || '🍽️')}</div>
             <div class="meal-card__body">
                 <div class="meal-card__header">
-                    <h3 class="meal-card__name">${d.name}</h3>
-                    <span class="meal-card__tag">${d.category_name || ''}</span>
+                    <h3 class="meal-card__name">${esc(d.name)}</h3>
+                    <span class="meal-card__tag">${esc(d.category_name || '')}</span>
                 </div>
                 <div class="meal-card__meta">
-                    ${d.prep_time ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">schedule</span>${d.prep_time} min</div>` : ''}
-                    ${d.difficulty ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">local_fire_department</span>${_diff(d.difficulty)}</div>` : ''}
-                    ${d.spin_count > 0 ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">autorenew</span>${d.spin_count}</div>` : ''}
+                    ${d.prep_time ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">schedule</span>${esc(d.prep_time)} min</div>` : ''}
+                    ${d.difficulty ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">local_fire_department</span>${esc(_diff(d.difficulty))}</div>` : ''}
+                    ${d.spin_count > 0 ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">autorenew</span>${esc(d.spin_count)}</div>` : ''}
                 </div>
             </div>
             <span class="material-symbols-outlined meal-card__chevron">chevron_right</span>
@@ -121,17 +121,17 @@ async function _openDishDetail(id) {
     const d = res.data;
 
     Modal.show(`
-        <div style="text-align:center;margin-bottom:1.5rem;font-size:4rem;">${d.category_icon || '🍽️'}</div>
-        <h2 style="font-family:var(--font-headline);font-size:1.75rem;font-weight:800;margin-bottom:.5rem;">${d.name}</h2>
-        <p style="color:var(--clr-on-surface-var);margin-bottom:1.25rem;">${d.description || ''}</p>
+        <div style="text-align:center;margin-bottom:1.5rem;font-size:4rem;">${esc(d.category_icon || '🍽️')}</div>
+        <h2 style="font-family:var(--font-headline);font-size:1.75rem;font-weight:800;margin-bottom:.5rem;">${esc(d.name)}</h2>
+        <p style="color:var(--clr-on-surface-var);margin-bottom:1.25rem;">${esc(d.description || '')}</p>
         ${d.instructions ? `
             <h3 style="font-family:var(--font-headline);font-weight:700;margin-bottom:.75rem;">Przepis</h3>
-            <p style="font-size:.9rem;line-height:1.7;color:var(--clr-on-surface-var);">${d.instructions}</p>
+            <p style="font-size:.9rem;line-height:1.7;color:var(--clr-on-surface-var);white-space:pre-wrap;">${esc(d.instructions)}</p>
         ` : ''}
         <div style="display:flex;gap:.75rem;margin-top:1.5rem;flex-wrap:wrap;">
-            ${Auth.isLoggedIn() ? `<button class="btn btn--primary btn--full fav-modal-btn" data-id="${d.id}">❤️ Dodaj do ulubionych</button>` : ''}
-            ${Auth.isLoggedIn() ? `<button class="btn btn--secondary btn--full rate-modal-btn" data-id="${d.id}">⭐ Oceń</button>` : ''}
-            ${Auth.isAdmin() ? `<button class="btn btn--danger btn--sm del-modal-btn" data-id="${d.id}">🗑 Usuń</button>` : ''}
+            ${Auth.isLoggedIn() ? `<button class="btn btn--primary btn--full fav-modal-btn" data-id="${esc(d.id)}">❤️ Dodaj do ulubionych</button>` : ''}
+            ${Auth.isLoggedIn() ? `<button class="btn btn--secondary btn--full rate-modal-btn" data-id="${esc(d.id)}">⭐ Oceń</button>` : ''}
+            ${Auth.isAdmin() ? `<button class="btn btn--danger btn--sm del-modal-btn" data-id="${esc(d.id)}">🗑 Usuń</button>` : ''}
         </div>
     `);
 
@@ -174,7 +174,7 @@ function _openDishModal(categories, onSave) {
             <div class="form-group"><label>Opis</label><textarea name="description" rows="2"></textarea></div>
             <div class="form-group"><label>Kategoria *</label>
                 <select name="category_id" required>
-                    ${categories.map(c=>`<option value="${c.id}">${c.icon||''} ${c.name}</option>`).join('')}
+                    ${categories.map(c=>`<option value="${esc(c.id)}">${esc(c.icon||'')} ${esc(c.name)}</option>`).join('')}
                 </select>
             </div>
             <div class="form-group"><label>URL obrazka</label><input type="url" name="image_url" placeholder="https://…" /></div>

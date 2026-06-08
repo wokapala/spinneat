@@ -30,19 +30,19 @@ Pages.favorites = async function(container) {
         }
 
         list.innerHTML = items.map(d => `
-            <div class="meal-card" data-id="${d.id}">
-                <div class="meal-card__emoji">${d.category_icon || '🍽️'}</div>
+            <div class="meal-card" data-id="${esc(d.id)}">
+                <div class="meal-card__emoji">${esc(d.category_icon || '🍽️')}</div>
                 <div class="meal-card__body">
                     <div class="meal-card__header">
-                        <h3 class="meal-card__name">${d.name}</h3>
-                        <span class="meal-card__tag">${d.category_name || ''}</span>
+                        <h3 class="meal-card__name">${esc(d.name)}</h3>
+                        <span class="meal-card__tag">${esc(d.category_name || '')}</span>
                     </div>
                     <div class="meal-card__meta">
-                        ${d.prep_time ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">schedule</span>${d.prep_time} min</div>` : ''}
-                        ${d.avg_rating ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">star</span>${parseFloat(d.avg_rating).toFixed(1)}</div>` : ''}
+                        ${d.prep_time ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">schedule</span>${esc(d.prep_time)} min</div>` : ''}
+                        ${d.avg_rating ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">star</span>${esc(parseFloat(d.avg_rating).toFixed(1))}</div>` : ''}
                     </div>
                 </div>
-                <button class="btn btn--ghost btn--sm unfav-btn" data-id="${d.id}" style="color:#c0392b;flex-shrink:0;" title="Usuń z ulubionych">
+                <button class="btn btn--ghost btn--sm unfav-btn" data-id="${esc(d.id)}" style="color:#c0392b;flex-shrink:0;" title="Usuń z ulubionych">
                     <span class="material-symbols-outlined icon-fill" style="color:#c0392b;">favorite</span>
                 </button>
             </div>
@@ -71,6 +71,6 @@ Pages.favorites = async function(container) {
             });
         });
     } catch (err) {
-        document.getElementById('favList').innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
+        document.getElementById('favList').innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
     }
 };

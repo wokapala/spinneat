@@ -13,12 +13,12 @@ Pages.login = function(container) {
                 <form id="loginForm" novalidate>
                     <div class="form-group">
                         <label for="loginEmail">E-mail</label>
-                        <input type="email" id="loginEmail" name="email" placeholder="jan@example.com" autocomplete="email" />
+                        <input type="email" id="loginEmail" name="email" placeholder="jan@example.com" autocomplete="email" maxlength="255" required />
                         <span class="field-error" id="emailErr"></span>
                     </div>
                     <div class="form-group">
                         <label for="loginPass">Hasło</label>
-                        <input type="password" id="loginPass" name="password" placeholder="••••••••" autocomplete="current-password" />
+                        <input type="password" id="loginPass" name="password" placeholder="••••••••" autocomplete="current-password" maxlength="200" required />
                         <span class="field-error" id="passErr"></span>
                     </div>
                     <button class="btn btn--primary btn--full btn--pill mt-md" type="submit" id="loginBtn">

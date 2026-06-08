@@ -28,6 +28,11 @@ final class Request
         return $this->method;
     }
 
+    public function method(): string
+    {
+        return $this->method;
+    }
+
     public function getPath(): string
     {
         return $this->path;

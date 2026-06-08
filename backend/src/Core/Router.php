@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use App\Core\Middleware\CsrfMiddleware;
 use App\Exceptions\NotFoundException;
 
 final class Router
@@ -53,6 +54,10 @@ final class Router
         foreach ($this->routes[$method] ?? [] as $routePath => [$handler, $middleware]) {
             $params = $this->matchRoute($routePath, $path);
             if ($params !== null) {
+                // CSRF check runs first for state-changing requests so we
+                // reject forged calls before any auth check inspects state.
+                (new CsrfMiddleware())->handle($request);
+
                 foreach ($middleware as $mw) {
                     $mwInstance = new $mw();
                     $mwInstance->handle($request);
