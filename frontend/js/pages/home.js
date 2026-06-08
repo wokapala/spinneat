@@ -218,10 +218,14 @@ async function _onSpin() {
         const dish = res.data?.dish;
         if (!dish) throw new Error('Brak dań do losowania');
 
+        // The backend can pick a dish that isn't among the 16 on the wheel;
+        // make sure it has a segment so the pointer lands on the real winner.
+        const targetId = Wheel.ensureSegment(dish);
+
         Wheel.spin(() => {
             btn.disabled = false;
             _showResult(dish);
-        }, dish.dish_id);
+        }, targetId);
     } catch (err) {
         Toast.show(err.message || 'Błąd losowania', 'error');
         btn.disabled = false;
