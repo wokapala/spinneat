@@ -18,7 +18,7 @@ const API = (() => {
         return csrfPromise;
     }
 
-    async function request(method, path, body = null) {
+    async function request(method, path, body = null, _retried = false) {
         const headers = { 'Content-Type': 'application/json' };
         if (UNSAFE.has(method)) {
             const token = await getCsrfToken();
@@ -32,10 +32,15 @@ const API = (() => {
         const data = await res.json().catch(() => ({}));
 
         if (!res.ok) {
-            // 419 CSRF expiry isn't standard but matches Laravel convention —
-            // drop the cached token so the next attempt fetches a fresh one.
+            // The session (and its CSRF token) is reset on logout, so the
+            // first state-changing call afterwards carries a stale token.
+            // Drop the cache and retry once transparently before surfacing
+            // the error, so re-login right after logout just works.
             if (res.status === 403 && /csrf/i.test(data.message || '')) {
                 csrfToken = null; csrfPromise = null;
+                if (!_retried && UNSAFE.has(method)) {
+                    return request(method, path, body, true);
+                }
             }
             const err = new Error(data.message || `HTTP ${res.status}`);
             err.status = res.status;
