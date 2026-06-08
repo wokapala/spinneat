@@ -42,20 +42,20 @@ Pages.history = async function(container, { page = 1 } = {}) {
 
         list.innerHTML = items.map(h => `
             <div class="history-item">
-                <div class="history-item__thumb">${h.category_icon || '🍽️'}</div>
+                <div class="history-item__thumb">${esc(h.category_icon || '🍽️')}</div>
                 <div style="flex:1;min-width:0;">
                     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;">
-                        <h4 class="history-item__name">${h.dish_name}</h4>
+                        <h4 class="history-item__name">${esc(h.dish_name)}</h4>
                         <span style="flex-shrink:0;font-size:.6875rem;font-weight:700;padding:.2rem .625rem;border-radius:var(--radius-full);background:var(--clr-secondary-container);color:var(--clr-on-secondary-container);">
-                            ${h.category_name}
+                            ${esc(h.category_name)}
                         </span>
                     </div>
                     <div class="history-item__date">
                         <span class="material-symbols-outlined">calendar_today</span>
-                        ${_fmt(h.spun_at)}
+                        ${esc(_fmt(h.spun_at))}
                     </div>
                 </div>
-                <button class="btn btn--tertiary btn--sm rate-hist-btn" data-id="${h.dish_id}">
+                <button class="btn btn--tertiary btn--sm rate-hist-btn" data-id="${esc(h.dish_id)}">
                     <span class="material-symbols-outlined">star</span>
                 </button>
             </div>
@@ -78,7 +78,7 @@ Pages.history = async function(container, { page = 1 } = {}) {
             }
         }
     } catch (err) {
-        document.getElementById('historyList').innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
+        document.getElementById('historyList').innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
     }
 };
 

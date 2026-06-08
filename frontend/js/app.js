@@ -1,5 +1,16 @@
 'use strict';
 
+/* ── ESCAPE (XSS guard) ──
+ * Every dynamic value injected into innerHTML must go through esc()
+ * so server data and user input can't break out of the template and
+ * inject <script> tags or event handlers.
+ */
+const esc = (() => {
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    return v => (v === null || v === undefined ? '' : String(v).replace(/[&<>"']/g, c => map[c]));
+})();
+window.esc = esc;
+
 /* ── TOAST ── */
 const Toast = (() => {
     function show(msg, type = 'info', duration = 3500) {
