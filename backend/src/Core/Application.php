@@ -15,6 +15,7 @@ use App\Core\Middleware\AuthMiddleware;
 use App\Core\Middleware\AdminMiddleware;
 use App\Core\Middleware\CsrfMiddleware;
 use App\Exceptions\AppException;
+use App\Exceptions\ValidationException;
 use Throwable;
 
 final class Application
@@ -94,6 +95,10 @@ final class Application
         try {
             $request = new Request();
             $this->router->dispatch($request);
+        } catch (ValidationException $e) {
+            // Preserve the per-field error map so the client can show
+            // inline validation messages instead of a single toast.
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch (AppException $e) {
             Response::error($e->getMessage(), $e->getCode());
         } catch (Throwable $e) {
