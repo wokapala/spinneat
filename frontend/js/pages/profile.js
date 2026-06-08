@@ -80,6 +80,4 @@ Pages.profile = async function(container) {
     }
 };
 
-function _initials(name) {
-    return (name || '?').split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-}
+function _initials(name) { return Utils.initials(name); }
