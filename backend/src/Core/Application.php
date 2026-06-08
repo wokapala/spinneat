@@ -88,9 +88,10 @@ final class Application
 
     public function run(): void
     {
+        // The SPA is served from the same origin as the API, so no CORS
+        // headers are needed. A wildcard Access-Control-Allow-Origin would
+        // also be invalid here because requests carry session cookies.
         header('Content-Type: application/json; charset=utf-8');
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers: Content-Type');
 
         try {
             $request = new Request();
@@ -102,11 +103,12 @@ final class Application
         } catch (AppException $e) {
             Response::error($e->getMessage(), $e->getCode());
         } catch (Throwable $e) {
-            $status  = (getenv('APP_ENV') === 'development') ? 500 : 500;
+            // Never leak internal error details outside development.
+            error_log('[unhandled] ' . $e->getMessage());
             $message = (getenv('APP_ENV') === 'development')
                 ? $e->getMessage()
                 : 'Internal Server Error';
-            Response::error($message, $status);
+            Response::error($message, 500);
         }
     }
 }
