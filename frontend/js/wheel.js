@@ -23,6 +23,28 @@ const Wheel = (() => {
         if (canvas) _draw(currentAngle);
     }
 
+    /**
+     * Guarantee a dish is present on the wheel so the animation can land
+     * on it. The backend may pick a dish outside the 16 currently shown
+     * (e.g. when more than 16 dishes exist); without this the pointer
+     * would stop on an unrelated segment while the result card shows the
+     * real winner. Returns the id to spin toward.
+     */
+    function ensureSegment(dish) {
+        const id = dish.dish_id ?? dish.id;
+        if (segments.some(s => s.id === id)) return id;
+
+        const i = segments.length;
+        segments.push({
+            label: dish.dish_name || dish.name || '',
+            color: PALETTE[i % PALETTE.length],
+            icon:  dish.category_icon || dish.icon || '🍽️',
+            id,
+        });
+        if (canvas) _draw(currentAngle);
+        return id;
+    }
+
     function _draw(angle) {
         const size = canvas.offsetWidth;
         canvas.width  = size;
@@ -149,5 +171,5 @@ const Wheel = (() => {
         return { ...segments[idx], index: idx };
     }
 
-    return { init, setSegments, spin };
+    return { init, setSegments, ensureSegment, spin };
 })();
