@@ -2,11 +2,12 @@
 -- Spin & Eat – Seed Data
 -- ============================================================
 
--- Admin user (password: Admin1234!)
+-- All seed users share the password: Admin1234!
+-- (bcrypt cost 12 — verified with password_verify)
 INSERT INTO users (email, password, name, role) VALUES
-('admin@spinneat.local', '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uHxL6vxAm', 'Administrator', 'admin'),
-('jan@example.com',      '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uHxL6vxAm', 'Jan Kowalski',    'user'),
-('anna@example.com',     '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uHxL6vxAm', 'Anna Nowak',      'user');
+('admin@spinneat.local', '$2y$12$ulFz5Lj8yFPCvxdTs/NPHeuhmwLZ1yE2c3NehbaADi8zZ8emNNyqe', 'Administrator', 'admin'),
+('jan@example.com',      '$2y$12$ulFz5Lj8yFPCvxdTs/NPHeuhmwLZ1yE2c3NehbaADi8zZ8emNNyqe', 'Jan Kowalski',    'user'),
+('anna@example.com',     '$2y$12$ulFz5Lj8yFPCvxdTs/NPHeuhmwLZ1yE2c3NehbaADi8zZ8emNNyqe', 'Anna Nowak',      'user');
 
 -- Categories
 INSERT INTO categories (name, description, icon, color) VALUES
