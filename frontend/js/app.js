@@ -11,6 +11,19 @@ const esc = (() => {
 })();
 window.esc = esc;
 
+/* ── SHARED UTILS ──
+ * Anything called from more than one page lives here so we don't end
+ * up with three slightly different copies of the same helper.
+ */
+const Utils = {
+    initials: name => (name || '?').split(' ').map(w => w[0] || '').join('').toUpperCase().slice(0, 2),
+    difficultyLabel: d => ({ easy: 'Łatwe', medium: 'Średnie', hard: 'Trudne' }[d] || d),
+    formatDate: iso => new Date(iso).toLocaleDateString('pl-PL', {
+        day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
+    }),
+};
+window.Utils = Utils;
+
 /* ── TOAST ── */
 const Toast = (() => {
     function show(msg, type = 'info', duration = 3500) {
