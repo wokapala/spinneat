@@ -3,6 +3,10 @@
     :root { --max-w: 100%; }
     .app-content { padding-left: 1.25rem; padding-right: 1.25rem; }
     .topbar { padding: 0 1.25rem; }
+    .modal__box { max-width: calc(100vw - 2rem); margin: 1rem; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select { font-size: 16px; } /* iOS skip zoom-on-focus */
 }
 
 /* ── MOBILE ── */
@@ -27,6 +31,17 @@
     .bottom-nav { max-width: 560px; }
     .app-content { padding-top: 1.5rem; }
     .wheel-canvas-wrap { width: min(380px, 80vw); height: min(380px, 80vw); }
+}
+
+/* ── WIDE DESKTOP ── */
+@media (min-width: 1024px) {
+    .app-content { max-width: 720px; margin: 0 auto; }
+}
+
+/* ── LANDSCAPE ON SHORT SCREENS ── */
+@media (max-height: 600px) and (orientation: landscape) {
+    .wheel-canvas-wrap { width: min(220px, 40vh); height: min(220px, 40vh); }
+    .stats-banner { padding: 1rem; }
 }
 
 /* ── PRINT ── */
