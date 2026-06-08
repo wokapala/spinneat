@@ -31,7 +31,7 @@ final class ListController extends BaseController
 
     public function store(Request $request): void
     {
-        $data = $this->validate($request->getBody(), ['name' => 'required|min:2']);
+        $data = $this->validate($request->getBody(), ['name' => 'required|min:2|max:200']);
         $list = $this->lists->create($this->currentUserId(), $data);
         Response::success($list, 'List created', 201);
     }
@@ -39,7 +39,7 @@ final class ListController extends BaseController
     public function update(Request $request, string $id): void
     {
         $this->assertOwner((int) $id);
-        $data = $this->validate($request->getBody(), ['name' => 'required|min:2']);
+        $data = $this->validate($request->getBody(), ['name' => 'required|min:2|max:200']);
         Response::success($this->lists->update((int) $id, $data));
     }
 
