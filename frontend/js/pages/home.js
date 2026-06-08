@@ -321,6 +321,4 @@ function _openRatingModal(dishId) {
     });
 }
 
-function _diffLabel(d) {
-    return { easy:'Łatwe', medium:'Średnie', hard:'Trudne' }[d] || d;
-}
+function _diffLabel(d) { return Utils.difficultyLabel(d); }
