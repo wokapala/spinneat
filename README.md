@@ -121,7 +121,7 @@ Pierwsze uruchomienie:
 - uruchamia composer install w kontenerze php,
 - odpala migrację schematu z `database/schema.sql` + seed z `database/seed.sql`.
 
-Aplikacja dostępna pod **<http://localhost:8080>**, API pod **<http://localhost:8080/api>**.
+Aplikacja dostępna pod **<http://localhost>** (port 80 z `.env.example`; ustaw `NGINX_PORT=8080` jeśli 80 jest zajęte), API pod **<http://localhost/api>**.
 
 ### Zmienne środowiskowe
 
@@ -134,7 +134,9 @@ Plik [`.env.example`](.env.example) zawiera wszystkie wymagane zmienne — najwa
 | `DB_PORT`     | port bazy                           | `5432`            |
 | `DB_NAME`     | nazwa bazy                          | `spinneat`        |
 | `DB_USER`     | użytkownik DB                       | `spinneat`        |
-| `DB_PASSWORD` | hasło DB                            | (ustaw w `.env`)  |
+| `DB_PASS`     | hasło DB                            | (ustaw w `.env`)  |
+| `NGINX_PORT`  | port HTTP gospodarza                | `80`              |
+| `APP_SECRET`  | sól dla aplikacji (na przyszłość)   | (ustaw w `.env`)  |
 
 W produkcji `APP_ENV=production` wyłącza wyświetlanie błędów PHP i włącza flagę `Secure` na cookie sesyjnym.
 
