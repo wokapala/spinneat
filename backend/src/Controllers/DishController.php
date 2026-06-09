@@ -32,12 +32,16 @@ final class DishController extends BaseController
         Response::success($dish);
     }
 
+    private const RULES = [
+        'name'        => 'required|min:2|max:200',
+        'category_id' => 'required|int',
+        'description' => 'max:2000',
+        'image_url'   => 'max:500',
+    ];
+
     public function store(Request $request): void
     {
-        $data = $this->validate($request->getBody(), [
-            'name'        => 'required|min:2|max:200',
-            'category_id' => 'required|int',
-        ]);
+        $data = $this->validate($request->getBody(), self::RULES);
         $data['created_by'] = $this->currentUserId();
 
         $dish = $this->dishes->create($data);
@@ -50,10 +54,7 @@ final class DishController extends BaseController
         if (!$dish) throw new NotFoundException('Dish not found');
         $this->assertOwnerOrAdmin($dish);
 
-        $data = $this->validate($request->getBody(), [
-            'name'        => 'required|min:2|max:200',
-            'category_id' => 'required|int',
-        ]);
+        $data = $this->validate($request->getBody(), self::RULES);
 
         $updated = $this->dishes->update((int) $id, $data);
         Response::success($updated);
