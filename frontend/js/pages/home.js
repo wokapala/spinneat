@@ -309,7 +309,7 @@ function _openRatingModal(dishId) {
             </div>
             <div class="form-group">
                 <label>Komentarz (opcjonalnie)</label>
-                <textarea name="comment" rows="3" placeholder="Jak smakowało?"></textarea>
+                <textarea name="comment" rows="3" placeholder="Jak smakowało?" maxlength="1000"></textarea>
             </div>
             <button class="btn btn--primary btn--full mt-md" type="submit">Zapisz ocenę</button>
         </form>
