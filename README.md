@@ -143,7 +143,7 @@ W produkcji `APP_ENV=production` wyłącza wyświetlanie błędów PHP i włącz
 ### Załadowanie pełnego dumpu (alternatywnie do schema + seed)
 
 ```bash
-docker compose exec -T db psql -U spinneat -d spinneat \
+docker compose exec -T postgres psql -U spinneat -d spinneat \
   < database/exports/spinneat_full.sql
 ```
 
@@ -189,7 +189,7 @@ System ma trzy role: `guest`, `user`, `admin` (enum w PostgreSQL).
 | CRUD kategorii                      | —     | —    | ✅    |
 | Zarządzanie userami                 | —     | —    | ✅    |
 
-Uprawnienia egzekwowane na dwóch poziomach: middleware (`AuthMiddleware`, `AdminMiddleware`) + kontroler (`assertOwnerOrAdmin()`). Niezalogowany dostęp do chronionego endpointu zwraca **401**; zalogowany bez uprawnień — **403** i przyjazną stronę błędu (`frontend/errors/403.html`).
+Uprawnienia egzekwowane na trzech poziomach: middleware (`AuthMiddleware`, `AdminMiddleware`), kontroler (`assertOwnerOrAdmin()`) i serwis (spin tylko z własnej lub publicznej listy). Niezalogowany dostęp do chronionego endpointu zwraca **401**, zalogowany bez uprawnień — **403** (UI pokazuje komunikat). Przyjazne strony błędów 400/401/403/404/500 są dostępne pod `/errors/*.html` i podpięte w nginx przez `error_page`.
 
 ---
 
@@ -234,11 +234,12 @@ Dodatkowo w nginx: `X-Frame-Options`, `X-Content-Type-Options`, `X-XSS-Protectio
 **Unit** — PHPUnit w `backend/tests/Unit/`:
 
 ```bash
-docker compose exec php vendor/bin/phpunit --testdox backend/tests/Unit
+docker compose exec php vendor/bin/phpunit --testdox
 ```
 
-- `AuthServiceTest` — walidacja rejestracji, hashowanie hasła, login flow.
-- `SpinServiceTest` — losowanie z transakcją, NotFoundException przy pustej bazie.
+- `AuthServiceTest` — walidacja rejestracji (hasło, email, duplikaty), trimowanie wejścia.
+- `SpinServiceTest` — transakcja spinów (commit/rollback), uprawnienia do list (403 na cudzą prywatną listę).
+- `CsrfTest` — generowanie i weryfikacja tokenu CSRF.
 
 **Integracyjne** — `backend/tests/Integration/endpoints.sh`:
 
@@ -252,7 +253,7 @@ Sprawdza: pełny rejestracja → login → spin → ocena flow + dostęp do endp
 
 ## Scenariusz testowy (krok po kroku)
 
-1. **Uruchomienie** — `docker compose up -d` → `http://localhost:8080` → widoczna strona "What's for dinner?" (guest hero).
+1. **Uruchomienie** — `docker compose up -d` → `http://localhost` (lub port z `NGINX_PORT`) → widoczna strona "What's for dinner?" (guest hero).
 2. **Rejestracja** — klik "Zacznij teraz" → wypełnij email/hasło/imię (hasło min. 8 znaków + litera + cyfra) → konto utworzone, auto-login → przekierowanie do home z kołem.
 3. **Spin** — w dropdownie "Wszystkie" zostaw domyślne → klik **SPIN!** → koło kręci się 4 sekundy i zatrzymuje na konkretnym daniu → karta wyniku **dokładnie zgadza się** z segmentem.
 4. **Filtr na kategorię** — wybierz "Polska" w pierwszym dropdownie → segmenty koła momentalnie aktualizują się na polskie dania → kolejny spin tylko z tej puli.
@@ -268,6 +269,8 @@ Sprawdza: pełny rejestracja → login → spin → ocena flow + dostęp do endp
 14. **Panel admin** — zaloguj `admin@spinneat.local` → *Profile* → "Panel administratora" → promuj / degraduj usera → potwierdzone w bazie (widok `v_user_stats`).
 15. **Wyzwalacz** — wykonaj spin → sprawdź w bazie `SELECT * FROM dish_stats WHERE dish_id = <id>` → `spin_count` zwiększony o 1.
 16. **Funkcja** — `SELECT * FROM get_random_dish(NULL);` w psql → zwraca jeden losowy aktywny rekord.
+17. **Akcje na referencjach (RESTRICT)** — jako admin spróbuj usunąć kategorię, która ma dania → **409** *"Cannot delete a category that still has dishes"* (FK `ON DELETE RESTRICT`). Kategoria bez dań usuwa się poprawnie.
+18. **Uprawnienia do list** — `POST /api/spin` z `list_id` prywatnej listy innego użytkownika → **403**; lista publiczna innego użytkownika → losuje normalnie.
 
 ---
 

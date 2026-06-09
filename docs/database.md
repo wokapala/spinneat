@@ -86,5 +86,5 @@ No redundancy → no update / delete anomalies. The only denormalised data is `d
 A single self-contained SQL dump (schema + sample data, wrapped in a transaction) is available at [`database/exports/spinneat_full.sql`](../database/exports/spinneat_full.sql). Load via:
 
 ```bash
-docker compose exec -T db psql -U spinneat -d spinneat < database/exports/spinneat_full.sql
+docker compose exec -T postgres psql -U spinneat -d spinneat < database/exports/spinneat_full.sql
 ```
