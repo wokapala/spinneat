@@ -23,6 +23,11 @@ abstract class BaseController
             }
 
             if ($value !== null) {
+                if (!is_scalar($value)) {
+                    $errors[$field] = "Field '{$field}' must be a scalar value";
+                    continue;
+                }
+
                 foreach ($parts as $part) {
                     if (str_starts_with($part, 'min:')) {
                         $min = (int) substr($part, 4);
@@ -39,7 +44,7 @@ abstract class BaseController
                     if ($part === 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                         $errors[$field] = "Field '{$field}' must be a valid email";
                     }
-                    if ($part === 'int' && !is_numeric($value)) {
+                    if ($part === 'int' && filter_var($value, FILTER_VALIDATE_INT) === false) {
                         $errors[$field] = "Field '{$field}' must be an integer";
                     }
                 }

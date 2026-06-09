@@ -5,19 +5,26 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Core\Database;
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\NotFoundException;
-use App\Exceptions\ValidationException;
+use App\Repositories\ListRepository;
 use App\Repositories\SpinRepository;
 
 final class SpinService
 {
     public function __construct(
-        private readonly SpinRepository $spins = new SpinRepository()
+        private readonly SpinRepository $spins = new SpinRepository(),
+        private readonly ListRepository $lists = new ListRepository(),
+        private ?Database $db = null,
     ) {}
 
     public function spin(int $userId, ?int $listId, ?int $categoryId): array
     {
-        $db = Database::getInstance();
+        if ($listId !== null) {
+            $this->assertListAccessible($listId, $userId);
+        }
+
+        $db = $this->db ??= Database::getInstance();
         $db->beginTransaction();
 
         try {
@@ -52,5 +59,22 @@ final class SpinService
             'page'  => $page,
             'limit' => $limit,
         ];
+    }
+
+    /**
+     * A user may spin only from their own lists or lists shared as public —
+     * otherwise the list_id parameter would leak other users' private data.
+     */
+    private function assertListAccessible(int $listId, int $userId): void
+    {
+        $list = $this->lists->findById($listId);
+
+        if (!$list) {
+            throw new NotFoundException('List not found');
+        }
+
+        if ((int) $list['user_id'] !== $userId && !$list['is_public']) {
+            throw new ForbiddenException('You do not have access to this list');
+        }
     }
 }

@@ -42,11 +42,10 @@ final class Router
         $method = $request->getMethod();
         $path   = $request->getPath();
 
-        // Handle OPTIONS preflight
+        // SPA and API share one origin, so no CORS headers are needed —
+        // just acknowledge OPTIONS with the supported methods.
         if ($method === 'OPTIONS') {
-            header('Access-Control-Allow-Origin: *');
-            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-            header('Access-Control-Allow-Headers: Content-Type, Authorization');
+            header('Allow: GET, POST, PUT, DELETE, OPTIONS');
             http_response_code(204);
             return;
         }
