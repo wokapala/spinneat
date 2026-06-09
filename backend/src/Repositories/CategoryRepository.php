@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-final class CategoryRepository extends BaseRepository
+class CategoryRepository extends BaseRepository
 {
     public function findAll(): array
     {

@@ -13,17 +13,22 @@ check() {
     local label=$1 expected=$2 actual=$3
     if [ "$actual" -eq "$expected" ]; then
         echo "  ✓ $label"
-        ((PASS++))
+        PASS=$((PASS + 1))
     else
         echo "  ✗ $label (expected $expected, got $actual)"
-        ((FAIL++))
+        FAIL=$((FAIL + 1))
     fi
+}
+
+# The API pretty-prints JSON, so allow whitespace after the colon.
+extract_token() {
+    sed -n 's/.*"token":[[:space:]]*"\([a-f0-9]*\)".*/\1/p'
 }
 
 # Fetch the CSRF token and stash it in a cookie jar so every later
 # request reuses the same session.
 JAR=$(mktemp)
-TOKEN=$(curl -s -c "$JAR" -b "$JAR" "$BASE/auth/csrf" | sed -n 's/.*"token":"\([a-f0-9]*\)".*/\1/p')
+TOKEN=$(curl -s -c "$JAR" -b "$JAR" "$BASE/auth/csrf" | extract_token)
 [ -n "$TOKEN" ] || { echo "✗ Could not obtain CSRF token from $BASE/auth/csrf"; exit 1; }
 
 POST() {
@@ -71,7 +76,7 @@ check "POST /spin authenticated (200)" 200 "$(POST POST /spin '{}')"
 
 # Logged-out session: nuke cookie jar so /spin lacks credentials
 LOGGED_OUT=$(mktemp)
-TOKEN_OUT=$(curl -s -c "$LOGGED_OUT" -b "$LOGGED_OUT" "$BASE/auth/csrf" | sed -n 's/.*"token":"\([a-f0-9]*\)".*/\1/p')
+TOKEN_OUT=$(curl -s -c "$LOGGED_OUT" -b "$LOGGED_OUT" "$BASE/auth/csrf" | extract_token)
 SPIN_401=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE/spin" \
     -b "$LOGGED_OUT" -c "$LOGGED_OUT" -H "Content-Type: application/json" \
     -H "X-CSRF-Token: $TOKEN_OUT" -d '{}')
@@ -84,7 +89,7 @@ check "POST /categories as user (403)" 403 \
 
 # Login as the seeded admin (seed.sql hash is for "Admin1234!")
 ADMIN_JAR=$(mktemp)
-ADMIN_TOKEN=$(curl -s -c "$ADMIN_JAR" -b "$ADMIN_JAR" "$BASE/auth/csrf" | sed -n 's/.*"token":"\([a-f0-9]*\)".*/\1/p')
+ADMIN_TOKEN=$(curl -s -c "$ADMIN_JAR" -b "$ADMIN_JAR" "$BASE/auth/csrf" | extract_token)
 ADMIN_LOGIN=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE/auth/login" \
     -b "$ADMIN_JAR" -c "$ADMIN_JAR" \
     -H "Content-Type: application/json" \

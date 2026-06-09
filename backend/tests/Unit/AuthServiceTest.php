@@ -46,11 +46,9 @@ final class AuthServiceTest extends TestCase
 
     public function testRegisterThrowsOnDuplicateEmail(): void
     {
-        $existingUser = $this->createMock(User::class);
-
         $this->repo
             ->method('findByEmail')
-            ->willReturn($existingUser);
+            ->willReturn($this->makeUser('existing@example.com'));
 
         $this->expectException(ValidationException::class);
 
@@ -91,15 +89,29 @@ final class AuthServiceTest extends TestCase
             ->method('create')
             ->with(
                 self::equalTo('clean@example.com'),
-                self::isType('string'),
+                self::isString(),
                 self::equalTo('Clean Name')
             )
-            ->willReturn($this->createMock(User::class));
+            ->willReturn($this->makeUser('clean@example.com', 'Clean Name'));
 
         $this->service->register([
             'email'    => '  clean@example.com  ',
             'password' => 'GoodPass1',
             'name'     => '  Clean Name  ',
         ]);
+    }
+
+    /** User is a final POPO, so tests build real instances instead of mocks. */
+    private function makeUser(string $email, string $name = 'Test User'): User
+    {
+        return new User(
+            id:        1,
+            email:     $email,
+            password:  password_hash('Irrelevant1', PASSWORD_BCRYPT, ['cost' => 4]),
+            name:      $name,
+            role:      'user',
+            avatarUrl: null,
+            createdAt: '2026-01-01 00:00:00',
+        );
     }
 }

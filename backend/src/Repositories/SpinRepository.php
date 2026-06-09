@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-final class SpinRepository extends BaseRepository
+class SpinRepository extends BaseRepository
 {
     public function randomDish(?int $listId = null, ?int $categoryId = null): ?array
     {
