@@ -281,6 +281,8 @@ function _showResult(dish) {
         e.currentTarget.disabled = true;
         Toast.show('Smacznego! 🍽️', 'success');
         el.innerHTML = '';
+        const target = document.querySelector('.carousel-wrap');
+        target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
     document.getElementById('rateResultBtn').addEventListener('click', () => {
         _openRatingModal(dish.dish_id);
