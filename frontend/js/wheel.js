@@ -17,7 +17,7 @@ const Wheel = (() => {
         segments = items.map((item, i) => ({
             label: item.label || item.name || '',
             color: PALETTE[i % PALETTE.length],
-            icon:  item.icon  || '🍽️',
+            icon:  item.category_icon || item.icon || '🍽️',
             id:    item.id,
         }));
         if (canvas) _draw(currentAngle);

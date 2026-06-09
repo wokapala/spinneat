@@ -131,7 +131,7 @@ async function _loadCategories() {
             Modal.show(`
                 <h2 style="font-family:var(--font-headline);font-size:1.25rem;font-weight:800;margin-bottom:1.5rem;">Nowa kategoria</h2>
                 <form id="catForm">
-                    <div class="form-group"><label>Nazwa *</label><input type="text" name="name" required placeholder="np. Makarony" /></div>
+                    <div class="form-group"><label>Nazwa *</label><input type="text" name="name" required placeholder="np. Makarony" maxlength="100" /></div>
                     <div class="form-group"><label>Ikona (emoji)</label><input type="text" name="icon" placeholder="🍕" maxlength="4" /></div>
                     <div class="form-group"><label>Kolor akcentu</label>
                         <div style="display:flex;align-items:center;gap:.75rem;">
@@ -139,7 +139,7 @@ async function _loadCategories() {
                             <span style="font-size:.875rem;color:var(--clr-on-surface-var);">Wybierz kolor kategorii</span>
                         </div>
                     </div>
-                    <div class="form-group"><label>Opis</label><textarea name="description" rows="2" placeholder="Krótki opis (opcjonalnie)"></textarea></div>
+                    <div class="form-group"><label>Opis</label><textarea name="description" rows="2" placeholder="Krótki opis (opcjonalnie)" maxlength="500"></textarea></div>
                     <button class="btn btn--primary btn--full btn--pill mt-md" type="submit">Dodaj kategorię</button>
                 </form>
             `);
@@ -162,7 +162,7 @@ async function _loadCategories() {
 
         el.querySelectorAll('.del-cat-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
-                if (!confirm('Usunąć kategorię? Powiązane dania stracą kategorię.')) return;
+                if (!confirm('Usunąć kategorię? Można usunąć tylko kategorię bez przypisanych dań.')) return;
                 try {
                     await API.categories.delete(parseInt(btn.dataset.id));
                     Toast.show('Kategoria usunięta', 'info');
