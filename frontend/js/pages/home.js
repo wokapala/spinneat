@@ -67,7 +67,7 @@ async function _renderSpinPage(container) {
                     <option value="">Z całej bazy</option>
                 </select>
             </div>
-            <button class="wheel-spin-btn" id="spinBtn">
+            <button class="wheel-spin-btn" id="spinBtn" disabled>
                 SPIN! <span class="material-symbols-outlined">autorenew</span>
             </button>
         </section>
@@ -85,7 +85,9 @@ async function _renderSpinPage(container) {
     `;
 
     await _loadHomeData();
-    document.getElementById('spinBtn').addEventListener('click', _onSpin);
+    const spinBtn = document.getElementById('spinBtn');
+    spinBtn.disabled = false;
+    spinBtn.addEventListener('click', _onSpin);
 }
 
 async function _loadHomeData() {
@@ -119,7 +121,7 @@ async function _loadHomeData() {
         // Feature cards
         _renderHomeCards(dishes.slice(0, 4));
     } catch (err) {
-        document.getElementById('homeCards').innerHTML = `<p class="text-muted">Błąd: ${err.message}</p>`;
+        document.getElementById('homeCards').innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
     }
 }
 
@@ -285,7 +287,7 @@ function _showResult(dish) {
         target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
     document.getElementById('rateResultBtn').addEventListener('click', () => {
-        _openRatingModal(dish.dish_id);
+        _openRatingModal(dish.dish_id ?? dish.id);
     });
 
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
