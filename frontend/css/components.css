@@ -83,7 +83,9 @@
     font-size: .875rem;
 }
 
-/* Pointer arrow above the strip indicating the winning card */
+/* Pointer arrows: top sits at wrap top, bottom at wrap bottom. The wrap's
+   symmetric padding gives both arrows identical breathing room against the
+   viewport, regardless of viewport height (mobile/desktop/landscape). */
 .carousel-pointer {
     position: absolute;
     top: 0;
@@ -96,17 +98,17 @@
     z-index: 10;
     filter: drop-shadow(0 2px 4px rgba(166,51,0,.35));
 }
-/* Tick mark at the bottom too, so it's obvious which card is selected */
-.carousel-pointer::after {
+.carousel-wrap::after {
     content: '';
     position: absolute;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    top: calc(100% + 140px);
     width: 0; height: 0;
     border-left: 14px solid transparent;
     border-right: 14px solid transparent;
     border-bottom: 18px solid var(--clr-primary);
+    z-index: 10;
     filter: drop-shadow(0 -2px 4px rgba(166,51,0,.35));
 }
 

@@ -15,7 +15,6 @@
     .carousel-viewport { height: 140px; }
     .carousel-card__icon { font-size: 1.9rem; }
     .carousel-card__label { font-size: .75rem; }
-    .carousel-pointer::after { top: calc(100% + 120px); }
     .wheel-spin-btn { font-size: 1.1rem; padding: 1rem 2.25rem; }
     .result-card__title { font-size: 1.625rem; }
     .stats-banner__count { font-size: 1.625rem; }
