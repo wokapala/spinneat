@@ -51,18 +51,13 @@ async function _renderSpinPage(container) {
     container.innerHTML = `
         <section class="wheel-section">
             <div class="wheel-ambient"></div>
-            <div class="wheel-canvas-wrap">
-                <div class="wheel-pointer">
-                    <div class="wheel-pointer__inner">
-                        <div class="wheel-pointer__dot"></div>
-                    </div>
+            <div class="carousel-wrap" id="carouselWrap">
+                <div class="carousel-pointer" aria-hidden="true"></div>
+                <div class="carousel-viewport" id="carouselViewport">
+                    <div class="carousel-strip"></div>
                 </div>
-                <canvas id="wheelCanvas"></canvas>
-                <div class="wheel-center">
-                    <div class="wheel-center__inner">
-                        <span class="material-symbols-outlined icon-fill">star</span>
-                    </div>
-                </div>
+                <div class="carousel-fade carousel-fade--left"></div>
+                <div class="carousel-fade carousel-fade--right"></div>
             </div>
             <div class="wheel-filters" id="wheelFilters">
                 <select id="spinCategory" style="padding:.4rem .9rem;background:var(--clr-surface-lowest);border:none;border-radius:var(--radius-full);font-family:var(--font-body);font-size:.8125rem;color:var(--clr-on-surface);cursor:pointer;outline:none;box-shadow:var(--shadow-card);">
@@ -111,9 +106,9 @@ async function _loadHomeData() {
         cats.forEach(c  => catSel?.insertAdjacentHTML('beforeend',  `<option value="${esc(c.id)}">${esc(c.icon || '')} ${esc(c.name)}</option>`));
         lists.forEach(l => listSel?.insertAdjacentHTML('beforeend', `<option value="${esc(l.id)}">${esc(l.name)}</option>`));
 
-        // Init wheel
-        const canvas = document.getElementById('wheelCanvas');
-        if (canvas) Wheel.init(canvas, dishes.slice(0, 16).map(d => ({ ...d, label: d.name })));
+        // Init carousel
+        const viewport = document.getElementById('carouselViewport');
+        if (viewport) Wheel.init(viewport, dishes.slice(0, 24).map(d => ({ ...d, label: d.name })));
 
         // Update wheel when filters change
         const catSel2  = document.getElementById('spinCategory');
@@ -142,7 +137,7 @@ async function _updateWheel() {
             const res = await API.dishes.list(params);
             dishes = res.data || [];
         }
-        Wheel.setSegments(dishes.slice(0, 16).map(d => ({ ...d, label: d.name })));
+        Wheel.setSegments(dishes.slice(0, 24).map(d => ({ ...d, label: d.name })));
     } catch (err) {
         Toast.show('Nie udało się zaktualizować koła', 'error');
     }
@@ -266,15 +261,13 @@ function _showResult(dish) {
 
     document.getElementById('spinAgainBtn').addEventListener('click', () => {
         el.innerHTML = '';
-        const wheelSection = document.querySelector('.wheel-section');
-        if (wheelSection) {
-            wheelSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // wait for scroll to finish, then spin
+        const target = document.querySelector('.carousel-wrap');
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
             const onScrollEnd = () => {
                 window.removeEventListener('scrollend', onScrollEnd);
                 _onSpin();
             };
-            // scrollend is supported in modern browsers; fallback via timeout
             if ('onscrollend' in window) {
                 window.addEventListener('scrollend', onScrollEnd, { once: true });
             } else {
@@ -291,7 +284,7 @@ function _showResult(dish) {
         _openRatingModal(dish.dish_id);
     });
 
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function _openRatingModal(dishId) {

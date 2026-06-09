@@ -11,7 +11,11 @@
 
 /* ── MOBILE ── */
 @media (max-width: 480px) {
-    .wheel-canvas-wrap { width: min(280px, 82vw); height: min(280px, 82vw); }
+    .carousel-card { flex-basis: 104px; }
+    .carousel-viewport { height: 140px; }
+    .carousel-card__icon { font-size: 1.9rem; }
+    .carousel-card__label { font-size: .75rem; }
+    .carousel-pointer::after { top: calc(100% + 120px); }
     .wheel-spin-btn { font-size: 1.1rem; padding: 1rem 2.25rem; }
     .result-card__title { font-size: 1.625rem; }
     .stats-banner__count { font-size: 1.625rem; }
@@ -21,7 +25,7 @@
 
 /* ── VERY SMALL ── */
 @media (max-width: 360px) {
-    .wheel-canvas-wrap { width: min(248px, 78vw); height: min(248px, 78vw); }
+    .carousel-card { flex-basis: 92px; }
     .bottom-nav__item { padding: .5rem .875rem; }
     .bottom-nav__label { font-size: .625rem; }
 }
@@ -30,7 +34,6 @@
 @media (min-width: 641px) {
     .bottom-nav { max-width: 560px; }
     .app-content { padding-top: 1.5rem; }
-    .wheel-canvas-wrap { width: min(380px, 80vw); height: min(380px, 80vw); }
 }
 
 /* ── WIDE DESKTOP ── */
@@ -40,7 +43,8 @@
 
 /* ── LANDSCAPE ON SHORT SCREENS ── */
 @media (max-height: 600px) and (orientation: landscape) {
-    .wheel-canvas-wrap { width: min(220px, 40vh); height: min(220px, 40vh); }
+    .carousel-viewport { height: 120px; }
+    .carousel-card { flex-basis: 96px; }
     .stats-banner { padding: 1rem; }
 }
 
