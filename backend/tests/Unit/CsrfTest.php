@@ -8,7 +8,8 @@ use App\Core\Csrf;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @runTestsInSeparateProcesses — each test needs a fresh $_SESSION.
+ * Each test starts from a fresh $_SESSION (reset in setUp), because the
+ * token is generated lazily and cached in the session.
  */
 final class CsrfTest extends TestCase
 {

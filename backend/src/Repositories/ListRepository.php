@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-final class ListRepository extends BaseRepository
+class ListRepository extends BaseRepository
 {
     public function findByUser(int $userId): array
     {
