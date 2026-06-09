@@ -277,8 +277,10 @@ function _showResult(dish) {
             _onSpin();
         }
     });
-    document.getElementById('eatBtn').addEventListener('click', () => {
+    document.getElementById('eatBtn').addEventListener('click', e => {
+        e.currentTarget.disabled = true;
         Toast.show('Smacznego! 🍽️', 'success');
+        el.innerHTML = '';
     });
     document.getElementById('rateResultBtn').addEventListener('click', () => {
         _openRatingModal(dish.dish_id);
