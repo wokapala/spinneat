@@ -1,6 +1,6 @@
 # Spin & Eat
 
-> *"Co dzisiaj na obiad?" — losowanie dań z koła fortuny.*
+> *"Co dzisiaj na obiad?" — losowanie dań z animowanej karuzeli.*
 
 Pełna aplikacja webowa zbudowana w ramach **Wstępu do Projektowania Aplikacji Internetowych**.
 Bez frameworka, bez gotowych szablonów — czysty PHP 8.3 (OOP + SOLID), PostgreSQL 16, vanilla JavaScript (Fetch API), własna lekka warstwa MVC.
@@ -29,7 +29,7 @@ Bez frameworka, bez gotowych szablonów — czysty PHP 8.3 (OOP + SOLID), Postgr
 ## Temat i zakres
 
 **Problem:** codzienne "co zjeść?" potrafi blokować obiad bardziej niż brak składników w lodówce.
-**Rozwiązanie:** spersonalizowane koło fortuny — użytkownik zbiera bazę dań (własne + społeczność), filtruje po kategoriach lub własnych listach, kręci kołem i dostaje decyzję podaną w przyjemnej formie. Po posiłku może ocenić danie, dodać do ulubionych i podejrzeć historię losowań.
+**Rozwiązanie:** spersonalizowana karuzela losująca (styl "case-opening" znany z CS:GO) — użytkownik zbiera bazę dań (własne + społeczność), filtruje po kategoriach lub własnych listach, odpala losowanie i dostaje decyzję podaną w przyjemnej formie. Po posiłku może ocenić danie, dodać do ulubionych i podejrzeć historię losowań.
 
 **Zakres MVP:**
 
@@ -163,7 +163,7 @@ Wszystkie konta z seedu używają hasła **`Admin1234!`**.
 
 ## Funkcjonalności
 
-- **Koło fortuny** — animowany canvas, segmenty zsynchronizowane z wynikiem z backendu, filtry "kategoria" i "lista".
+- **Karuzela losująca** — poziomy pasek kart z animacją "case-opening", wskaźnik zatrzymuje się dokładnie na daniu wylosowanym przez backend, filtry "kategoria" i "lista".
 - **Katalog dań** — wyszukiwarka, chipsy kategorii, dodawanie własnych dań.
 - **Listy** — własne kolekcje dań do losowania, opcjonalnie publiczne.
 - **Ulubione** — szybkie zapisywanie na osi serca.
@@ -254,9 +254,9 @@ Sprawdza: pełny rejestracja → login → spin → ocena flow + dostęp do endp
 ## Scenariusz testowy (krok po kroku)
 
 1. **Uruchomienie** — `docker compose up -d` → `http://localhost` (lub port z `NGINX_PORT`) → widoczna strona "What's for dinner?" (guest hero).
-2. **Rejestracja** — klik "Zacznij teraz" → wypełnij email/hasło/imię (hasło min. 8 znaków + litera + cyfra) → konto utworzone, auto-login → przekierowanie do home z kołem.
-3. **Spin** — w dropdownie "Wszystkie" zostaw domyślne → klik **SPIN!** → koło kręci się 4 sekundy i zatrzymuje na konkretnym daniu → karta wyniku **dokładnie zgadza się** z segmentem.
-4. **Filtr na kategorię** — wybierz "Polska" w pierwszym dropdownie → segmenty koła momentalnie aktualizują się na polskie dania → kolejny spin tylko z tej puli.
+2. **Rejestracja** — klik "Zacznij teraz" → wypełnij email/hasło/imię (hasło min. 8 znaków + litera + cyfra) → konto utworzone, auto-login → przekierowanie do home z karuzelą.
+3. **Spin** — w dropdownie "Wszystkie" zostaw domyślne → klik **SPIN!** → karuzela przejeżdża ~5–6 sekund z mocnym wyhamowaniem i zatrzymuje się na konkretnym daniu → karta wyniku **dokładnie zgadza się** z kartą pod wskaźnikiem.
+4. **Filtr na kategorię** — wybierz "Polska" w pierwszym dropdownie → karty karuzeli momentalnie aktualizują się na polskie dania → kolejny spin tylko z tej puli.
 5. **Filtr na własną listę** — przejdź do *Lists* → utwórz listę "Moje weekendy" → dodaj kilka dań przez "+ Dodaj danie" → wróć do home → w drugim dropdownie wybierz tę listę → spin losuje tylko z listy.
 6. **Ulubione** — w *Meals* otwórz danie → "❤️ Dodaj do ulubionych" → w sekcji *Favorites* danie się pojawia (toast "Dodano").
 7. **Ocena** — po spinie klik "Oceń danie" → wybierz 5★ + komentarz → "Zapisz" → wracając do tego dania widać średnią.
@@ -321,7 +321,7 @@ spinneat/
 │   ├── js/
 │   │   ├── api.js                # warstwa Fetch + CSRF
 │   │   ├── auth.js               # stan sesji
-│   │   ├── wheel.js              # animacja canvas
+│   │   ├── wheel.js              # karuzela losująca (case-opening)
 │   │   ├── app.js                # router SPA, Toast, Modal, esc()
 │   │   └── pages/                # home, dishes, lists, login, …
 │   └── errors/                   # 400/401/403/404/500.html
