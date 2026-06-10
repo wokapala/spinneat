@@ -6,18 +6,34 @@ namespace App\Controllers;
 
 use App\Core\Request;
 use App\Core\Response;
+use App\Exceptions\ForbiddenException;
+use App\Exceptions\NotFoundException;
+use App\Repositories\ListRepository;
 use App\Services\SpinService;
 
 final class SpinController extends BaseController
 {
     public function __construct(
-        private readonly SpinService $spinService = new SpinService()
+        private readonly SpinService    $spinService = new SpinService(),
+        private readonly ListRepository $lists       = new ListRepository()
     ) {}
 
     public function spin(Request $request): void
     {
         $listId     = $request->input('list_id') ? (int) $request->input('list_id') : null;
         $categoryId = $request->input('category_id') ? (int) $request->input('category_id') : null;
+
+        if ($listId !== null) {
+            $list = $this->lists->findById($listId);
+            if (!$list) {
+                throw new NotFoundException('List not found');
+            }
+            $ownedByUser = (int) $list['user_id'] === $this->currentUserId();
+            $isPublic    = (bool) $list['is_public'];
+            if (!$ownedByUser && !$isPublic) {
+                throw new ForbiddenException('Access denied to this list');
+            }
+        }
 
         $result = $this->spinService->spin($this->currentUserId(), $listId, $categoryId);
         Response::success($result);

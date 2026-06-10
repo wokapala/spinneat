@@ -47,11 +47,18 @@ class DishRepository extends BaseRepository
 
     public function update(int $id, array $data): ?array
     {
-        $this->execute(
-            'UPDATE dishes SET name = ?, description = ?, category_id = ?, image_url = ?, is_active = ?
-             WHERE id = ?',
-            [$data['name'], $data['description'] ?? null, $data['category_id'], $data['image_url'] ?? null, (int) ($data['is_active'] ?? true), $id]
-        );
+        $params = [$data['name'], $data['description'] ?? null, $data['category_id'], $data['image_url'] ?? null];
+        $sql    = 'UPDATE dishes SET name = ?, description = ?, category_id = ?, image_url = ?';
+
+        if (array_key_exists('is_active', $data)) {
+            $sql     .= ', is_active = ?';
+            $params[] = (int) (bool) $data['is_active'];
+        }
+
+        $sql     .= ' WHERE id = ?';
+        $params[] = $id;
+
+        $this->execute($sql, $params);
         return $this->findById($id);
     }
 

@@ -126,6 +126,7 @@ SELECT
     d.description,
     d.image_url,
     d.is_active,
+    d.created_by,
     d.created_at,
     c.id          AS category_id,
     c.name        AS category_name,
