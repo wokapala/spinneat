@@ -21,13 +21,14 @@ const Wheel = (() => {
     const REPEAT = 30;
 
     function _cardMetrics() {
-        // Pull the actual rendered card width + gap so the math survives any
-        // CSS tweaks (e.g. mobile vs desktop sizing).
+        // Pull the actual rendered card width + gap + strip padding so the
+        // math survives any CSS tweaks (e.g. mobile vs desktop sizing).
         const card = strip?.querySelector('.carousel-card');
-        if (!card) return { width: 120, gap: 12 };
-        const styles = getComputedStyle(strip);
-        const gap = parseFloat(styles.columnGap || styles.gap || '12');
-        return { width: card.getBoundingClientRect().width, gap };
+        if (!card) return { width: 120, gap: 12, padding: 0 };
+        const styles  = getComputedStyle(strip);
+        const gap     = parseFloat(styles.columnGap || styles.gap || '12') || 12;
+        const padding = parseFloat(styles.paddingLeft) || 0;
+        return { width: card.getBoundingClientRect().width, gap, padding };
     }
 
     function init(viewportEl, items) {
@@ -92,8 +93,9 @@ const Wheel = (() => {
         strip.style.transform = 'translateX(0)';
     }
 
+    /** @returns {boolean} false when a spin is already running (caller should re-enable its UI) */
     function spin(onResult, targetId) {
-        if (isSpinning || !segments.length) return;
+        if (isSpinning || !segments.length) return false;
         isSpinning = true;
 
         // Find target index in the segment list; pick a random one if not given
@@ -103,10 +105,19 @@ const Wheel = (() => {
             : Math.floor(Math.random() * segments.length);
         if (targetIdx < 0) targetIdx = Math.floor(Math.random() * segments.length);
 
-        const { width, gap } = _cardMetrics();
+        const { width, gap, padding } = _cardMetrics();
         const step = width + gap;
+        const cycle = step * segments.length;
         const viewportW = viewport.clientWidth;
-        const centerOffset = viewportW / 2 - width / 2;
+        const centerOffset = viewportW / 2 - width / 2 - padding;
+
+        // The strip repeats the same segment cycle, so the offset left over
+        // from a previous spin can be folded back into the first cycle without
+        // any visible change — this keeps consecutive spins from teleporting
+        // the strip back to zero and lets the travel distance stay constant.
+        let startX = parseFloat((strip.style.transform.match(/-?[\d.]+/) || [0])[0]) || 0;
+        startX = -((-startX % cycle) + cycle) % cycle;
+        strip.style.transform = `translateX(${startX}px)`;
 
         // Land on a copy of the target card in the latter portion of the strip.
         const repetition = Math.floor(REPEAT * 0.7) + Math.floor(Math.random() * 3);
@@ -126,7 +137,7 @@ const Wheel = (() => {
         function frame(now) {
             const elapsed = now - startT;
             const progress = Math.min(elapsed / duration, 1);
-            const x = finalX * easeOut(progress);
+            const x = startX + (finalX - startX) * easeOut(progress);
             strip.style.transform = `translateX(${x}px)`;
 
             if (progress < 1) {
@@ -137,6 +148,7 @@ const Wheel = (() => {
             }
         }
         requestAnimationFrame(frame);
+        return true;
     }
 
     return { init, setSegments, ensureSegment, spin };

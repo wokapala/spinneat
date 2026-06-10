@@ -27,7 +27,7 @@ function _renderHeroGuest(container) {
         </section>
 
         <section style="margin-top:3rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">
-            ${_featureCell('auto_awesome', 'Losowanie', 'Zakręć kołem i odkryj dzisiejsze danie', 'primary')}
+            ${_featureCell('auto_awesome', 'Losowanie', 'Odpal karuzelę i odkryj dzisiejsze danie', 'primary')}
             ${_featureCell('format_list_bulleted', 'Własne listy', 'Twórz zestawy do losowania', 'surface')}
             ${_featureCell('star', 'Oceny', 'Oceniaj co jadłeś i śledź historię', 'surface')}
         </section>
@@ -139,7 +139,7 @@ async function _updateWheel() {
         }
         Wheel.setSegments(dishes.slice(0, 24).map(d => ({ ...d, label: d.name })));
     } catch (err) {
-        Toast.show('Nie udało się zaktualizować koła', 'error');
+        Toast.show('Nie udało się zaktualizować karuzeli', 'error');
     }
 }
 
@@ -205,6 +205,11 @@ async function _onSpin() {
 
     btn.disabled = true;
 
+    // A result card from the previous spin must not stay on screen while the
+    // carousel is already racing toward a different dish.
+    const prevResult = document.getElementById('spinResult');
+    if (prevResult) prevResult.innerHTML = '';
+
     try {
         const res  = await API.spin.spin({
             list_id:     listId ? parseInt(listId) : undefined,
@@ -217,10 +222,13 @@ async function _onSpin() {
         // make sure it has a segment so the pointer lands on the real winner.
         const targetId = Wheel.ensureSegment(dish);
 
-        Wheel.spin(() => {
+        const started = Wheel.spin(() => {
             btn.disabled = false;
             _showResult(dish);
         }, targetId);
+
+        // Another spin is still animating — don't leave the button dead.
+        if (!started) btn.disabled = false;
     } catch (err) {
         Toast.show(err.message || 'Błąd losowania', 'error');
         btn.disabled = false;
@@ -262,20 +270,21 @@ function _showResult(dish) {
     document.getElementById('spinAgainBtn').addEventListener('click', () => {
         el.innerHTML = '';
         const target = document.querySelector('.carousel-wrap');
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            const onScrollEnd = () => {
-                window.removeEventListener('scrollend', onScrollEnd);
-                _onSpin();
-            };
-            if ('onscrollend' in window) {
-                window.addEventListener('scrollend', onScrollEnd, { once: true });
-            } else {
-                setTimeout(_onSpin, 700);
-            }
-        } else {
+        if (!target) { _onSpin(); return; }
+
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // 'scrollend' never fires when the page is already in position, so a
+        // timeout fallback always runs too — the guard keeps it to one spin.
+        let spun = false;
+        const go = () => {
+            if (spun) return;
+            spun = true;
+            window.removeEventListener('scrollend', go);
             _onSpin();
-        }
+        };
+        window.addEventListener('scrollend', go, { once: true });
+        setTimeout(go, 800);
     });
     document.getElementById('eatBtn').addEventListener('click', e => {
         e.currentTarget.disabled = true;
