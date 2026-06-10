@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-final class DishRepository extends BaseRepository
+class DishRepository extends BaseRepository
 {
     public function findAll(?int $categoryId = null, ?string $search = null): array
     {

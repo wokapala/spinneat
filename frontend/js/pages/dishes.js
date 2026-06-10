@@ -149,7 +149,7 @@ async function _openDishDetail(id) {
                         ${[5,4,3,2,1].map(n=>`<input type="radio" name="score" id="ms${n}" value="${n}" ${n===5?'checked':''}><label for="ms${n}">★</label>`).join('')}
                     </div>
                 </div>
-                <div class="form-group"><label>Komentarz</label><textarea name="comment" rows="3"></textarea></div>
+                <div class="form-group"><label>Komentarz</label><textarea name="comment" rows="3" maxlength="1000"></textarea></div>
                 <button class="btn btn--primary btn--full mt-md" type="submit">Zapisz</button>
             </form>
         `);
@@ -170,14 +170,14 @@ function _openDishModal(categories, onSave) {
     Modal.show(`
         <h2 style="font-family:var(--font-headline);font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">Nowe danie</h2>
         <form id="dishForm">
-            <div class="form-group"><label>Nazwa *</label><input type="text" name="name" required /></div>
-            <div class="form-group"><label>Opis</label><textarea name="description" rows="2"></textarea></div>
+            <div class="form-group"><label>Nazwa *</label><input type="text" name="name" required maxlength="200" /></div>
+            <div class="form-group"><label>Opis</label><textarea name="description" rows="2" maxlength="2000"></textarea></div>
             <div class="form-group"><label>Kategoria *</label>
                 <select name="category_id" required>
                     ${categories.map(c=>`<option value="${esc(c.id)}">${esc(c.icon||'')} ${esc(c.name)}</option>`).join('')}
                 </select>
             </div>
-            <div class="form-group"><label>URL obrazka</label><input type="url" name="image_url" placeholder="https://…" /></div>
+            <div class="form-group"><label>URL obrazka</label><input type="url" name="image_url" placeholder="https://…" maxlength="500" /></div>
             <button class="btn btn--primary btn--full mt-md" type="submit">Dodaj danie</button>
         </form>
     `);

@@ -13,7 +13,7 @@ Pages.history = async function(container, { page = 1 } = {}) {
         </div>
         <div class="section-header">
             <h2>Recent spins</h2>
-            <button class="section-header__action" onclick="App.navigate('history')">View All</button>
+            <button class="section-header__action" data-page="history">View All</button>
         </div>
         <div style="display:flex;flex-direction:column;gap:.75rem;" id="historyList">
             <div class="loading-overlay"><div class="spinner"></div></div>
@@ -91,7 +91,7 @@ function _rateModal(dishId) {
                     ${[5,4,3,2,1].map(n=>`<input type="radio" name="score" id="hs${n}" value="${n}" ${n===5?'checked':''}><label for="hs${n}">★</label>`).join('')}
                 </div>
             </div>
-            <div class="form-group"><label>Komentarz</label><textarea name="comment" rows="3" placeholder="Jak smakowało?"></textarea></div>
+            <div class="form-group"><label>Komentarz</label><textarea name="comment" rows="3" placeholder="Jak smakowało?" maxlength="1000"></textarea></div>
             <button class="btn btn--primary btn--full mt-md" type="submit">Zapisz</button>
         </form>
     `);

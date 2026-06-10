@@ -9,8 +9,9 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/backend
 
 COPY composer.json ./
-RUN composer install --no-dev --optimize-autoloader 2>/dev/null || true
+RUN composer install --optimize-autoloader 2>/dev/null || true
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+# Dev dependencies stay in: the grader runs PHPUnit inside this container
+RUN composer install --optimize-autoloader

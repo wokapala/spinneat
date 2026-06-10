@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-final class RatingRepository extends BaseRepository
+class RatingRepository extends BaseRepository
 {
     public function upsert(int $userId, int $dishId, int $score, ?string $comment): array
     {

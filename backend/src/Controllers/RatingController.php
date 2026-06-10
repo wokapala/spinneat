@@ -23,6 +23,7 @@ final class RatingController extends BaseController
         $data = $this->validate($request->getBody(), [
             'dish_id' => 'required|int',
             'score'   => 'required|int',
+            'comment' => 'max:1000',
         ]);
 
         $score = (int) $data['score'];
@@ -51,7 +52,10 @@ final class RatingController extends BaseController
         if (!$existing) throw new NotFoundException('Rating not found');
         if ((int) $existing['user_id'] !== $this->currentUserId()) throw new ForbiddenException();
 
-        $data  = $this->validate($request->getBody(), ['score' => 'required|int']);
+        $data  = $this->validate($request->getBody(), [
+            'score'   => 'required|int',
+            'comment' => 'max:1000',
+        ]);
         $score = (int) $data['score'];
         if ($score < 1 || $score > 5) {
             Response::error('Score must be between 1 and 5', 422);

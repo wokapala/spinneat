@@ -8,7 +8,7 @@ use PDO;
 use PDOException;
 use RuntimeException;
 
-final class Database
+class Database
 {
     private static ?self $instance = null;
     private PDO $pdo;
