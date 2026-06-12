@@ -1,5 +1,7 @@
 'use strict';
 
+let _dishesOnRated = null;
+
 Pages.dishes = async function(container) {
     container.innerHTML = `
         <div style="margin-bottom:1.5rem;">
@@ -32,6 +34,14 @@ Pages.dishes = async function(container) {
         allCats.forEach(c => chips.insertAdjacentHTML('beforeend',
             `<button class="chip" data-cat="${esc(c.id)}">${esc(c.icon || '')} ${esc(c.name)}</button>`
         ));
+
+        _dishesOnRated = async () => {
+            const fresh = await API.dishes.list().catch(() => null);
+            if (!fresh) return;
+            allDishes = fresh.data || [];
+            document.getElementById('dishCount').textContent = `${allDishes.length} ${t('dishes.count_suffix')}`;
+            _filter(allDishes);
+        };
 
         _renderList(allDishes);
     } catch (err) {
@@ -112,12 +122,7 @@ function _renderList(dishes) {
     `).join('');
 
     list.querySelectorAll('.meal-card').forEach(card => {
-        card.addEventListener('click', () => _openDishDetail(parseInt(card.dataset.id), async () => {
-            const fresh = await API.dishes.list().catch(() => null);
-            if (!fresh) return;
-            allDishes = fresh.data || [];
-            _filter(allDishes);
-        }));
+        card.addEventListener('click', () => _openDishDetail(parseInt(card.dataset.id), _dishesOnRated));
     });
 }
 
