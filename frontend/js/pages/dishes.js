@@ -112,11 +112,16 @@ function _renderList(dishes) {
     `).join('');
 
     list.querySelectorAll('.meal-card').forEach(card => {
-        card.addEventListener('click', () => _openDishDetail(parseInt(card.dataset.id)));
+        card.addEventListener('click', () => _openDishDetail(parseInt(card.dataset.id), async () => {
+            const fresh = await API.dishes.list().catch(() => null);
+            if (!fresh) return;
+            allDishes = fresh.data || [];
+            _filter(allDishes);
+        }));
     });
 }
 
-async function _openDishDetail(id) {
+async function _openDishDetail(id, onRated = null) {
     const res  = await API.dishes.get(id).catch(() => null);
     if (!res) { Toast.show(t('error.dish_not_found'), 'error'); return; }
     const d = res.data;
@@ -157,8 +162,12 @@ async function _openDishDetail(id) {
         document.getElementById('rateModalForm').addEventListener('submit', async e => {
             e.preventDefault();
             const fd = new FormData(e.target);
-            try { await API.ratings.save({ dish_id: id, score: parseInt(fd.get('score')), comment: fd.get('comment') || null }); Modal.hide(); Toast.show(t('toast.rating_saved'), 'success'); }
-            catch (err) { Toast.show(err.message, 'error'); }
+            try {
+                await API.ratings.save({ dish_id: id, score: parseInt(fd.get('score')), comment: fd.get('comment') || null });
+                Modal.hide();
+                Toast.show(t('toast.rating_saved'), 'success');
+                if (onRated) await onRated();
+            } catch (err) { Toast.show(err.message, 'error'); }
         });
     });
     document.querySelector('.del-modal-btn')?.addEventListener('click', async e => {
