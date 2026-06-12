@@ -51,7 +51,9 @@ Pages.login = function(container) {
             Toast.show(t('toast.welcome', { name: res.data.name }), 'success');
             App.navigate('home');
         } catch (err) {
-            if (err.status === 401) {
+            if (err.status === 401 && /too many|attempts/i.test(err.message)) {
+                Toast.show(err.message, 'error');
+            } else if (err.status === 401) {
                 document.getElementById('passErr').textContent = t('login.invalid_credentials');
             } else {
                 Toast.show(err.message, 'error');
