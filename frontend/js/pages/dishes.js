@@ -3,15 +3,15 @@
 Pages.dishes = async function(container) {
     container.innerHTML = `
         <div style="margin-bottom:1.5rem;">
-            <h1 style="font-family:var(--font-headline);font-size:2rem;font-weight:800;letter-spacing:-.03em;">My Meals</h1>
+            <h1 style="font-family:var(--font-headline);font-size:2rem;font-weight:800;letter-spacing:-.03em;">${esc(t('dishes.title'))}</h1>
             <p class="text-muted" style="font-size:.875rem;" id="dishCount"></p>
         </div>
         <div class="search-wrap">
             <span class="material-symbols-outlined">search</span>
-            <input class="search-input" id="dishSearch" type="text" placeholder="Search your saved meals..." />
+            <input class="search-input" id="dishSearch" type="text" placeholder="${esc(t('dishes.search_placeholder'))}" />
         </div>
         <div class="chips-scroll" id="catChips">
-            <button class="chip active" data-cat="">All</button>
+            <button class="chip active" data-cat="">${esc(t('dishes.all_chip'))}</button>
         </div>
         <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:1.25rem;" id="dishList">
             <div class="loading-overlay"><div class="spinner"></div></div>
@@ -25,7 +25,7 @@ Pages.dishes = async function(container) {
         allDishes = dishRes.data || [];
         allCats   = catRes.data  || [];
 
-        document.getElementById('dishCount').textContent = `${allDishes.length} Delicious recipes saved`;
+        document.getElementById('dishCount').textContent = `${allDishes.length} ${t('dishes.count_suffix')}`;
 
         // Category chips
         const chips = document.getElementById('catChips');
@@ -35,12 +35,12 @@ Pages.dishes = async function(container) {
 
         _renderList(allDishes);
     } catch (err) {
-        document.getElementById('dishList').innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
+        document.getElementById('dishList').innerHTML = `<p class="text-muted">${esc(t('error.prefix'))}${esc(err.message)}</p>`;
     }
 
     // Search
     let debounce;
-    document.getElementById('dishSearch').addEventListener('input', e => {
+    document.getElementById('dishSearch').addEventListener('input', () => {
         clearTimeout(debounce);
         debounce = setTimeout(() => _filter(allDishes), 280);
     });
@@ -63,9 +63,9 @@ Pages.dishes = async function(container) {
             try {
                 const res = await API.dishes.create(data);
                 allDishes.unshift(res.data);
-                document.getElementById('dishCount').textContent = `${allDishes.length} Delicious recipes saved`;
+                document.getElementById('dishCount').textContent = `${allDishes.length} ${t('dishes.count_suffix')}`;
                 _renderList(allDishes);
-                Toast.show('Danie dodane!', 'success');
+                Toast.show(t('toast.dish_added'), 'success');
             } catch (err) { Toast.show(err.message, 'error'); }
         }));
         container.appendChild(fab);
@@ -88,7 +88,7 @@ function _renderList(dishes) {
         list.innerHTML = `
             <div class="empty-state">
                 <div class="empty-icon">🍽️</div>
-                <p>Brak dań pasujących do filtrów</p>
+                <p>${esc(t('dishes.empty'))}</p>
             </div>`;
         return;
     }
@@ -117,7 +117,7 @@ function _renderList(dishes) {
 
 async function _openDishDetail(id) {
     const res  = await API.dishes.get(id).catch(() => null);
-    if (!res) { Toast.show('Nie znaleziono dania', 'error'); return; }
+    if (!res) { Toast.show(t('error.dish_not_found'), 'error'); return; }
     const d = res.data;
 
     Modal.show(`
@@ -125,60 +125,60 @@ async function _openDishDetail(id) {
         <h2 style="font-family:var(--font-headline);font-size:1.75rem;font-weight:800;margin-bottom:.5rem;">${esc(d.name)}</h2>
         <p style="color:var(--clr-on-surface-var);margin-bottom:1.25rem;">${esc(d.description || '')}</p>
         ${d.instructions ? `
-            <h3 style="font-family:var(--font-headline);font-weight:700;margin-bottom:.75rem;">Przepis</h3>
+            <h3 style="font-family:var(--font-headline);font-weight:700;margin-bottom:.75rem;">${esc(t('dishes.recipe'))}</h3>
             <p style="font-size:.9rem;line-height:1.7;color:var(--clr-on-surface-var);white-space:pre-wrap;">${esc(d.instructions)}</p>
         ` : ''}
         <div style="display:flex;gap:.75rem;margin-top:1.5rem;flex-wrap:wrap;">
-            ${Auth.isLoggedIn() ? `<button class="btn btn--primary btn--full fav-modal-btn" data-id="${esc(d.id)}">❤️ Dodaj do ulubionych</button>` : ''}
-            ${Auth.isLoggedIn() ? `<button class="btn btn--secondary btn--full rate-modal-btn" data-id="${esc(d.id)}">⭐ Oceń</button>` : ''}
-            ${Auth.isAdmin() ? `<button class="btn btn--danger btn--sm del-modal-btn" data-id="${esc(d.id)}">🗑 Usuń</button>` : ''}
+            ${Auth.isLoggedIn() ? `<button class="btn btn--primary btn--full fav-modal-btn" data-id="${esc(d.id)}">${esc(t('dishes.add_favorite'))}</button>` : ''}
+            ${Auth.isLoggedIn() ? `<button class="btn btn--secondary btn--full rate-modal-btn" data-id="${esc(d.id)}">${esc(t('dishes.rate'))}</button>` : ''}
+            ${Auth.isAdmin() ? `<button class="btn btn--danger btn--sm del-modal-btn" data-id="${esc(d.id)}">${esc(t('dishes.delete'))}</button>` : ''}
         </div>
     `);
 
     document.querySelector('.fav-modal-btn')?.addEventListener('click', async e => {
         const id = parseInt(e.currentTarget.dataset.id);
-        try { await API.dishes.addFavorite(id); Modal.hide(); Toast.show('Dodano do ulubionych!', 'success'); } catch (err) { Toast.show(err.message, 'error'); }
+        try { await API.dishes.addFavorite(id); Modal.hide(); Toast.show(t('toast.added_to_favorites_modal'), 'success'); } catch (err) { Toast.show(err.message, 'error'); }
     });
     document.querySelector('.rate-modal-btn')?.addEventListener('click', e => {
         const id = parseInt(e.currentTarget.dataset.id);
         Modal.show(`
-            <h2 style="font-family:var(--font-headline);font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">Oceń danie</h2>
+            <h2 style="font-family:var(--font-headline);font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">${esc(t('modal.rate_title_short'))}</h2>
             <form id="rateModalForm">
-                <div class="form-group"><label>Ocena</label>
+                <div class="form-group"><label>${esc(t('modal.rating_label'))}</label>
                     <div class="star-input">
                         ${[5,4,3,2,1].map(n=>`<input type="radio" name="score" id="ms${n}" value="${n}" ${n===5?'checked':''}><label for="ms${n}">★</label>`).join('')}
                     </div>
                 </div>
-                <div class="form-group"><label>Komentarz</label><textarea name="comment" rows="3" maxlength="1000"></textarea></div>
-                <button class="btn btn--primary btn--full mt-md" type="submit">Zapisz</button>
+                <div class="form-group"><label>${esc(t('modal.comment_label'))}</label><textarea name="comment" rows="3" maxlength="1000"></textarea></div>
+                <button class="btn btn--primary btn--full mt-md" type="submit">${esc(t('modal.save'))}</button>
             </form>
         `);
         document.getElementById('rateModalForm').addEventListener('submit', async e => {
             e.preventDefault();
             const fd = new FormData(e.target);
-            try { await API.ratings.save({ dish_id: id, score: parseInt(fd.get('score')), comment: fd.get('comment') || null }); Modal.hide(); Toast.show('Ocena zapisana!', 'success'); }
+            try { await API.ratings.save({ dish_id: id, score: parseInt(fd.get('score')), comment: fd.get('comment') || null }); Modal.hide(); Toast.show(t('toast.rating_saved'), 'success'); }
             catch (err) { Toast.show(err.message, 'error'); }
         });
     });
     document.querySelector('.del-modal-btn')?.addEventListener('click', async e => {
-        if (!confirm('Usunąć danie?')) return;
-        try { await API.dishes.delete(parseInt(e.currentTarget.dataset.id)); Modal.hide(); Toast.show('Usunięto', 'info'); } catch (err) { Toast.show(err.message, 'error'); }
+        if (!confirm(t('confirm.delete_dish'))) return;
+        try { await API.dishes.delete(parseInt(e.currentTarget.dataset.id)); Modal.hide(); Toast.show(t('toast.deleted'), 'info'); } catch (err) { Toast.show(err.message, 'error'); }
     });
 }
 
 function _openDishModal(categories, onSave) {
     Modal.show(`
-        <h2 style="font-family:var(--font-headline);font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">Nowe danie</h2>
+        <h2 style="font-family:var(--font-headline);font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">${esc(t('dishes.new_dish'))}</h2>
         <form id="dishForm">
-            <div class="form-group"><label>Nazwa *</label><input type="text" name="name" required maxlength="200" /></div>
-            <div class="form-group"><label>Opis</label><textarea name="description" rows="2" maxlength="2000"></textarea></div>
-            <div class="form-group"><label>Kategoria *</label>
+            <div class="form-group"><label>${esc(t('form.name_required'))}</label><input type="text" name="name" required maxlength="200" /></div>
+            <div class="form-group"><label>${esc(t('form.description'))}</label><textarea name="description" rows="2" maxlength="2000"></textarea></div>
+            <div class="form-group"><label>${esc(t('form.category_required'))}</label>
                 <select name="category_id" required>
                     ${categories.map(c=>`<option value="${esc(c.id)}">${esc(c.icon||'')} ${esc(c.name)}</option>`).join('')}
                 </select>
             </div>
-            <div class="form-group"><label>URL obrazka</label><input type="url" name="image_url" placeholder="https://…" maxlength="500" /></div>
-            <button class="btn btn--primary btn--full mt-md" type="submit">Dodaj danie</button>
+            <div class="form-group"><label>${esc(t('form.image_url'))}</label><input type="url" name="image_url" placeholder="${esc(t('form.image_url_placeholder'))}" maxlength="500" /></div>
+            <button class="btn btn--primary btn--full mt-md" type="submit">${esc(t('dishes.add_dish_button'))}</button>
         </form>
     `);
     document.getElementById('dishForm').addEventListener('submit', async e => {
@@ -189,4 +189,4 @@ function _openDishModal(categories, onSave) {
     });
 }
 
-function _diff(d) { return { easy:'Easy', medium:'Med', hard:'Expert' }[d] || d; }
+function _diff(d) { return { easy: t('diff.easy'), medium: t('diff.medium'), hard: t('diff.hard') }[d] || d; }

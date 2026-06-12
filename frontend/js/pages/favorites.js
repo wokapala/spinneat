@@ -3,7 +3,7 @@
 Pages.favorites = async function(container) {
     container.innerHTML = `
         <div style="margin-bottom:1.5rem;">
-            <h1 style="font-family:var(--font-headline);font-size:2rem;font-weight:800;letter-spacing:-.03em;">Ulubione</h1>
+            <h1 style="font-family:var(--font-headline);font-size:2rem;font-weight:800;letter-spacing:-.03em;">${esc(t('favorites.title'))}</h1>
             <p class="text-muted" style="font-size:.875rem;" id="favCount"></p>
         </div>
         <div style="display:flex;flex-direction:column;gap:.75rem;" id="favList">
@@ -16,14 +16,14 @@ Pages.favorites = async function(container) {
         const items = res.data || [];
         const list  = document.getElementById('favList');
 
-        document.getElementById('favCount').textContent = `${items.length} zapisanych dań`;
+        document.getElementById('favCount').textContent = `${items.length} ${t('favorites.count_suffix')}`;
 
         if (!items.length) {
             list.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-icon">🤍</div>
-                    <p>Brak ulubionych dań</p>
-                    <button class="btn btn--primary btn--pill mt-md" data-page="dishes">Przeglądaj dania</button>
+                    <p>${esc(t('favorites.empty'))}</p>
+                    <button class="btn btn--primary btn--pill mt-md" data-page="dishes">${esc(t('favorites.browse'))}</button>
                 </div>
             `;
             return;
@@ -42,7 +42,7 @@ Pages.favorites = async function(container) {
                         ${d.avg_rating ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">star</span>${esc(parseFloat(d.avg_rating).toFixed(1))}</div>` : ''}
                     </div>
                 </div>
-                <button class="btn btn--ghost btn--sm unfav-btn" data-id="${esc(d.id)}" style="color:#c0392b;flex-shrink:0;" title="Usuń z ulubionych">
+                <button class="btn btn--ghost btn--sm unfav-btn" data-id="${esc(d.id)}" style="color:#c0392b;flex-shrink:0;" title="${esc(t('favorites.remove_title'))}">
                     <span class="material-symbols-outlined icon-fill" style="color:#c0392b;">favorite</span>
                 </button>
             </div>
@@ -56,21 +56,21 @@ Pages.favorites = async function(container) {
                     await API.dishes.removeFavorite(id);
                     btn.closest('.meal-card').remove();
                     const remaining = list.querySelectorAll('.meal-card').length;
-                    document.getElementById('favCount').textContent = `${remaining} zapisanych dań`;
+                    document.getElementById('favCount').textContent = `${remaining} ${t('favorites.count_suffix')}`;
                     if (!remaining) {
                         list.innerHTML = `
                             <div class="empty-state">
                                 <div class="empty-icon">🤍</div>
-                                <p>Brak ulubionych dań</p>
-                                <button class="btn btn--primary btn--pill mt-md" data-page="dishes">Przeglądaj dania</button>
+                                <p>${esc(t('favorites.empty'))}</p>
+                                <button class="btn btn--primary btn--pill mt-md" data-page="dishes">${esc(t('favorites.browse'))}</button>
                             </div>
                         `;
                     }
-                    Toast.show('Usunięto z ulubionych', 'info');
+                    Toast.show(t('toast.removed_from_favorites'), 'info');
                 } catch (err) { Toast.show(err.message, 'error'); }
             });
         });
     } catch (err) {
-        document.getElementById('favList').innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
+        document.getElementById('favList').innerHTML = `<p class="text-muted">${esc(t('error.prefix'))}${esc(err.message)}</p>`;
     }
 };

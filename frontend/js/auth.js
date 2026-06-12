@@ -27,7 +27,7 @@ const Auth = (() => {
         currentUser = null;
         _updateUI();
         App.navigate('home');
-        Toast.show('Wylogowano pomyślnie', 'success');
+        Toast.show(t('toast.logged_out'), 'success');
     }
 
     function _updateUI() {
@@ -54,7 +54,7 @@ const Auth = (() => {
         try {
             const res = await API.dishes.list();
             const label = document.getElementById('mealCountLabel');
-            if (label) label.textContent = `${(res.data || []).length} meals saved`;
+            if (label) label.textContent = `${(res.data || []).length} ${t('topbar.meals_saved')}`;
         } catch {}
     }
 

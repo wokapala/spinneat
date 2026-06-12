@@ -72,7 +72,7 @@ const Wheel = (() => {
         if (!strip) return;
 
         if (!segments.length) {
-            strip.innerHTML = '<div class="carousel-empty">Brak dań</div>';
+            strip.innerHTML = `<div class="carousel-empty">${t('wheel.empty')}</div>`;
             strip.style.transform = 'translateX(0)';
             return;
         }

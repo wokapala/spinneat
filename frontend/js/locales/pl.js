@@ -1,0 +1,201 @@
+'use strict';
+
+window._LOCALE_PL = {
+    // Nav
+    'nav.home':          'Strona główna',
+    'nav.meals':         'Dania',
+    'nav.history':       'Historia',
+    'nav.lists':         'Listy',
+    'nav.profile':       'Profil',
+    'nav.notifications': 'Powiadomienia',
+    'nav.login':         'Zaloguj się',
+
+    // Topbar
+    'topbar.meals_saved': 'posiłków zapisanych',
+    'lang.toggle_label':  'EN',
+
+    // App toasts
+    'toast.login_required': 'Zaloguj się, aby uzyskać dostęp',
+    'toast.no_permission':  'Brak uprawnień',
+    'toast.logged_out':     'Wylogowano pomyślnie',
+
+    // Difficulty
+    'difficulty.easy':   'Łatwe',
+    'difficulty.medium': 'Średnie',
+    'difficulty.hard':   'Trudne',
+
+    // Home — guest hero
+    'home.hero_title':            'Co na obiad?',
+    'home.hero_subtitle':         'Zdaj się na los i odkryj swoje następne kulinarne arcydzieło.',
+    'home.start_now':             'Zacznij teraz',
+    'home.browse':                'Przeglądaj dania',
+    'home.feature_spin_title':    'Losowanie',
+    'home.feature_spin_sub':      'Odpal karuzelę i odkryj dzisiejsze danie',
+    'home.feature_lists_title':   'Własne listy',
+    'home.feature_lists_sub':     'Twórz zestawy do losowania',
+    'home.feature_ratings_title': 'Oceny',
+    'home.feature_ratings_sub':   'Oceniaj co jadłeś i śledź historię',
+
+    // Spin
+    'spin.all_categories':   'Wszystkie',
+    'spin.all_dishes':       'Z całej bazy',
+    'spin.button':           'SPIN!',
+    'home.chefs_picks':      'Polecane',
+    'home.view_all':         'Wszystkie',
+    'home.trending':         'Trending',
+    'spin.result_label':     'Idealny wybór na dziś',
+    'spin.eat_button':       'Tak, jemy!',
+    'spin.again_button':     'Losuj ponownie',
+    'spin.rate_button':      'Oceń danie',
+    'toast.bon_appetit':     'Smacznego! 🍽️',
+
+    // Rating modal
+    'modal.rate_title':        'Oceń danie ⭐',
+    'modal.rate_title_short':  'Oceń danie',
+    'modal.rating_label':      'Ocena',
+    'modal.comment_optional':  'Komentarz (opcjonalnie)',
+    'modal.comment_label':     'Komentarz',
+    'modal.comment_placeholder': 'Jak smakowało?',
+    'modal.save_rating':       'Zapisz ocenę',
+    'modal.save':              'Zapisz',
+    'toast.rating_saved':      'Ocena zapisana!',
+
+    // Errors
+    'error.prefix':           'Błąd: ',
+    'error.carousel_update':  'Nie udało się zaktualizować karuzeli',
+    'error.no_dishes':        'Brak dań do losowania',
+    'error.spin_failed':      'Błąd losowania',
+    'error.dish_not_found':   'Nie znaleziono dania',
+    'error.list_not_found':   'Nie znaleziono listy',
+
+    // Login
+    'login.subtitle':             'Witaj z powrotem! Zaloguj się, by losować.',
+    'login.button':               'Zaloguj się',
+    'login.no_account':           'Nie masz konta?',
+    'login.register_link':        'Zarejestruj się',
+    'login.invalid_credentials':  'Nieprawidłowy email lub hasło',
+    'toast.welcome':              'Witaj, {name}!',
+
+    // Form fields
+    'form.email':                 'E-mail',
+    'form.email_placeholder':     'jan@example.com',
+    'form.password':              'Hasło',
+    'form.password_placeholder':  '••••••••',
+    'form.password_hint':         '(min. 8 znaków, litera + cyfra)',
+    'form.name':                  'Imię i nazwisko',
+    'form.name_placeholder':      'Jan Kowalski',
+    'form.name_required':         'Nazwa *',
+    'form.description':           'Opis',
+    'form.category_required':     'Kategoria *',
+    'form.image_url':             'URL obrazka',
+    'form.image_url_placeholder': 'https://…',
+    'form.icon_label':            'Ikona (emoji)',
+    'form.color_label':           'Kolor akcentu',
+    'form.color_description':     'Wybierz kolor kategorii',
+    'form.description_placeholder': 'Krótki opis (opcjonalnie)',
+
+    // Register
+    'register.subtitle':      'Utwórz konto i zacznij losować swoje posiłki!',
+    'register.button':        'Utwórz konto',
+    'register.have_account':  'Masz już konto?',
+    'register.login_link':    'Zaloguj się',
+    'toast.account_created':  'Konto utworzone! Witaj!',
+
+    // Dishes
+    'dishes.title':              'Moje dania',
+    'dishes.search_placeholder': 'Szukaj dań...',
+    'dishes.all_chip':           'Wszystkie',
+    'dishes.count_suffix':       'dań w bazie',
+    'dishes.empty':              'Brak dań pasujących do filtrów',
+    'dishes.recipe':             'Przepis',
+    'dishes.add_favorite':       '❤️ Dodaj do ulubionych',
+    'dishes.rate':               '⭐ Oceń',
+    'dishes.delete':             '🗑 Usuń',
+    'dishes.new_dish':           'Nowe danie',
+    'dishes.add_dish_button':    'Dodaj danie',
+    'toast.added_to_favorites':       'Dodano do ulubionych ❤️',
+    'toast.added_to_favorites_modal': 'Dodano do ulubionych!',
+    'toast.dish_added':          'Danie dodane!',
+    'toast.deleted':             'Usunięto',
+    'confirm.delete_dish':       'Usunąć danie?',
+    'diff.easy':   'Łatwe',
+    'diff.medium': 'Średnie',
+    'diff.hard':   'Trudne',
+
+    // History
+    'history.lifetime':      'Łącznie',
+    'history.total_spins':   'Spinów łącznie: ',
+    'history.track_progress': 'Śledź swoje postępy',
+    'history.recent':        'Ostatnie losowania',
+    'history.view_all':      'Wszystkie',
+    'history.empty':         'Jeszcze nie losowałeś!',
+    'history.spin_wheel':    'Zakręć kołem',
+
+    // Lists
+    'lists.title':             'Moje listy',
+    'lists.new_button':        'Nowa',
+    'lists.empty':             'Nie masz jeszcze żadnych list',
+    'lists.create_first':      'Utwórz pierwszą',
+    'lists.public':            'Publiczna',
+    'lists.count_one':         'lista',
+    'lists.count_many':        'listy',
+    'lists.dishes_suffix':     'dań',
+    'lists.show_dishes_title': 'Pokaż dania',
+    'lists.edit_title':        'Edytuj',
+    'lists.delete_title':      'Usuń',
+    'lists.modal_edit_title':  'Edytuj listę',
+    'lists.modal_new_title':   'Nowa lista',
+    'lists.name_placeholder':  'np. Zdrowe obiady',
+    'lists.public_label':      'Publiczna lista',
+    'lists.public_description': 'Widoczna dla innych użytkowników',
+    'lists.add_dish_title':    'Dodaj danie do listy',
+    'lists.content_empty':     'Lista jest pusta',
+    'lists.add_dish_button':   'Dodaj danie',
+    'toast.list_created':           'Lista utworzona!',
+    'toast.list_updated':           'Lista zaktualizowana',
+    'toast.dish_removed_from_list': 'Danie usunięte z listy',
+    'toast.dish_added_to_list':     'Danie dodane!',
+    'toast.list_deleted':           'Lista usunięta',
+    'confirm.delete_list':          'Usunąć listę?',
+
+    // Favorites
+    'favorites.title':          'Ulubione',
+    'favorites.count_suffix':   'zapisanych dań',
+    'favorites.empty':          'Brak ulubionych dań',
+    'favorites.browse':         'Przeglądaj dania',
+    'favorites.remove_title':   'Usuń z ulubionych',
+    'toast.removed_from_favorites': 'Usunięto z ulubionych',
+
+    // Profile
+    'profile.admin_badge':    'Admin',
+    'profile.admin_panel':    'Panel administratora',
+    'profile.favorites':      'Moje ulubione',
+    'profile.lists':          'Moje listy',
+    'profile.history':        'Historia spinów',
+    'profile.logout':         'Wyloguj się',
+    'profile.spins_label':    'Spinów',
+    'profile.favorites_label': 'Ulubionych',
+
+    // Admin
+    'admin.title':               'Panel admina',
+    'admin.subtitle':            'Zarządzaj użytkownikami i kategoriami',
+    'admin.users_tab':           'Użytkownicy',
+    'admin.categories_tab':      'Kategorie',
+    'admin.demote_title':        'Degraduj do user',
+    'admin.promote_title':       'Nadaj uprawnienia admin',
+    'admin.delete_user_title':   'Usuń użytkownika',
+    'admin.spins_label':         'spinów',
+    'admin.favorites_label':     'ulubionych',
+    'admin.add_category_button': 'Dodaj kategorię',
+    'admin.new_category_title':  'Nowa kategoria',
+    'admin.add_category_submit': 'Dodaj kategorię',
+    'toast.role_changed':        'Rola zmieniona',
+    'toast.user_deleted':        'Użytkownik usunięty',
+    'toast.category_added':      'Kategoria dodana!',
+    'toast.category_deleted':    'Kategoria usunięta',
+    'confirm.delete_user':     'Na pewno usunąć użytkownika? Tej operacji nie można cofnąć.',
+    'confirm.delete_category': 'Usunąć kategorię? Można usunąć tylko kategorię bez przypisanych dań.',
+
+    // Wheel
+    'wheel.empty': 'Brak dań',
+};

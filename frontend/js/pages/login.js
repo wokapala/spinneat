@@ -8,26 +8,26 @@ Pages.login = function(container) {
                     <span class="material-symbols-outlined" style="font-size:2.5rem;color:var(--clr-primary);">refresh</span>
                     <h1 style="font-family:var(--font-headline);font-size:1.75rem;font-weight:800;letter-spacing:-.03em;color:var(--clr-on-bg);margin:0;">Spin & Eat</h1>
                 </div>
-                <p style="color:var(--clr-on-surface-var);font-size:.9375rem;margin-bottom:2rem;">Witaj z powrotem! Zaloguj się, by losować.</p>
+                <p style="color:var(--clr-on-surface-var);font-size:.9375rem;margin-bottom:2rem;">${esc(t('login.subtitle'))}</p>
 
                 <form id="loginForm" novalidate>
                     <div class="form-group">
-                        <label for="loginEmail">E-mail</label>
-                        <input type="email" id="loginEmail" name="email" placeholder="jan@example.com" autocomplete="email" maxlength="255" required />
+                        <label for="loginEmail">${esc(t('form.email'))}</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="${esc(t('form.email_placeholder'))}" autocomplete="email" maxlength="255" required />
                         <span class="field-error" id="emailErr"></span>
                     </div>
                     <div class="form-group">
-                        <label for="loginPass">Hasło</label>
-                        <input type="password" id="loginPass" name="password" placeholder="••••••••" autocomplete="current-password" maxlength="200" required />
+                        <label for="loginPass">${esc(t('form.password'))}</label>
+                        <input type="password" id="loginPass" name="password" placeholder="${esc(t('form.password_placeholder'))}" autocomplete="current-password" maxlength="200" required />
                         <span class="field-error" id="passErr"></span>
                     </div>
                     <button class="btn btn--primary btn--full btn--pill mt-md" type="submit" id="loginBtn">
-                        Zaloguj się <span class="material-symbols-outlined">arrow_forward</span>
+                        ${esc(t('login.button'))} <span class="material-symbols-outlined">arrow_forward</span>
                     </button>
                 </form>
 
-                <p class="auth-card__switch">Nie masz konta?
-                    <a href="#" data-page="register" style="color:var(--clr-primary);font-weight:600;text-decoration:none;">Zarejestruj się</a>
+                <p class="auth-card__switch">${esc(t('login.no_account'))}
+                    <a href="#" data-page="register" style="color:var(--clr-primary);font-weight:600;text-decoration:none;">${esc(t('login.register_link'))}</a>
                 </p>
             </div>
         </div>
@@ -48,16 +48,16 @@ Pages.login = function(container) {
         try {
             const res = await API.auth.login({ email, password });
             Auth.set(res.data);
-            Toast.show(`Witaj, ${res.data.name}!`, 'success');
+            Toast.show(t('toast.welcome', { name: res.data.name }), 'success');
             App.navigate('home');
         } catch (err) {
             if (err.status === 401) {
-                document.getElementById('passErr').textContent = 'Nieprawidłowy email lub hasło';
+                document.getElementById('passErr').textContent = t('login.invalid_credentials');
             } else {
                 Toast.show(err.message, 'error');
             }
             btn.disabled = false;
-            btn.innerHTML = 'Zaloguj się <span class="material-symbols-outlined">arrow_forward</span>';
+            btn.innerHTML = `${esc(t('login.button'))} <span class="material-symbols-outlined">arrow_forward</span>`;
         }
     });
 };

@@ -1,0 +1,201 @@
+'use strict';
+
+window._LOCALE_EN = {
+    // Nav
+    'nav.home':          'Home',
+    'nav.meals':         'Meals',
+    'nav.history':       'History',
+    'nav.lists':         'Lists',
+    'nav.profile':       'Profile',
+    'nav.notifications': 'Notifications',
+    'nav.login':         'Log in',
+
+    // Topbar
+    'topbar.meals_saved': 'meals saved',
+    'lang.toggle_label':  'PL',
+
+    // App toasts
+    'toast.login_required': 'Please log in to continue',
+    'toast.no_permission':  'Access denied',
+    'toast.logged_out':     'Logged out successfully',
+
+    // Difficulty
+    'difficulty.easy':   'Easy',
+    'difficulty.medium': 'Medium',
+    'difficulty.hard':   'Hard',
+
+    // Home — guest hero
+    'home.hero_title':            "What's for dinner?",
+    'home.hero_subtitle':         'Let chance decide your next culinary masterpiece.',
+    'home.start_now':             'Get started',
+    'home.browse':                'Browse dishes',
+    'home.feature_spin_title':    'Spin',
+    'home.feature_spin_sub':      'Spin the wheel and discover today\'s dish',
+    'home.feature_lists_title':   'Custom lists',
+    'home.feature_lists_sub':     'Create your own spin sets',
+    'home.feature_ratings_title': 'Ratings',
+    'home.feature_ratings_sub':   'Rate what you ate and track your history',
+
+    // Spin
+    'spin.all_categories':   'All',
+    'spin.all_dishes':       'Whole database',
+    'spin.button':           'SPIN!',
+    'home.chefs_picks':      "Chef's Picks",
+    'home.view_all':         'View All',
+    'home.trending':         'Trending',
+    'spin.result_label':     "Today's Perfect Match",
+    'spin.eat_button':       "Yes, let's eat!",
+    'spin.again_button':     'Spin again',
+    'spin.rate_button':      'Rate dish',
+    'toast.bon_appetit':     'Bon appétit! 🍽️',
+
+    // Rating modal
+    'modal.rate_title':        'Rate dish ⭐',
+    'modal.rate_title_short':  'Rate dish',
+    'modal.rating_label':      'Rating',
+    'modal.comment_optional':  'Comment (optional)',
+    'modal.comment_label':     'Comment',
+    'modal.comment_placeholder': 'How was it?',
+    'modal.save_rating':       'Save rating',
+    'modal.save':              'Save',
+    'toast.rating_saved':      'Rating saved!',
+
+    // Errors
+    'error.prefix':           'Error: ',
+    'error.carousel_update':  'Failed to update carousel',
+    'error.no_dishes':        'No dishes to spin',
+    'error.spin_failed':      'Spin failed',
+    'error.dish_not_found':   'Dish not found',
+    'error.list_not_found':   'List not found',
+
+    // Login
+    'login.subtitle':             'Welcome back! Log in to start spinning.',
+    'login.button':               'Log in',
+    'login.no_account':           "Don't have an account?",
+    'login.register_link':        'Sign up',
+    'login.invalid_credentials':  'Invalid email or password',
+    'toast.welcome':              'Welcome, {name}!',
+
+    // Form fields
+    'form.email':                 'Email',
+    'form.email_placeholder':     'john@example.com',
+    'form.password':              'Password',
+    'form.password_placeholder':  '••••••••',
+    'form.password_hint':         '(min. 8 chars, letter + number)',
+    'form.name':                  'Full name',
+    'form.name_placeholder':      'John Smith',
+    'form.name_required':         'Name *',
+    'form.description':           'Description',
+    'form.category_required':     'Category *',
+    'form.image_url':             'Image URL',
+    'form.image_url_placeholder': 'https://…',
+    'form.icon_label':            'Icon (emoji)',
+    'form.color_label':           'Accent color',
+    'form.color_description':     'Choose category color',
+    'form.description_placeholder': 'Short description (optional)',
+
+    // Register
+    'register.subtitle':      'Create an account and start spinning your meals!',
+    'register.button':        'Create account',
+    'register.have_account':  'Already have an account?',
+    'register.login_link':    'Log in',
+    'toast.account_created':  'Account created! Welcome!',
+
+    // Dishes
+    'dishes.title':              'My Meals',
+    'dishes.search_placeholder': 'Search your saved meals...',
+    'dishes.all_chip':           'All',
+    'dishes.count_suffix':       'dishes in database',
+    'dishes.empty':              'No dishes match the filters',
+    'dishes.recipe':             'Recipe',
+    'dishes.add_favorite':       '❤️ Add to favorites',
+    'dishes.rate':               '⭐ Rate',
+    'dishes.delete':             '🗑 Delete',
+    'dishes.new_dish':           'New dish',
+    'dishes.add_dish_button':    'Add dish',
+    'toast.added_to_favorites':       'Added to favorites ❤️',
+    'toast.added_to_favorites_modal': 'Added to favorites!',
+    'toast.dish_added':          'Dish added!',
+    'toast.deleted':             'Deleted',
+    'confirm.delete_dish':       'Delete this dish?',
+    'diff.easy':   'Easy',
+    'diff.medium': 'Med',
+    'diff.hard':   'Expert',
+
+    // History
+    'history.lifetime':      'Lifetime Achievement',
+    'history.total_spins':   'Total spins: ',
+    'history.track_progress': 'Track your progress',
+    'history.recent':        'Recent spins',
+    'history.view_all':      'View All',
+    'history.empty':         "You haven't spun yet!",
+    'history.spin_wheel':    'Spin the wheel',
+
+    // Lists
+    'lists.title':             'My Lists',
+    'lists.new_button':        'New',
+    'lists.empty':             "You don't have any lists yet",
+    'lists.create_first':      'Create first',
+    'lists.public':            'Public',
+    'lists.count_one':         'list',
+    'lists.count_many':        'lists',
+    'lists.dishes_suffix':     'dishes',
+    'lists.show_dishes_title': 'Show dishes',
+    'lists.edit_title':        'Edit',
+    'lists.delete_title':      'Delete',
+    'lists.modal_edit_title':  'Edit list',
+    'lists.modal_new_title':   'New list',
+    'lists.name_placeholder':  'e.g. Healthy lunches',
+    'lists.public_label':      'Public list',
+    'lists.public_description': 'Visible to other users',
+    'lists.add_dish_title':    'Add dish to list',
+    'lists.content_empty':     'List is empty',
+    'lists.add_dish_button':   'Add dish',
+    'toast.list_created':           'List created!',
+    'toast.list_updated':           'List updated',
+    'toast.dish_removed_from_list': 'Dish removed from list',
+    'toast.dish_added_to_list':     'Dish added!',
+    'toast.list_deleted':           'List deleted',
+    'confirm.delete_list':          'Delete this list?',
+
+    // Favorites
+    'favorites.title':          'Favorites',
+    'favorites.count_suffix':   'saved dishes',
+    'favorites.empty':          'No favorite dishes',
+    'favorites.browse':         'Browse dishes',
+    'favorites.remove_title':   'Remove from favorites',
+    'toast.removed_from_favorites': 'Removed from favorites',
+
+    // Profile
+    'profile.admin_badge':    'Admin',
+    'profile.admin_panel':    'Admin panel',
+    'profile.favorites':      'My favorites',
+    'profile.lists':          'My lists',
+    'profile.history':        'Spin history',
+    'profile.logout':         'Log out',
+    'profile.spins_label':    'Spins',
+    'profile.favorites_label': 'Favorites',
+
+    // Admin
+    'admin.title':               'Admin panel',
+    'admin.subtitle':            'Manage users and categories',
+    'admin.users_tab':           'Users',
+    'admin.categories_tab':      'Categories',
+    'admin.demote_title':        'Demote to user',
+    'admin.promote_title':       'Grant admin rights',
+    'admin.delete_user_title':   'Delete user',
+    'admin.spins_label':         'spins',
+    'admin.favorites_label':     'favorites',
+    'admin.add_category_button': 'Add category',
+    'admin.new_category_title':  'New category',
+    'admin.add_category_submit': 'Add category',
+    'toast.role_changed':        'Role changed',
+    'toast.user_deleted':        'User deleted',
+    'toast.category_added':      'Category added!',
+    'toast.category_deleted':    'Category deleted',
+    'confirm.delete_user':     'Are you sure you want to delete this user? This action cannot be undone.',
+    'confirm.delete_category': 'Delete category? You can only delete categories with no assigned dishes.',
+
+    // Wheel
+    'wheel.empty': 'No dishes',
+};

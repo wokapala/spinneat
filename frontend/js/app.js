@@ -11,14 +11,11 @@ const esc = (() => {
 })();
 window.esc = esc;
 
-/* ── SHARED UTILS ──
- * Anything called from more than one page lives here so we don't end
- * up with three slightly different copies of the same helper.
- */
+/* ── SHARED UTILS ── */
 const Utils = {
     initials: name => (name || '?').split(' ').map(w => w[0] || '').join('').toUpperCase().slice(0, 2),
-    difficultyLabel: d => ({ easy: 'Łatwe', medium: 'Średnie', hard: 'Trudne' }[d] || d),
-    formatDate: iso => new Date(iso).toLocaleDateString('pl-PL', {
+    difficultyLabel: d => ({ easy: t('difficulty.easy'), medium: t('difficulty.medium'), hard: t('difficulty.hard') }[d] || d),
+    formatDate: iso => new Date(iso).toLocaleDateString(I18n.getLang() === 'en' ? 'en-GB' : 'pl-PL', {
         day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
     }),
 };
@@ -75,12 +72,12 @@ const App = (() => {
 
     function navigate(page, params = {}) {
         if (authRequired.includes(page) && !Auth.isLoggedIn()) {
-            Toast.show('Zaloguj się, aby uzyskać dostęp', 'error');
+            Toast.show(t('toast.login_required'), 'error');
             navigate('login');
             return;
         }
         if (adminRequired.includes(page) && !Auth.isAdmin()) {
-            Toast.show('Brak uprawnień', 'error');
+            Toast.show(t('toast.no_permission'), 'error');
             return;
         }
         const fn = pages[page];
@@ -96,7 +93,6 @@ const App = (() => {
     function _setActiveNav(page) {
         document.querySelectorAll('.bottom-nav__item').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.page === page);
-            // swap icon fill on active
             const icon = btn.querySelector('.material-symbols-outlined');
             if (icon) {
                 icon.style.fontVariationSettings = btn.dataset.page === page
@@ -107,6 +103,18 @@ const App = (() => {
     }
 
     async function init() {
+        // Apply i18n to static HTML elements (nav labels, aria-labels)
+        _applyI18n();
+
+        // Wire language toggle button
+        const langBtn = document.getElementById('langToggleBtn');
+        if (langBtn) {
+            document.getElementById('langLabel').textContent = t('lang.toggle_label');
+            langBtn.addEventListener('click', () =>
+                I18n.setLang(I18n.getLang() === 'pl' ? 'en' : 'pl')
+            );
+        }
+
         // Delegate all [data-page] clicks
         document.addEventListener('click', e => {
             const link = e.target.closest('[data-page]');
@@ -119,5 +127,16 @@ const App = (() => {
 
     return { navigate, init };
 })();
+
+function _applyI18n() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.dataset.i18n);
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        el.setAttribute('aria-label', t(el.dataset.i18nAria));
+    });
+    // Update html lang attribute
+    document.documentElement.lang = I18n.getLang();
+}
 
 document.addEventListener('DOMContentLoaded', () => App.init());

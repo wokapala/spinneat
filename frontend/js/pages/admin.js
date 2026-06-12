@@ -3,15 +3,15 @@
 Pages.admin = async function(container) {
     container.innerHTML = `
         <div style="margin-bottom:1.5rem;">
-            <h1 style="font-family:var(--font-headline);font-size:2rem;font-weight:800;letter-spacing:-.03em;">Panel admina</h1>
-            <p class="text-muted" style="font-size:.875rem;">Zarządzaj użytkownikami i kategoriami</p>
+            <h1 style="font-family:var(--font-headline);font-size:2rem;font-weight:800;letter-spacing:-.03em;">${esc(t('admin.title'))}</h1>
+            <p class="text-muted" style="font-size:.875rem;">${esc(t('admin.subtitle'))}</p>
         </div>
         <div class="chips-scroll" id="adminTabs" style="margin-bottom:1.25rem;">
             <button class="chip active" data-tab="users">
-                <span class="material-symbols-outlined" style="font-size:1rem;vertical-align:middle;">group</span> Użytkownicy
+                <span class="material-symbols-outlined" style="font-size:1rem;vertical-align:middle;">group</span> ${esc(t('admin.users_tab'))}
             </button>
             <button class="chip" data-tab="categories">
-                <span class="material-symbols-outlined" style="font-size:1rem;vertical-align:middle;">category</span> Kategorie
+                <span class="material-symbols-outlined" style="font-size:1rem;vertical-align:middle;">category</span> ${esc(t('admin.categories_tab'))}
             </button>
         </div>
         <div id="adminContent">
@@ -51,16 +51,16 @@ async function _loadUsers() {
                             </div>
                             <p style="color:var(--clr-on-surface-var);font-size:.8125rem;margin:0;">${esc(u.email)}</p>
                             <p style="color:var(--clr-on-surface-var);font-size:.75rem;margin:.1rem 0 0;">
-                                <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">autorenew</span> ${esc(u.total_spins || 0)} spinów
+                                <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">autorenew</span> ${esc(u.total_spins || 0)} ${esc(t('admin.spins_label'))}
                                 &nbsp;·&nbsp;
-                                <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">favorite</span> ${esc(u.total_favorites || 0)} ulubionych
+                                <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">favorite</span> ${esc(u.total_favorites || 0)} ${esc(t('admin.favorites_label'))}
                             </p>
                         </div>
                         <div style="display:flex;gap:.375rem;flex-shrink:0;">
-                            <button class="btn btn--secondary btn--sm role-btn" data-id="${esc(u.id)}" data-role="${esc(u.role)}" title="${u.role === 'admin' ? 'Degraduj do user' : 'Nadaj uprawnienia admin'}">
+                            <button class="btn btn--secondary btn--sm role-btn" data-id="${esc(u.id)}" data-role="${esc(u.role)}" title="${u.role === 'admin' ? esc(t('admin.demote_title')) : esc(t('admin.promote_title'))}">
                                 <span class="material-symbols-outlined" style="font-size:1rem;">${u.role === 'admin' ? 'arrow_downward' : 'arrow_upward'}</span>
                             </button>
-                            <button class="btn btn--ghost btn--sm del-user-btn" data-id="${esc(u.id)}" title="Usuń użytkownika" style="color:#c0392b;">
+                            <button class="btn btn--ghost btn--sm del-user-btn" data-id="${esc(u.id)}" title="${esc(t('admin.delete_user_title'))}" style="color:#c0392b;">
                                 <span class="material-symbols-outlined" style="font-size:1rem;">delete</span>
                             </button>
                         </div>
@@ -74,7 +74,7 @@ async function _loadUsers() {
                 const newRole = btn.dataset.role === 'admin' ? 'user' : 'admin';
                 try {
                     await API.admin.updateUser(parseInt(btn.dataset.id), { role: newRole });
-                    Toast.show('Rola zmieniona', 'success');
+                    Toast.show(t('toast.role_changed'), 'success');
                     _loadUsers();
                 } catch (err) { Toast.show(err.message, 'error'); }
             });
@@ -82,16 +82,16 @@ async function _loadUsers() {
 
         el.querySelectorAll('.del-user-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
-                if (!confirm('Na pewno usunąć użytkownika? Tej operacji nie można cofnąć.')) return;
+                if (!confirm(t('confirm.delete_user'))) return;
                 try {
                     await API.admin.deleteUser(parseInt(btn.dataset.id));
-                    Toast.show('Użytkownik usunięty', 'info');
+                    Toast.show(t('toast.user_deleted'), 'info');
                     _loadUsers();
                 } catch (err) { Toast.show(err.message, 'error'); }
             });
         });
     } catch (err) {
-        el.innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
+        el.innerHTML = `<p class="text-muted">${esc(t('error.prefix'))}${esc(err.message)}</p>`;
     }
 }
 
@@ -105,7 +105,7 @@ async function _loadCategories() {
         el.innerHTML = `
             <div style="margin-bottom:1rem;">
                 <button class="btn btn--primary btn--pill btn--sm" id="addCatBtn">
-                    <span class="material-symbols-outlined">add</span> Dodaj kategorię
+                    <span class="material-symbols-outlined">add</span> ${esc(t('admin.add_category_button'))}
                 </button>
             </div>
             <div style="display:flex;flex-direction:column;gap:.625rem;">
@@ -129,18 +129,18 @@ async function _loadCategories() {
 
         document.getElementById('addCatBtn').addEventListener('click', () => {
             Modal.show(`
-                <h2 style="font-family:var(--font-headline);font-size:1.25rem;font-weight:800;margin-bottom:1.5rem;">Nowa kategoria</h2>
+                <h2 style="font-family:var(--font-headline);font-size:1.25rem;font-weight:800;margin-bottom:1.5rem;">${esc(t('admin.new_category_title'))}</h2>
                 <form id="catForm">
-                    <div class="form-group"><label>Nazwa *</label><input type="text" name="name" required placeholder="np. Makarony" maxlength="100" /></div>
-                    <div class="form-group"><label>Ikona (emoji)</label><input type="text" name="icon" placeholder="🍕" maxlength="4" /></div>
-                    <div class="form-group"><label>Kolor akcentu</label>
+                    <div class="form-group"><label>${esc(t('form.name_required'))}</label><input type="text" name="name" required placeholder="np. Makarony" maxlength="100" /></div>
+                    <div class="form-group"><label>${esc(t('form.icon_label'))}</label><input type="text" name="icon" placeholder="🍕" maxlength="4" /></div>
+                    <div class="form-group"><label>${esc(t('form.color_label'))}</label>
                         <div style="display:flex;align-items:center;gap:.75rem;">
                             <input type="color" name="color" value="#ff7949" style="width:3rem;height:2.5rem;border:none;background:none;cursor:pointer;padding:0;" />
-                            <span style="font-size:.875rem;color:var(--clr-on-surface-var);">Wybierz kolor kategorii</span>
+                            <span style="font-size:.875rem;color:var(--clr-on-surface-var);">${esc(t('form.color_description'))}</span>
                         </div>
                     </div>
-                    <div class="form-group"><label>Opis</label><textarea name="description" rows="2" placeholder="Krótki opis (opcjonalnie)" maxlength="500"></textarea></div>
-                    <button class="btn btn--primary btn--full btn--pill mt-md" type="submit">Dodaj kategorię</button>
+                    <div class="form-group"><label>${esc(t('form.description'))}</label><textarea name="description" rows="2" placeholder="${esc(t('form.description_placeholder'))}" maxlength="500"></textarea></div>
+                    <button class="btn btn--primary btn--full btn--pill mt-md" type="submit">${esc(t('admin.add_category_submit'))}</button>
                 </form>
             `);
             document.getElementById('catForm').addEventListener('submit', async e => {
@@ -154,7 +154,7 @@ async function _loadCategories() {
                         description: fd.get('description') || null,
                     });
                     Modal.hide();
-                    Toast.show('Kategoria dodana!', 'success');
+                    Toast.show(t('toast.category_added'), 'success');
                     _loadCategories();
                 } catch (err) { Toast.show(err.message, 'error'); }
             });
@@ -162,16 +162,16 @@ async function _loadCategories() {
 
         el.querySelectorAll('.del-cat-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
-                if (!confirm('Usunąć kategorię? Można usunąć tylko kategorię bez przypisanych dań.')) return;
+                if (!confirm(t('confirm.delete_category'))) return;
                 try {
                     await API.categories.delete(parseInt(btn.dataset.id));
-                    Toast.show('Kategoria usunięta', 'info');
+                    Toast.show(t('toast.category_deleted'), 'info');
                     _loadCategories();
                 } catch (err) { Toast.show(err.message, 'error'); }
             });
         });
     } catch (err) {
-        el.innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
+        el.innerHTML = `<p class="text-muted">${esc(t('error.prefix'))}${esc(err.message)}</p>`;
     }
 }
 

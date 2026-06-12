@@ -15,21 +15,21 @@ function _renderHeroGuest(container) {
     container.innerHTML = `
         <section style="text-align:center; padding: 3rem 0 2rem;">
             <h1 style="font-family:var(--font-headline);font-size:clamp(2rem,8vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--clr-on-bg);margin-bottom:.75rem;">
-                What's for<br/>dinner?
+                ${esc(t('home.hero_title'))}
             </h1>
             <p style="color:var(--clr-on-surface-var);font-size:1.0625rem;margin-bottom:2.5rem;max-width:360px;margin-left:auto;margin-right:auto;">
-                Let chance decide your next culinary masterpiece.
+                ${esc(t('home.hero_subtitle'))}
             </p>
             <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;">
-                <button class="btn btn--primary btn--xl btn--pill" data-page="register">Zacznij teraz</button>
-                <button class="btn btn--secondary btn--xl btn--pill" data-page="dishes">Przeglądaj dania</button>
+                <button class="btn btn--primary btn--xl btn--pill" data-page="register">${esc(t('home.start_now'))}</button>
+                <button class="btn btn--secondary btn--xl btn--pill" data-page="dishes">${esc(t('home.browse'))}</button>
             </div>
         </section>
 
         <section style="margin-top:3rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">
-            ${_featureCell('auto_awesome', 'Losowanie', 'Odpal karuzelę i odkryj dzisiejsze danie', 'primary')}
-            ${_featureCell('format_list_bulleted', 'Własne listy', 'Twórz zestawy do losowania', 'surface')}
-            ${_featureCell('star', 'Oceny', 'Oceniaj co jadłeś i śledź historię', 'surface')}
+            ${_featureCell('auto_awesome', t('home.feature_spin_title'),    t('home.feature_spin_sub'),    'primary')}
+            ${_featureCell('format_list_bulleted', t('home.feature_lists_title'),  t('home.feature_lists_sub'),  'surface')}
+            ${_featureCell('star', t('home.feature_ratings_title'), t('home.feature_ratings_sub'), 'surface')}
         </section>
     `;
 }
@@ -39,8 +39,8 @@ function _featureCell(icon, title, sub, type) {
         <div class="bento-cell bento-cell--${type}">
             <span class="material-symbols-outlined bento-cell__icon">${icon}</span>
             <div>
-                <p class="bento-cell__title">${title}</p>
-                <p class="bento-cell__sub">${sub}</p>
+                <p class="bento-cell__title">${esc(title)}</p>
+                <p class="bento-cell__sub">${esc(sub)}</p>
             </div>
         </div>
     `;
@@ -61,22 +61,22 @@ async function _renderSpinPage(container) {
             </div>
             <div class="wheel-filters" id="wheelFilters">
                 <select id="spinCategory" style="padding:.4rem .9rem;background:var(--clr-surface-lowest);border:none;border-radius:var(--radius-full);font-family:var(--font-body);font-size:.8125rem;color:var(--clr-on-surface);cursor:pointer;outline:none;box-shadow:var(--shadow-card);">
-                    <option value="">Wszystkie</option>
+                    <option value="">${esc(t('spin.all_categories'))}</option>
                 </select>
                 <select id="spinList" style="padding:.4rem .9rem;background:var(--clr-surface-lowest);border:none;border-radius:var(--radius-full);font-family:var(--font-body);font-size:.8125rem;color:var(--clr-on-surface);cursor:pointer;outline:none;box-shadow:var(--shadow-card);">
-                    <option value="">Z całej bazy</option>
+                    <option value="">${esc(t('spin.all_dishes'))}</option>
                 </select>
             </div>
             <button class="wheel-spin-btn" id="spinBtn" disabled>
-                SPIN! <span class="material-symbols-outlined">autorenew</span>
+                ${esc(t('spin.button'))} <span class="material-symbols-outlined">autorenew</span>
             </button>
         </section>
         <div id="spinResult"></div>
 
         <section style="margin-top:2.5rem;">
             <div class="section-header">
-                <h2>Chef's Picks</h2>
-                <button class="section-header__action" data-page="dishes">View All</button>
+                <h2>${esc(t('home.chefs_picks'))}</h2>
+                <button class="section-header__action" data-page="dishes">${esc(t('home.view_all'))}</button>
             </div>
             <div id="homeCards" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
                 <div class="loading-overlay" style="grid-column:1/-1"><div class="spinner"></div></div>
@@ -121,7 +121,7 @@ async function _loadHomeData() {
         // Feature cards
         _renderHomeCards(dishes.slice(0, 4));
     } catch (err) {
-        document.getElementById('homeCards').innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
+        document.getElementById('homeCards').innerHTML = `<p class="text-muted">${esc(t('error.prefix'))}${esc(err.message)}</p>`;
     }
 }
 
@@ -140,8 +140,8 @@ async function _updateWheel() {
             dishes = res.data || [];
         }
         Wheel.setSegments(dishes.slice(0, 24).map(d => ({ ...d, label: d.name })));
-    } catch (err) {
-        Toast.show('Nie udało się zaktualizować karuzeli', 'error');
+    } catch {
+        Toast.show(t('error.carousel_update'), 'error');
     }
 }
 
@@ -155,7 +155,7 @@ function _renderHomeCards(dishes) {
         <div class="feature-card" style="grid-column:1/-1">
             <div class="feature-card__img-wrap">
                 <div class="feature-card__img">${esc(first.category_icon || '🍽️')}</div>
-                <div class="feature-card__tag">Trending</div>
+                <div class="feature-card__tag">${esc(t('home.trending'))}</div>
             </div>
             <div class="feature-card__body">
                 <div class="feature-card__header">
@@ -189,12 +189,12 @@ function _renderHomeCards(dishes) {
     container.querySelectorAll('.fav-btn').forEach(btn =>
         btn.addEventListener('click', async e => {
             e.stopPropagation();
-            if (!Auth.isLoggedIn()) { Toast.show('Zaloguj się', 'info'); return; }
+            if (!Auth.isLoggedIn()) { Toast.show(t('nav.login'), 'info'); return; }
             try {
                 await API.dishes.addFavorite(parseInt(btn.dataset.id));
                 btn.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24";
                 btn.style.color = 'var(--clr-primary)';
-                Toast.show('Dodano do ulubionych ❤️', 'success');
+                Toast.show(t('toast.added_to_favorites'), 'success');
             } catch (err) { Toast.show(err.message, 'error'); }
         })
     );
@@ -207,8 +207,6 @@ async function _onSpin() {
 
     btn.disabled = true;
 
-    // A result card from the previous spin must not stay on screen while the
-    // carousel is already racing toward a different dish.
     const prevResult = document.getElementById('spinResult');
     if (prevResult) prevResult.innerHTML = '';
 
@@ -218,10 +216,8 @@ async function _onSpin() {
             category_id: catId  ? parseInt(catId)  : undefined,
         });
         const dish = res.data?.dish;
-        if (!dish) throw new Error('Brak dań do losowania');
+        if (!dish) throw new Error(t('error.no_dishes'));
 
-        // The backend can pick a dish that isn't among the 16 on the wheel;
-        // make sure it has a segment so the pointer lands on the real winner.
         const targetId = Wheel.ensureSegment(dish);
 
         const started = Wheel.spin(() => {
@@ -229,10 +225,9 @@ async function _onSpin() {
             _showResult(dish);
         }, targetId);
 
-        // Another spin is still animating — don't leave the button dead.
         if (!started) btn.disabled = false;
     } catch (err) {
-        Toast.show(err.message || 'Błąd losowania', 'error');
+        Toast.show(err.message || t('error.spin_failed'), 'error');
         btn.disabled = false;
     }
 }
@@ -244,7 +239,6 @@ function _showResult(dish) {
     el.innerHTML = `
         <div class="result-card" style="position:relative;">
             <div class="result-ambient"></div>
-            <!-- confetti dots -->
             <div class="confetti-piece" style="top:10%;left:12%;transform:rotate(15deg)"></div>
             <div class="confetti-piece" style="top:20%;right:10%;background:#a63300;transform:rotate(-25deg)"></div>
 
@@ -252,19 +246,19 @@ function _showResult(dish) {
                 <span>${esc(dish.category_icon || '🍽️')}</span>
                 <span class="material-symbols-outlined">auto_awesome</span>
             </div>
-            <p class="result-card__label">Today's Perfect Match</p>
+            <p class="result-card__label">${esc(t('spin.result_label'))}</p>
             <h2 class="result-card__title">${esc(dish.dish_name || dish.name)}</h2>
 
             <div class="result-card__actions">
                 <button class="btn btn--primary btn--full" id="eatBtn">
-                    Yes, let's eat! <span class="material-symbols-outlined">check_circle</span>
+                    ${esc(t('spin.eat_button'))} <span class="material-symbols-outlined">check_circle</span>
                 </button>
                 <button class="btn btn--secondary btn--full" id="spinAgainBtn">
-                    Spin again
+                    ${esc(t('spin.again_button'))}
                 </button>
             </div>
             <button class="result-card__footer" id="rateResultBtn">
-                <span class="material-symbols-outlined">history</span> Oceń danie
+                <span class="material-symbols-outlined">history</span> ${esc(t('spin.rate_button'))}
             </button>
         </div>
     `;
@@ -276,8 +270,6 @@ function _showResult(dish) {
 
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-        // 'scrollend' never fires when the page is already in position, so a
-        // timeout fallback always runs too — the guard keeps it to one spin.
         let spun = false;
         const go = () => {
             if (spun) return;
@@ -290,7 +282,7 @@ function _showResult(dish) {
     });
     document.getElementById('eatBtn').addEventListener('click', e => {
         e.currentTarget.disabled = true;
-        Toast.show('Smacznego! 🍽️', 'success');
+        Toast.show(t('toast.bon_appetit'), 'success');
         el.innerHTML = '';
         const target = document.querySelector('.carousel-wrap');
         target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -304,10 +296,10 @@ function _showResult(dish) {
 
 function _openRatingModal(dishId) {
     Modal.show(`
-        <h2 style="font-family:var(--font-headline);font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">Oceń danie ⭐</h2>
+        <h2 style="font-family:var(--font-headline);font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">${esc(t('modal.rate_title'))}</h2>
         <form id="ratingForm">
             <div class="form-group">
-                <label>Ocena</label>
+                <label>${esc(t('modal.rating_label'))}</label>
                 <div class="star-input">
                     ${[5,4,3,2,1].map(n => `
                         <input type="radio" name="score" id="star${n}" value="${n}" ${n===5?'checked':''}>
@@ -316,10 +308,10 @@ function _openRatingModal(dishId) {
                 </div>
             </div>
             <div class="form-group">
-                <label>Komentarz (opcjonalnie)</label>
-                <textarea name="comment" rows="3" placeholder="Jak smakowało?" maxlength="1000"></textarea>
+                <label>${esc(t('modal.comment_optional'))}</label>
+                <textarea name="comment" rows="3" placeholder="${esc(t('modal.comment_placeholder'))}" maxlength="1000"></textarea>
             </div>
-            <button class="btn btn--primary btn--full mt-md" type="submit">Zapisz ocenę</button>
+            <button class="btn btn--primary btn--full mt-md" type="submit">${esc(t('modal.save_rating'))}</button>
         </form>
     `);
     document.getElementById('ratingForm').addEventListener('submit', async e => {
@@ -328,7 +320,7 @@ function _openRatingModal(dishId) {
         try {
             await API.ratings.save({ dish_id: dishId, score: parseInt(fd.get('score')), comment: fd.get('comment') || null });
             Modal.hide();
-            Toast.show('Ocena zapisana!', 'success');
+            Toast.show(t('toast.rating_saved'), 'success');
         } catch (err) { Toast.show(err.message, 'error'); }
     });
 }

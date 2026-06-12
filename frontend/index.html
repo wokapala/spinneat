@@ -30,10 +30,13 @@
             <span class="topbar__pill-dot"></span>
             <span id="mealCountLabel">0 meals saved</span>
         </div>
-        <button class="topbar__icon-btn nav-auth-only hidden" id="notifBtn" aria-label="Powiadomienia">
+        <button class="topbar__icon-btn nav-auth-only hidden" id="notifBtn" data-i18n-aria="nav.notifications" aria-label="Powiadomienia">
             <span class="material-symbols-outlined">notifications</span>
         </button>
-        <button class="topbar__icon-btn nav-guest-only" data-page="login" aria-label="Zaloguj się">
+        <button class="topbar__icon-btn" id="langToggleBtn" style="font-size:.8125rem;font-weight:700;letter-spacing:.03em;min-width:2.25rem;" aria-label="Switch language">
+            <span id="langLabel">EN</span>
+        </button>
+        <button class="topbar__icon-btn nav-guest-only" data-page="login" data-i18n-aria="nav.login" aria-label="Zaloguj się">
             <span class="material-symbols-outlined">login</span>
         </button>
     </div>
@@ -46,31 +49,31 @@
 <nav class="bottom-nav" id="bottomNav">
     <button class="bottom-nav__item active" data-page="home">
         <span class="material-symbols-outlined icon-fill">home</span>
-        <span class="bottom-nav__label">Home</span>
+        <span class="bottom-nav__label" data-i18n="nav.home">Home</span>
     </button>
     <button class="bottom-nav__item nav-auth-only hidden" data-page="dishes">
         <span class="material-symbols-outlined">restaurant</span>
-        <span class="bottom-nav__label">Meals</span>
+        <span class="bottom-nav__label" data-i18n="nav.meals">Meals</span>
     </button>
     <button class="bottom-nav__item nav-auth-only hidden" data-page="history">
         <span class="material-symbols-outlined">history</span>
-        <span class="bottom-nav__label">History</span>
+        <span class="bottom-nav__label" data-i18n="nav.history">History</span>
     </button>
     <button class="bottom-nav__item nav-guest-only" data-page="dishes">
         <span class="material-symbols-outlined">restaurant</span>
-        <span class="bottom-nav__label">Meals</span>
+        <span class="bottom-nav__label" data-i18n="nav.meals">Meals</span>
     </button>
     <button class="bottom-nav__item nav-auth-only hidden" data-page="lists">
         <span class="material-symbols-outlined">format_list_bulleted</span>
-        <span class="bottom-nav__label">Lists</span>
+        <span class="bottom-nav__label" data-i18n="nav.lists">Lists</span>
     </button>
     <button class="bottom-nav__item nav-auth-only hidden" data-page="profile">
         <span class="material-symbols-outlined">person</span>
-        <span class="bottom-nav__label">Profile</span>
+        <span class="bottom-nav__label" data-i18n="nav.profile">Profile</span>
     </button>
     <button class="bottom-nav__item nav-guest-only" data-page="login">
         <span class="material-symbols-outlined">person</span>
-        <span class="bottom-nav__label">Profile</span>
+        <span class="bottom-nav__label" data-i18n="nav.profile">Profile</span>
     </button>
 </nav>
 
@@ -86,6 +89,9 @@
     </div>
 </div>
 
+<script src="/js/locales/pl.js"></script>
+<script src="/js/locales/en.js"></script>
+<script src="/js/i18n.js"></script>
 <script src="/js/api.js"></script>
 <script src="/js/auth.js"></script>
 <script src="/js/wheel.js"></script>

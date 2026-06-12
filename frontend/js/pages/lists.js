@@ -4,11 +4,11 @@ Pages.lists = async function(container) {
     container.innerHTML = `
         <div style="margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
             <div>
-                <h1 style="font-family:var(--font-headline);font-size:2rem;font-weight:800;letter-spacing:-.03em;">Moje listy</h1>
+                <h1 style="font-family:var(--font-headline);font-size:2rem;font-weight:800;letter-spacing:-.03em;">${esc(t('lists.title'))}</h1>
                 <p class="text-muted" style="font-size:.875rem;" id="listCount"></p>
             </div>
             <button class="btn btn--primary btn--pill btn--sm" id="newListBtn">
-                <span class="material-symbols-outlined">add</span> Nowa
+                <span class="material-symbols-outlined">add</span> ${esc(t('lists.new_button'))}
             </button>
         </div>
         <div style="display:flex;flex-direction:column;gap:.75rem;" id="listsContainer">
@@ -22,7 +22,7 @@ Pages.lists = async function(container) {
         _openListModal(null, async data => {
             try {
                 await API.lists.create(data);
-                Toast.show('Lista utworzona!', 'success');
+                Toast.show(t('toast.list_created'), 'success');
                 await _loadLists();
             } catch (err) { Toast.show(err.message, 'error'); }
         });
@@ -38,15 +38,15 @@ async function _loadLists() {
         const items = res.data || [];
 
         const countEl = document.getElementById('listCount');
-        if (countEl) countEl.textContent = `${items.length} list${items.length === 1 ? 'a' : 'y'}`;
+        if (countEl) countEl.textContent = `${items.length} ${items.length === 1 ? t('lists.count_one') : t('lists.count_many')}`;
 
         if (!items.length) {
             el.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-icon">📋</div>
-                    <p>Nie masz jeszcze żadnych list</p>
+                    <p>${esc(t('lists.empty'))}</p>
                     <button class="btn btn--primary btn--pill mt-md" id="emptyNewListBtn">
-                        <span class="material-symbols-outlined">add</span> Utwórz pierwszą
+                        <span class="material-symbols-outlined">add</span> ${esc(t('lists.create_first'))}
                     </button>
                 </div>
             `;
@@ -64,21 +64,21 @@ async function _loadLists() {
                 <div class="list-item-card__body">
                     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;">
                         <h3 class="list-item-card__name">${esc(l.name)}</h3>
-                        ${l.is_public ? `<span style="font-size:.625rem;font-weight:700;padding:.15rem .5rem;border-radius:var(--radius-full);background:var(--clr-secondary-container);color:var(--clr-on-secondary-container);flex-shrink:0;">Publiczna</span>` : ''}
+                        ${l.is_public ? `<span style="font-size:.625rem;font-weight:700;padding:.15rem .5rem;border-radius:var(--radius-full);background:var(--clr-secondary-container);color:var(--clr-on-secondary-container);flex-shrink:0;">${esc(t('lists.public'))}</span>` : ''}
                     </div>
                     <p class="list-item-card__meta">
                         <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">restaurant</span>
-                        ${esc(l.dish_count || 0)} dań${l.description ? ` · ${esc(l.description)}` : ''}
+                        ${esc(l.dish_count || 0)} ${esc(t('lists.dishes_suffix'))}${l.description ? ` · ${esc(l.description)}` : ''}
                     </p>
                 </div>
                 <div style="display:flex;gap:.375rem;flex-shrink:0;">
-                    <button class="btn btn--ghost btn--sm view-list-btn" data-id="${esc(l.id)}" title="Pokaż dania">
+                    <button class="btn btn--ghost btn--sm view-list-btn" data-id="${esc(l.id)}" title="${esc(t('lists.show_dishes_title'))}">
                         <span class="material-symbols-outlined">visibility</span>
                     </button>
-                    <button class="btn btn--ghost btn--sm edit-list-btn" data-id="${esc(l.id)}" title="Edytuj">
+                    <button class="btn btn--ghost btn--sm edit-list-btn" data-id="${esc(l.id)}" title="${esc(t('lists.edit_title'))}">
                         <span class="material-symbols-outlined">edit</span>
                     </button>
-                    <button class="btn btn--ghost btn--sm del-list-btn" data-id="${esc(l.id)}" title="Usuń" style="color:#c0392b;">
+                    <button class="btn btn--ghost btn--sm del-list-btn" data-id="${esc(l.id)}" title="${esc(t('lists.delete_title'))}" style="color:#c0392b;">
                         <span class="material-symbols-outlined">delete</span>
                     </button>
                 </div>
@@ -96,7 +96,7 @@ async function _loadLists() {
                 _openListModal(res.data, async data => {
                     try {
                         await API.lists.update(parseInt(btn.dataset.id), data);
-                        Toast.show('Lista zaktualizowana', 'success');
+                        Toast.show(t('toast.list_updated'), 'success');
                         await _loadLists();
                     } catch (err) { Toast.show(err.message, 'error'); }
                 });
@@ -105,10 +105,10 @@ async function _loadLists() {
         el.querySelectorAll('.del-list-btn').forEach(btn =>
             btn.addEventListener('click', async e => {
                 e.stopPropagation();
-                if (!confirm('Usunąć listę?')) return;
+                if (!confirm(t('confirm.delete_list'))) return;
                 try {
                     await API.lists.delete(parseInt(btn.dataset.id));
-                    Toast.show('Lista usunięta', 'info');
+                    Toast.show(t('toast.list_deleted'), 'info');
                     await _loadLists();
                 } catch (err) { Toast.show(err.message, 'error'); }
             })
@@ -117,13 +117,13 @@ async function _loadLists() {
             card.addEventListener('click', () => _viewList(parseInt(card.dataset.id)))
         );
     } catch (err) {
-        el.innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
+        el.innerHTML = `<p class="text-muted">${esc(t('error.prefix'))}${esc(err.message)}</p>`;
     }
 }
 
 async function _viewList(id) {
     const res  = await API.lists.get(id).catch(() => null);
-    if (!res) { Toast.show('Nie znaleziono listy', 'error'); return; }
+    if (!res) { Toast.show(t('error.list_not_found'), 'error'); return; }
     const list = res.data;
 
     Modal.show(`
@@ -149,11 +149,11 @@ async function _viewList(id) {
                         <span class="material-symbols-outlined" style="font-size:1.1rem;">close</span>
                     </button>
                 </div>
-            `).join('') : '<p style="color:var(--clr-on-surface-var);text-align:center;padding:1.5rem 0;">Lista jest pusta</p>'}
+            `).join('') : `<p style="color:var(--clr-on-surface-var);text-align:center;padding:1.5rem 0;">${esc(t('lists.content_empty'))}</p>`}
         </div>
 
         <button class="btn btn--secondary btn--full btn--pill" id="addDishToListBtn">
-            <span class="material-symbols-outlined">add</span> Dodaj danie
+            <span class="material-symbols-outlined">add</span> ${esc(t('lists.add_dish_button'))}
         </button>
     `);
 
@@ -162,7 +162,7 @@ async function _viewList(id) {
             try {
                 await API.lists.removeDish(parseInt(btn.dataset.listid), parseInt(btn.dataset.dishid));
                 btn.closest('div[style]').remove();
-                Toast.show('Danie usunięte z listy', 'info');
+                Toast.show(t('toast.dish_removed_from_list'), 'info');
             } catch (err) { Toast.show(err.message, 'error'); }
         })
     );
@@ -172,7 +172,7 @@ async function _viewList(id) {
         const dishes  = dishRes.data || [];
 
         Modal.show(`
-            <h2 style="font-family:var(--font-headline);font-size:1.25rem;font-weight:800;margin-bottom:1.25rem;">Dodaj danie do listy</h2>
+            <h2 style="font-family:var(--font-headline);font-size:1.25rem;font-weight:800;margin-bottom:1.25rem;">${esc(t('lists.add_dish_title'))}</h2>
             <div style="display:flex;flex-direction:column;gap:.5rem;max-height:400px;overflow-y:auto;">
                 ${dishes.map(d => `
                     <div class="meal-card add-dish-row" data-dishid="${esc(d.id)}" style="cursor:pointer;">
@@ -191,7 +191,7 @@ async function _viewList(id) {
             row.addEventListener('click', async () => {
                 try {
                     await API.lists.addDish(id, parseInt(row.dataset.dishid));
-                    Toast.show('Danie dodane!', 'success');
+                    Toast.show(t('toast.dish_added_to_list'), 'success');
                     Modal.hide();
                 } catch (err) { Toast.show(err.message, 'error'); }
             })
@@ -202,25 +202,25 @@ async function _viewList(id) {
 function _openListModal(list, onSave) {
     Modal.show(`
         <h2 style="font-family:var(--font-headline);font-size:1.25rem;font-weight:800;margin-bottom:1.5rem;">
-            ${list ? 'Edytuj listę' : 'Nowa lista'}
+            ${esc(list ? t('lists.modal_edit_title') : t('lists.modal_new_title'))}
         </h2>
         <form id="listForm">
             <div class="form-group">
-                <label>Nazwa *</label>
-                <input type="text" name="name" value="${esc(list?.name || '')}" required placeholder="np. Zdrowe obiady" maxlength="200" />
+                <label>${esc(t('form.name_required'))}</label>
+                <input type="text" name="name" value="${esc(list?.name || '')}" required placeholder="${esc(t('lists.name_placeholder'))}" maxlength="200" />
             </div>
             <div class="form-group">
-                <label>Opis</label>
-                <textarea name="description" rows="2" placeholder="Krótki opis (opcjonalnie)" maxlength="500">${esc(list?.description || '')}</textarea>
+                <label>${esc(t('form.description'))}</label>
+                <textarea name="description" rows="2" placeholder="${esc(t('form.description_placeholder'))}" maxlength="500">${esc(list?.description || '')}</textarea>
             </div>
             <label style="display:flex;align-items:center;gap:.625rem;padding:.75rem;background:var(--clr-surface-low);border-radius:var(--radius-md);cursor:pointer;margin-bottom:1.5rem;">
                 <input type="checkbox" name="is_public" ${list?.is_public ? 'checked' : ''} style="width:1.125rem;height:1.125rem;accent-color:var(--clr-primary);" />
                 <div>
-                    <p style="font-weight:600;font-size:.9375rem;margin:0;">Publiczna lista</p>
-                    <p style="font-size:.8125rem;color:var(--clr-on-surface-var);margin:0;">Widoczna dla innych użytkowników</p>
+                    <p style="font-weight:600;font-size:.9375rem;margin:0;">${esc(t('lists.public_label'))}</p>
+                    <p style="font-size:.8125rem;color:var(--clr-on-surface-var);margin:0;">${esc(t('lists.public_description'))}</p>
                 </div>
             </label>
-            <button class="btn btn--primary btn--full btn--pill" type="submit">Zapisz</button>
+            <button class="btn btn--primary btn--full btn--pill" type="submit">${esc(t('modal.save'))}</button>
         </form>
     `);
 

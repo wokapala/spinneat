@@ -5,15 +5,15 @@ Pages.history = async function(container, { page = 1 } = {}) {
         <div class="stats-banner" id="statsBanner">
             <div class="stats-banner__glow"></div>
             <span class="material-symbols-outlined stats-banner__icon">auto_awesome</span>
-            <p class="stats-banner__label">Lifetime Achievement</p>
-            <h2 class="stats-banner__count">Total spins: <span id="totalSpins">…</span></h2>
+            <p class="stats-banner__label">${esc(t('history.lifetime'))}</p>
+            <h2 class="stats-banner__count">${esc(t('history.total_spins'))}<span id="totalSpins">…</span></h2>
             <div class="stats-banner__trend">
-                <span class="material-symbols-outlined">trending_up</span> Śledź swoje postępy
+                <span class="material-symbols-outlined">trending_up</span> ${esc(t('history.track_progress'))}
             </div>
         </div>
         <div class="section-header">
-            <h2>Recent spins</h2>
-            <button class="section-header__action" data-page="history">View All</button>
+            <h2>${esc(t('history.recent'))}</h2>
+            <button class="section-header__action" data-page="history">${esc(t('history.view_all'))}</button>
         </div>
         <div style="display:flex;flex-direction:column;gap:.75rem;" id="historyList">
             <div class="loading-overlay"><div class="spinner"></div></div>
@@ -34,8 +34,8 @@ Pages.history = async function(container, { page = 1 } = {}) {
             list.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-icon">🎡</div>
-                    <p>Jeszcze nie losowałeś!</p>
-                    <button class="btn btn--primary btn--pill mt-md" data-page="home">Zakręć kołem</button>
+                    <p>${esc(t('history.empty'))}</p>
+                    <button class="btn btn--primary btn--pill mt-md" data-page="home">${esc(t('history.spin_wheel'))}</button>
                 </div>`;
             return;
         }
@@ -78,27 +78,27 @@ Pages.history = async function(container, { page = 1 } = {}) {
             }
         }
     } catch (err) {
-        document.getElementById('historyList').innerHTML = `<p class="text-muted">Błąd: ${esc(err.message)}</p>`;
+        document.getElementById('historyList').innerHTML = `<p class="text-muted">${esc(t('error.prefix'))}${esc(err.message)}</p>`;
     }
 };
 
 function _rateModal(dishId) {
     Modal.show(`
-        <h2 style="font-family:var(--font-headline);font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">Oceń danie ⭐</h2>
+        <h2 style="font-family:var(--font-headline);font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">${esc(t('modal.rate_title'))}</h2>
         <form id="rateHistForm">
-            <div class="form-group"><label>Ocena</label>
+            <div class="form-group"><label>${esc(t('modal.rating_label'))}</label>
                 <div class="star-input">
                     ${[5,4,3,2,1].map(n=>`<input type="radio" name="score" id="hs${n}" value="${n}" ${n===5?'checked':''}><label for="hs${n}">★</label>`).join('')}
                 </div>
             </div>
-            <div class="form-group"><label>Komentarz</label><textarea name="comment" rows="3" placeholder="Jak smakowało?" maxlength="1000"></textarea></div>
-            <button class="btn btn--primary btn--full mt-md" type="submit">Zapisz</button>
+            <div class="form-group"><label>${esc(t('modal.comment_label'))}</label><textarea name="comment" rows="3" placeholder="${esc(t('modal.comment_placeholder'))}" maxlength="1000"></textarea></div>
+            <button class="btn btn--primary btn--full mt-md" type="submit">${esc(t('modal.save'))}</button>
         </form>
     `);
     document.getElementById('rateHistForm').addEventListener('submit', async e => {
         e.preventDefault();
         const fd = new FormData(e.target);
-        try { await API.ratings.save({ dish_id: dishId, score: parseInt(fd.get('score')), comment: fd.get('comment') || null }); Modal.hide(); Toast.show('Ocena zapisana!', 'success'); }
+        try { await API.ratings.save({ dish_id: dishId, score: parseInt(fd.get('score')), comment: fd.get('comment') || null }); Modal.hide(); Toast.show(t('toast.rating_saved'), 'success'); }
         catch (err) { Toast.show(err.message, 'error'); }
     });
 }
