@@ -31,8 +31,10 @@ class RatingRepository extends BaseRepository
     public function findByUser(int $userId): array
     {
         return $this->fetchAll(
-            'SELECT r.*, d.name AS dish_name FROM ratings r
+            'SELECT r.*, d.name AS dish_name, c.icon AS category_icon, c.name AS category_name
+             FROM ratings r
              JOIN dishes d ON d.id = r.dish_id
+             JOIN categories c ON c.id = d.category_id
              WHERE r.user_id = ? ORDER BY r.rated_at DESC',
             [$userId]
         );

@@ -104,6 +104,7 @@ function _renderList(dishes) {
                     ${d.prep_time ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">schedule</span>${esc(d.prep_time)} min</div>` : ''}
                     ${d.difficulty ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">local_fire_department</span>${esc(_diff(d.difficulty))}</div>` : ''}
                     ${d.spin_count > 0 ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined">autorenew</span>${esc(d.spin_count)}</div>` : ''}
+                    ${parseFloat(d.avg_rating) > 0 ? `<div class="meal-card__meta-item"><span class="material-symbols-outlined" style="color:#f59e0b;">star</span>${esc(parseFloat(d.avg_rating).toFixed(1))}</div>` : ''}
                 </div>
             </div>
             <span class="material-symbols-outlined meal-card__chevron">chevron_right</span>

@@ -108,6 +108,7 @@ const API = (() => {
 
         // Ratings
         ratings: {
+            mine:   ()         => request('GET',  '/ratings/mine'),
             save:   (data)     => request('POST', '/ratings', data),
             update: (id, data) => request('PUT',  `/ratings/${id}`, data),
         },

@@ -46,6 +46,12 @@ final class RatingController extends BaseController
         Response::success($rating, 'Rating saved', 201);
     }
 
+    public function mine(Request $request): void
+    {
+        $ratings = $this->ratings->findByUser($this->currentUserId());
+        Response::success($ratings);
+    }
+
     public function update(Request $request, string $id): void
     {
         $existing = $this->ratings->findById((int) $id);

@@ -77,6 +77,7 @@ final class Application
         $this->router->delete('/api/favorites/{id}',   [new $dish(), 'removeFavorite'],[AuthMiddleware::class]);
 
         // Ratings
+        $this->router->get('/api/ratings/mine',    [new $rate(), 'mine'],   [AuthMiddleware::class]);
         $this->router->post('/api/ratings',        [new $rate(), 'store'],  [AuthMiddleware::class]);
         $this->router->put('/api/ratings/{id}',    [new $rate(), 'update'], [AuthMiddleware::class]);
 

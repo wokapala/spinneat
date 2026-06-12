@@ -56,7 +56,7 @@ const Modal = (() => {
 
 /* ── SPA ROUTER ── */
 const App = (() => {
-    const authRequired  = ['history', 'lists', 'favorites', 'profile'];
+    const authRequired  = ['history', 'lists', 'favorites', 'profile', 'ratings'];
     const adminRequired = ['admin'];
     const pages = {
         home:      Pages.home,
@@ -66,6 +66,7 @@ const App = (() => {
         history:   Pages.history,
         lists:     Pages.lists,
         favorites: Pages.favorites,
+        ratings:   Pages.ratings,
         profile:   Pages.profile,
         admin:     Pages.admin,
     };

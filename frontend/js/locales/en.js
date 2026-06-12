@@ -166,9 +166,19 @@ window._LOCALE_EN = {
     'favorites.remove_title':   'Remove from favorites',
     'toast.removed_from_favorites': 'Removed from favorites',
 
+    // Ratings page
+    'ratings.title':          'My Ratings',
+    'ratings.count_suffix':   'rated dishes',
+    'ratings.empty':          "You haven't rated any dishes yet",
+    'ratings.browse':         'Browse dishes',
+    'ratings.edit_btn':       'Edit rating',
+    'ratings.edit_title':     'Edit rating',
+    'ratings.updated':        'Rating updated!',
+
     // Profile
     'profile.admin_badge':    'Admin',
     'profile.admin_panel':    'Admin panel',
+    'profile.ratings':        'My ratings',
     'profile.favorites':      'My favorites',
     'profile.lists':          'My lists',
     'profile.history':        'Spin history',

@@ -35,6 +35,11 @@ Pages.profile = async function(container) {
                 <span class="profile-action-btn__label">${esc(t('profile.favorites'))}</span>
                 <span class="material-symbols-outlined" style="color:var(--clr-outline-var);">chevron_right</span>
             </button>
+            <button class="profile-action-btn" data-page="ratings">
+                <span class="material-symbols-outlined profile-action-btn__icon" style="color:#f59e0b;">star</span>
+                <span class="profile-action-btn__label">${esc(t('profile.ratings'))}</span>
+                <span class="material-symbols-outlined" style="color:var(--clr-outline-var);">chevron_right</span>
+            </button>
             <button class="profile-action-btn" data-page="lists">
                 <span class="material-symbols-outlined profile-action-btn__icon" style="color:#6c9de8;">format_list_bulleted</span>
                 <span class="profile-action-btn__label">${esc(t('profile.lists'))}</span>

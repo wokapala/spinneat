@@ -166,9 +166,19 @@ window._LOCALE_PL = {
     'favorites.remove_title':   'Usuń z ulubionych',
     'toast.removed_from_favorites': 'Usunięto z ulubionych',
 
+    // Ratings page
+    'ratings.title':          'Moje oceny',
+    'ratings.count_suffix':   'ocenionych dań',
+    'ratings.empty':          'Jeszcze nie oceniłeś żadnego dania',
+    'ratings.browse':         'Przeglądaj dania',
+    'ratings.edit_btn':       'Edytuj ocenę',
+    'ratings.edit_title':     'Edytuj ocenę',
+    'ratings.updated':        'Ocena zaktualizowana!',
+
     // Profile
     'profile.admin_badge':    'Admin',
     'profile.admin_panel':    'Panel administratora',
+    'profile.ratings':        'Moje oceny',
     'profile.favorites':      'Moje ulubione',
     'profile.lists':          'Moje listy',
     'profile.history':        'Historia spinów',
