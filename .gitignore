@@ -3,3 +3,4 @@ backend/vendor/
 *.log
 .DS_Store
 .phpunit.result.cache
+OBRONA.md

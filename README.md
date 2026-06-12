@@ -164,13 +164,14 @@ Wszystkie konta z seedu używają hasła **`Admin1234!`**.
 ## Funkcjonalności
 
 - **Karuzela losująca** — poziomy pasek kart z animacją "case-opening", wskaźnik zatrzymuje się dokładnie na daniu wylosowanym przez backend, filtry "kategoria" i "lista".
-- **Katalog dań** — wyszukiwarka, chipsy kategorii, dodawanie własnych dań.
+- **Katalog dań** — wyszukiwarka, chipsy kategorii, dodawanie własnych dań, średnia ocena widoczna na kartach.
 - **Listy** — własne kolekcje dań do losowania, opcjonalnie publiczne.
 - **Ulubione** — szybkie zapisywanie na osi serca.
 - **Historia spinów** — paginowana lista, oceny "in place".
-- **Oceny** — 1–5 gwiazdek + komentarz, jedna ocena na (user, dish).
+- **Oceny** — 1–5 gwiazdek + komentarz, jedna ocena na (user, dish); strona "Moje oceny" z listą i edycją.
 - **Profil** — statystyki i skróty do sekcji.
 - **Panel administratora** — promowanie / degradowanie userów, usuwanie userów, CRUD kategorii.
+- **i18n PL/EN** — przełącznik języka w topbarze, wszystkie komunikaty UI w języku polskim i angielskim.
 
 ---
 
@@ -253,7 +254,7 @@ Sprawdza: pełny rejestracja → login → spin → ocena flow + dostęp do endp
 
 ## Scenariusz testowy (krok po kroku)
 
-1. **Uruchomienie** — `docker compose up -d` → `http://localhost` (lub port z `NGINX_PORT`) → widoczna strona "What's for dinner?" (guest hero).
+1. **Uruchomienie** — `docker compose up -d` → `http://localhost` (lub port z `NGINX_PORT`) → widoczna strona "Co na obiad?" (strona główna gościa; domyślny język PL, przełącznik EN w topbarze).
 2. **Rejestracja** — klik "Zacznij teraz" → wypełnij email/hasło/imię (hasło min. 8 znaków + litera + cyfra) → konto utworzone, auto-login → przekierowanie do home z karuzelą.
 3. **Spin** — w dropdownie "Wszystkie" zostaw domyślne → klik **SPIN!** → karuzela przejeżdża ~5–6 sekund z mocnym wyhamowaniem i zatrzymuje się na konkretnym daniu → karta wyniku **dokładnie zgadza się** z kartą pod wskaźnikiem.
 4. **Filtr na kategorię** — wybierz "Polska" w pierwszym dropdownie → karty karuzeli momentalnie aktualizują się na polskie dania → kolejny spin tylko z tej puli.
@@ -319,11 +320,13 @@ spinneat/
 │   ├── index.html                # SPA shell
 │   ├── css/                      # variables, main, components, responsive
 │   ├── js/
+│   │   ├── locales/              # pl.js, en.js — słowniki i18n
+│   │   ├── i18n.js               # moduł I18n: t(), getLang(), setLang()
 │   │   ├── api.js                # warstwa Fetch + CSRF
 │   │   ├── auth.js               # stan sesji
 │   │   ├── wheel.js              # karuzela losująca (case-opening)
 │   │   ├── app.js                # router SPA, Toast, Modal, esc()
-│   │   └── pages/                # home, dishes, lists, login, …
+│   │   └── pages/                # home, dishes, lists, ratings, …
 │   └── errors/                   # 400/401/403/404/500.html
 ├── nginx/default.conf            # proxy + security headers
 ├── docker-compose.yml
