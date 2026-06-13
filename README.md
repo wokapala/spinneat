@@ -277,17 +277,14 @@ Sprawdza: pełny rejestracja → login → spin → ocena flow + dostęp do endp
 
 ## Zrzuty ekranu
 
-> Zrzuty znajdują się w `docs/screenshots/` (wersja **WEBOWA** i **MOBILNA**).
-
-```
-docs/screenshots/
-├── home-desktop.png        home-mobile.png
-├── dishes-desktop.png      dishes-mobile.png
-├── lists-desktop.png       lists-mobile.png
-├── history-desktop.png     history-mobile.png
-├── profile-desktop.png     profile-mobile.png
-└── admin-desktop.png       admin-mobile.png
-```
+| Desktop | Mobile |
+|---------|--------|
+| ![Home – desktop](docs/screenshots/home-desktop.png) | ![Home – mobile](docs/screenshots/home-mobile.png) |
+| ![Dania – desktop](docs/screenshots/dishes-desktop.png) | ![Dania – mobile](docs/screenshots/dishes-mobile.png) |
+| ![Listy – desktop](docs/screenshots/lists-desktop.png) | ![Listy – mobile](docs/screenshots/lists-mobile.png) |
+| ![Historia – desktop](docs/screenshots/history-desktop.png) | ![Historia – mobile](docs/screenshots/history-mobile.png) |
+| ![Profil – desktop](docs/screenshots/profile-desktop.png) | ![Profil – mobile](docs/screenshots/profile-mobile.png) |
+| ![Admin – desktop](docs/screenshots/admin-desktop.png) | ![Admin – mobile](docs/screenshots/admin-mobile.png) |
 
 ---
 
