@@ -11,15 +11,22 @@
 
 /* ── MOBILE ── */
 @media (max-width: 480px) {
-    /* Topbar — prevent brand from wrapping */
+    /* Topbar — prevent brand from wrapping; hide redundant meal-count pill */
     .topbar { padding: 0 .75rem; }
     .topbar__title { font-size: .9375rem; white-space: nowrap; }
     .topbar__actions { gap: .25rem; }
-    .topbar__pill { font-size: .6rem; padding: .15rem .45rem; gap: .25rem; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .topbar__pill { display: none; }
 
-    /* Bottom nav — 5 items must fit */
-    .bottom-nav__item { padding: .5rem .5rem; }
-    .bottom-nav__label { font-size: .6rem; }
+    /* Bottom nav — 5 items share width equally and labels truncate */
+    .bottom-nav { width: 94%; padding: .4rem .35rem; gap: .1rem; }
+    .bottom-nav__item { flex: 1 1 0; min-width: 0; padding: .45rem .15rem; }
+    .bottom-nav__label {
+        font-size: .58rem;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     .bottom-nav__item span.material-symbols-outlined { font-size: 1.25rem; }
 
     /* Wheel filter selects — readable on mobile */
