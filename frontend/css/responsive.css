@@ -11,6 +11,10 @@
 
 /* ── MOBILE ── */
 @media (max-width: 480px) {
+    .topbar { padding: 0 .875rem; }
+    .topbar__title { font-size: 1.05rem; }
+    .topbar__actions { gap: .375rem; }
+    .topbar__pill { font-size: .65rem; padding: .2rem .5rem; gap: .3rem; }
     .carousel-card { flex-basis: 104px; }
     .carousel-viewport { height: 140px; }
     .carousel-card__icon { font-size: 1.9rem; }
