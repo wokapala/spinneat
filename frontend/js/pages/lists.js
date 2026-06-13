@@ -62,9 +62,9 @@ async function _loadLists() {
                     <span class="material-symbols-outlined">format_list_bulleted</span>
                 </div>
                 <div class="list-item-card__body">
-                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;">
-                        <h3 class="list-item-card__name">${esc(l.name)}</h3>
-                        ${l.is_public ? `<span style="font-size:.625rem;font-weight:700;padding:.15rem .5rem;border-radius:var(--radius-full);background:var(--clr-secondary-container);color:var(--clr-on-secondary-container);flex-shrink:0;">${esc(t('lists.public'))}</span>` : ''}
+                    <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:.1rem;">
+                        <h3 class="list-item-card__name" style="margin:0;">${esc(l.name)}</h3>
+                        ${l.is_public ? `<span style="font-size:.625rem;font-weight:700;padding:.15rem .5rem;border-radius:var(--radius-full);background:var(--clr-secondary-container);color:var(--clr-on-secondary-container);white-space:nowrap;">${esc(t('lists.public'))}</span>` : ''}
                     </div>
                     <p class="list-item-card__meta">
                         <span class="material-symbols-outlined" style="font-size:.875rem;vertical-align:middle;">restaurant</span>
